@@ -1,0 +1,447 @@
+.wop-nav-wrap {
+  position: fixed;
+  top: 18px;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 0 22px;
+  transition: 0.35s ease;
+}
+
+.wop-nav-wrap.is-scrolled {
+  top: 10px;
+}
+
+.wop-nav {
+  width: min(1180px, 100%);
+  height: 78px;
+  margin: 0 auto;
+  padding: 10px 12px 10px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.78),
+      rgba(255, 255, 255, 0.42)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.82);
+
+  box-shadow:
+    0 24px 80px rgba(73, 43, 20, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+
+  transition: 0.35s ease;
+}
+
+.wop-nav-wrap.is-scrolled .wop-nav {
+  height: 68px;
+  box-shadow:
+    0 20px 70px rgba(73, 43, 20, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.wop-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 210px;
+}
+
+.wop-brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: white;
+
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.45), transparent 32%),
+    linear-gradient(135deg, var(--orange), var(--red));
+
+  box-shadow:
+    0 16px 34px rgba(232, 123, 50, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.38);
+
+  transition: 0.35s ease;
+}
+
+.wop-brand:hover .wop-brand-mark {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.wop-brand span {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.wop-brand b {
+  margin-top: 2px;
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--orange);
+  text-transform: none;
+}
+
+.wop-nav-links {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.36);
+  border: 1px solid rgba(255,255,255,0.52);
+}
+
+.wop-nav-links a {
+  position: relative;
+  isolation: isolate;
+
+  padding: 11px 15px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(16, 23, 40, 0.68);
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.wop-nav-links a:hover {
+  color: var(--navy);
+  transform: translateY(-2px);
+}
+
+.wop-nav-links a.active {
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 12px 30px rgba(54, 34, 18, 0.1),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.wop-nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: var(--orange);
+  box-shadow: 0 0 16px rgba(232,123,50,0.9);
+}
+
+.wop-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wop-nav-login,
+.wop-nav-cta {
+  min-height: 46px;
+  padding: 0 17px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.wop-nav-login {
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(16, 23, 40, 0.08);
+}
+
+.wop-nav-login:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.9);
+}
+
+.wop-nav-cta {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(135deg, var(--orange), var(--red));
+  box-shadow: 0 16px 38px rgba(232, 123, 50, 0.34);
+}
+
+.wop-nav-cta::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255,255,255,0.52),
+    transparent
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+
+.wop-nav-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(232, 123, 50, 0.42);
+}
+
+.wop-nav-cta:hover::after {
+  transform: translateX(120%);
+}
+
+.wop-menu-btn {
+  display: none;
+
+  width: 46px;
+  height: 46px;
+
+  border: 0;
+  border-radius: 50%;
+
+  place-items: center;
+
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.76);
+
+  box-shadow: 0 12px 28px rgba(54, 34, 18, 0.1);
+}
+
+.wop-mobile-menu {
+  width: min(1180px, calc(100% - 44px));
+  margin: 12px auto 0;
+  padding: 18px;
+
+  border-radius: 30px;
+
+  display: grid;
+  gap: 8px;
+
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(26px);
+  -webkit-backdrop-filter: blur(26px);
+
+  box-shadow: 0 30px 90px rgba(35, 20, 8, 0.18);
+
+  animation: mobileMenuIn 0.25s ease both;
+}
+
+.wop-mobile-menu a {
+  padding: 15px 16px;
+  border-radius: 18px;
+
+  font-weight: 900;
+  color: var(--navy);
+
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.wop-mobile-menu a.active {
+  background: rgba(232, 123, 50, 0.13);
+  color: var(--orange);
+}
+
+.wop-mobile-cta {
+  color: white !important;
+  background: linear-gradient(135deg, var(--orange), var(--red)) !important;
+}
+
+@keyframes mobileMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1050px) {
+  .wop-brand {
+    min-width: auto;
+  }
+
+  .wop-nav-links,
+  .wop-nav-actions {
+    display: none;
+  }
+
+  .wop-menu-btn {
+    display: grid;
+  }
+}
+
+@media (max-width: 520px) {
+  .wop-nav-wrap {
+    top: 12px;
+    padding: 0 12px;
+  }
+
+  .wop-nav {
+    height: 68px;
+    padding: 9px 10px;
+  }
+
+  .wop-nav-wrap.is-scrolled .wop-nav {
+    height: 64px;
+  }
+
+  .wop-brand-mark {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+
+  .wop-brand span {
+    font-size: 10px;
+  }
+
+  .wop-brand b {
+    font-size: 17px;
+  }
+}
+
+/* ── Paste these into your existing Navbar.css ── */
+
+/* Admin link — desktop */
+.wop-nav-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wop-muted, #6B6B5A);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  opacity: 0.55;
+}
+
+.wop-nav-admin:hover {
+  opacity: 1;
+  color: var(--wop-dark, #1A1A14);
+  border-color: rgba(200, 153, 58, 0.25);
+  background: rgba(200, 153, 58, 0.07);
+}
+
+/* Highlighted when currently on /admin */
+.wop-nav-admin--active {
+  opacity: 1;
+  color: #C8993A;
+  border-color: rgba(200, 153, 58, 0.35);
+  background: rgba(200, 153, 58, 0.08);
+}
+
+.wop-nav-admin--active:hover {
+  background: rgba(200, 153, 58, 0.14);
+}
+
+/* Admin link — mobile menu */
+.wop-mobile-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--wop-muted, #6B6B5A);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.wop-mobile-admin:hover {
+  opacity: 1;
+  color: var(--wop-dark, #1A1A14);
+}
+
+.wop-mobile-admin--active {
+  opacity: 1;
+  color: #C8993A;
+}
+
+.wop-nav-wrap.is-admin {
+  border-bottom-color: rgba(200, 153, 58, 0.35);
+}
+
+/* Register button — desktop (mirrors .wop-nav-login) */
+.wop-nav-register {
+  min-height: 46px;
+  padding: 0 17px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  color: var(--navy);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(16, 23, 40, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.wop-nav-register:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Register link — mobile menu (mirrors existing mobile link styles) */
+.wop-mobile-register {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
