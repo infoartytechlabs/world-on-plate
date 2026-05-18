@@ -6,37 +6,6 @@ import {
 const SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errorMsg = validate(form, activeType);
-    if (errorMsg) { setPartnerStatus(errorMsg); return; }
-
-    setPartnerStatus("Submitting...");
-    setSubmitting(true);
-
-    try {
-        const res = await fetch(SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ formType: activeType, ...form }),
-        });
-        const result = await res.json();
-
-        if (result.success) {
-            setForms(p => ({ ...p, [activeType]: {} }));
-            setPartnerStatus("");
-            setSuccessPopup(`${currentTab?.label || "Form"} interest submitted successfully. An organizer will contact you shortly.`);
-            setTimeout(() => setSuccessPopup(""), 4200);
-            formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-            setPartnerStatus("Something went wrong. Please try again.");
-        }
-    } catch {
-        setPartnerStatus("Server error. Please try again.");
-    } finally {
-        setSubmitting(false);
-    }
-};
-
 const TABS = [
     {
         type: "sponsor",
@@ -178,7 +147,6 @@ function VolunteerForm({ form, onChange, onPhone }) {
     return (
         <>
             <ContactFields form={form} onChange={onChange} onPhone={onPhone} />
-
             <select name="role" value={form.role || ""} onChange={onChange}>
                 <option value="">Which role are you interested in? *</option>
                 <option value="Country Booth Volunteer">Country Booth Volunteer</option>
@@ -187,7 +155,6 @@ function VolunteerForm({ form, onChange, onPhone }) {
                 <option value="Information Booth">Information Booth</option>
                 <option value="Children's Area">Children's Area</option>
             </select>
-
             <textarea
                 name="notes"
                 placeholder="Country booth preference or other notes"
@@ -234,21 +201,18 @@ export default function Registration() {
         setSubmitting(true);
 
         try {
-            const isVolunteer = activeType === "volunteer";
-            const url = isVolunteer ? VOLUNTEER_URL : SCRIPT_URL;
-            const headers = isVolunteer ? { "Content-Type": "application/json" } : {};
-            const res = await fetch(url, { method: "POST", headers, body: JSON.stringify({ formType: activeType, ...form }) });
-            const result = await res.json();
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: JSON.stringify({ formType: activeType, ...form }),
+            });
 
-            if (result.success) {
-                setForms(p => ({ ...p, [activeType]: {} }));
-                setPartnerStatus("");
-                setSuccessPopup(`${currentTab?.label || "Form"} interest submitted successfully. An organizer will contact you shortly.`);
-                setTimeout(() => setSuccessPopup(""), 4200);
-                formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-            } else {
-                setPartnerStatus("Something went wrong. Please try again.");
-            }
+            setForms(p => ({ ...p, [activeType]: {} }));
+            setPartnerStatus("");
+            setSuccessPopup(`${currentTab?.label || "Form"} interest submitted successfully. An organizer will contact you shortly.`);
+            setTimeout(() => setSuccessPopup(""), 4200);
+            formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
         } catch {
             setPartnerStatus("Server error. Please try again.");
         } finally {
@@ -276,7 +240,6 @@ export default function Registration() {
                     </p>
                 </div>
             </section>
-
 
             {/* ── Registration form ── */}
             <section className="volunteer-section" ref={formRef}>
@@ -406,6 +369,7 @@ export default function Registration() {
                 )}
 
             </section>
+
             {/* ── Success toast ── */}
             {successPopup && (
                 <div className="success-toast">
