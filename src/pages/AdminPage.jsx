@@ -236,7 +236,7 @@ function SheetPanel({ tab, showToast }) {
         const nextPayments = {};
         json.data.forEach(r => {
           const id = rowId(r);
-          const sv = (r["Approved"] || "").toString().toLowerCase().trim();
+          const sv = (r["Approved"] || r["Status"] || "").toString().toLowerCase().trim();
           nextStatuses[id] = sv === "accepted" ? "accepted" : sv === "declined" ? "declined" : "pending";
           if (tab.hasPayment) {
             const pv = (r["Payment"] || "").toString().toLowerCase().trim();
