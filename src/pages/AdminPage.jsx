@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import {
   ChefHat, Users, Building2, Store, Music4,
   RefreshCw, Download, CheckCircle2, XCircle,
-  RotateCcw, Search, Loader2, ShieldCheck,
+  RotateCcw, Search, Loader2, ShieldCheck, CreditCard,
 } from "lucide-react";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -43,6 +43,7 @@ const TABS = [
     color: "#633806",
     lightBg: "#FAEEDA",
     columns: ["First Name", "Last Name", "Institution/Business", "Phone", "Email"],
+    hasPayment: true,
   },
   {
     key: "musicians",
@@ -91,6 +92,23 @@ function StatusBadge({ status }) {
       whiteSpace: "nowrap",
     }}>
       {s.label}
+    </span>
+  );
+}
+
+function PaymentBadge({ paid }) {
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 4,
+      padding: "4px 10px", borderRadius: 20,
+      background: paid ? "#EAF3DE" : "#FAEEDA",
+      color: paid ? "#27500A" : "#633806",
+      border: `1px solid ${paid ? "#97C459" : "#EF9F27"}`,
+      fontSize: 14, fontWeight: 600,
+      textTransform: "uppercase", letterSpacing: "0.06em",
+      whiteSpace: "nowrap",
+    }}>
+      {paid ? "✔ Paid" : "● Pending"}
     </span>
   );
 }
@@ -197,13 +215,14 @@ function EmptyState({ icon: Icon, title, sub, color }) {
 }
 
 function SheetPanel({ tab, showToast }) {
-  const [allData, setAllData]   = useState([]);
-  const [statuses, setStatuses] = useState({});
-  const [loading, setLoading]   = useState(false);
-  const [loaded, setLoaded]     = useState(false);
-  const [filter, setFilter]     = useState("all");
-  const [search, setSearch]     = useState("");
-  const [sort, setSort]         = useState({ key: "ts", dir: -1 });
+  const [allData, setAllData]     = useState([]);
+  const [statuses, setStatuses]   = useState({});
+  const [payments, setPayments]   = useState({});
+  const [loading, setLoading]     = useState(false);
+  const [loaded, setLoaded]       = useState(false);
+  const [filter, setFilter]       = useState("all");
+  const [search, setSearch]       = useState("");
+  const [sort, setSort]           = useState({ key: "ts", dir: -1 });
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -213,15 +232,19 @@ function SheetPanel({ tab, showToast }) {
       if (json.success && Array.isArray(json.data)) {
         setAllData(json.data);
         setLoaded(true);
-        setStatuses(() => {
-          const next = {};
-          json.data.forEach(r => {
-            const id = rowId(r);
-            const sv = (r["Approved"] || "").toString().toLowerCase().trim();
-            next[id] = sv === "accepted" ? "accepted" : sv === "declined" ? "declined" : "pending";
-          });
-          return next;
+        const nextStatuses = {};
+        const nextPayments = {};
+        json.data.forEach(r => {
+          const id = rowId(r);
+          const sv = (r["Approved"] || "").toString().toLowerCase().trim();
+          nextStatuses[id] = sv === "accepted" ? "accepted" : sv === "declined" ? "declined" : "pending";
+          if (tab.hasPayment) {
+            const pv = (r["Payment"] || "").toString().toLowerCase().trim();
+            nextPayments[id] = pv === "paid";
+          }
         });
+        setStatuses(nextStatuses);
+        setPayments(nextPayments);
         showToast(`Loaded ${json.data.length} ${tab.label.toLowerCase()}`, "info");
       } else {
         showToast(`No data in ${tab.label}`, "error");
@@ -249,6 +272,26 @@ function SheetPanel({ tab, showToast }) {
           sheet: tab.sheetName,
           rowIndex: row._rowIndex,
           approved: value === "pending" ? "Pending" : value.charAt(0).toUpperCase() + value.slice(1),
+        }),
+      });
+    } catch {
+      showToast("Saved locally — sheet sync failed", "error");
+    }
+  };
+
+  const setPayment = async (id, paid) => {
+    const row = allData.find(r => rowId(r) === id);
+    if (!row) return;
+    setPayments(prev => ({ ...prev, [id]: paid }));
+    showToast(paid ? "Marked as Paid" : "Marked as Pending", paid ? "accept" : "undo");
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          sheet: tab.sheetName,
+          rowIndex: row._rowIndex,
+          paymentColumn: "Payment",
+          paymentValue: paid ? "Paid" : "Pending",
         }),
       });
     } catch {
@@ -382,11 +425,12 @@ function SheetPanel({ tab, showToast }) {
               <th style={th} onClick={() => handleSort("name")}>Name <SortArrow k="name" /></th>
               <th style={{ ...th, minWidth: 180 }}>Email</th>
               <th style={{ ...th, minWidth: 120 }}>Phone</th>
-              {tab.columns.includes("Professional Title")    && <th style={th}>Title</th>}
-              {tab.columns.includes("Institution/Business")  && <th style={th}>Institution / Business</th>}
-              {tab.columns.includes("Performer/Group")       && <th style={th}>Performer / Group</th>}
+              {tab.columns.includes("Professional Title")   && <th style={th}>Title</th>}
+              {tab.columns.includes("Institution/Business") && <th style={th}>Institution / Business</th>}
+              {tab.columns.includes("Performer/Group")      && <th style={th}>Performer / Group</th>}
               <th style={{ ...th, cursor: "default" }}>Submitted</th>
               <th style={th} onClick={() => handleSort("status")}>Approval <SortArrow k="status" /></th>
+              {tab.hasPayment && <th style={{ ...th, cursor: "default" }}>Payment</th>}
               <th style={{ ...th, cursor: "default", minWidth: 200 }}>Actions</th>
             </tr>
           </thead>
@@ -399,6 +443,7 @@ function SheetPanel({ tab, showToast }) {
               filtered.map((row, i) => {
                 const id        = rowId(row);
                 const status    = statuses[id] || "pending";
+                const paid      = payments[id] || false;
                 const name      = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim() || "—";
                 const email     = getVal(row, ["Email", "email"]);
                 const phone     = getVal(row, ["Phone", "phone"]);
@@ -432,6 +477,18 @@ function SheetPanel({ tab, showToast }) {
                     )}
                     <td style={{ ...td, fontSize: 14, color: "#9B9B8A", whiteSpace: "nowrap" }}>{ts}</td>
                     <td style={td}><StatusBadge status={status} /></td>
+
+                    {/* Payment column — vendors only */}
+                    {tab.hasPayment && (
+                      <td style={td}>
+                        {status === "accepted" ? (
+                          <PaymentBadge paid={paid} />
+                        ) : (
+                          <span style={{ fontSize: 14, color: "#9B9B8A" }}>—</span>
+                        )}
+                      </td>
+                    )}
+
                     <td style={{ ...td, whiteSpace: "nowrap" }}>
                       <div style={{ display: "flex", gap: 5, alignItems: "center", flexWrap: "nowrap" }}>
                         {status === "pending" ? (
@@ -440,7 +497,20 @@ function SheetPanel({ tab, showToast }) {
                             <ActionBtn label="Decline" icon={<XCircle size={16} />} bg="#FCEBEB" color="#791F1F" border="#F09595" hoverBg="#fad8d8" onClick={() => setApproval(id, "declined")} />
                           </>
                         ) : (
-                          <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
+                          <>
+                            <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
+                            {tab.hasPayment && status === "accepted" && (
+                              <ActionBtn
+                                label={paid ? "Unpaid" : "Mark Paid"}
+                                icon={<CreditCard size={16} />}
+                                bg={paid ? "#FAEEDA" : "#EAF3DE"}
+                                color={paid ? "#633806" : "#27500A"}
+                                border={paid ? "#EF9F27" : "#97C459"}
+                                hoverBg={paid ? "#f5ddb5" : "#d6ecbc"}
+                                onClick={() => setPayment(id, !paid)}
+                              />
+                            )}
+                          </>
                         )}
                       </div>
                     </td>
@@ -474,15 +544,8 @@ export default function AdminPage() {
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
 
       <div style={{ minHeight: "100vh", background: "#FAFAF7", fontFamily: "'DM Sans', sans-serif" }}>
-
-        {/*
-          paddingTop: "80px" — pushes content below the fixed navbar.
-          If your navbar is taller or shorter, adjust this number to match
-          the height defined in your Navbar.css (look for height on .wop-nav-wrap).
-        */}
         <div style={{ maxWidth: 1600, margin: "0 auto", padding: "120px 24px 64px" }}>
 
-          {/* Page header */}
           <div style={{ borderBottom: "1px solid rgba(200,153,58,0.2)", paddingBottom: 22, marginBottom: 28, display: "flex", alignItems: "center", gap: 12 }}>
             <ShieldCheck size={22} color="#C8993A" />
             <div>
@@ -495,7 +558,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Tab bar */}
           <div style={{ display: "flex", gap: 4, marginBottom: 28, flexWrap: "wrap", borderBottom: "1px solid rgba(200,153,58,0.15)" }}>
             {TABS.map(tab => {
               const Icon     = tab.icon;
