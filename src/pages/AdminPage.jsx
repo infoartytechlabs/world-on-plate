@@ -508,10 +508,11 @@ function SheetPanel({ tab, showToast }) {
                             <ActionBtn label="Decline" icon={<XCircle size={16} />} bg="#FCEBEB" color="#791F1F" border="#F09595" hoverBg="#fad8d8" onClick={() => setApproval(id, "declined")} />
                             <ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} />
                           </>
-                        ) : (
+                        ) : status === "accepted" ? (
                           <>
                             <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
-                            {tab.hasPayment && status === "accepted" && (
+                            <ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} />
+                            {tab.hasPayment && (
                               <ActionBtn
                                 label={paid ? "Unpaid" : "Mark Paid"}
                                 icon={<CreditCard size={16} />}
@@ -523,6 +524,8 @@ function SheetPanel({ tab, showToast }) {
                               />
                             )}
                           </>
+                        ) : (
+                          <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
                         )}
                       </div>
                     </td>
