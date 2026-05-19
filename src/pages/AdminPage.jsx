@@ -506,12 +506,11 @@ function SheetPanel({ tab, showToast }) {
                           <>
                             <ActionBtn label="Accept" icon={<CheckCircle2 size={16} />} bg="#EAF3DE" color="#27500A" border="#97C459" hoverBg="#d6ecbc" onClick={() => setApproval(id, "accepted")} />
                             <ActionBtn label="Decline" icon={<XCircle size={16} />} bg="#FCEBEB" color="#791F1F" border="#F09595" hoverBg="#fad8d8" onClick={() => setApproval(id, "declined")} />
-                            <span style={{ marginLeft: 10 }}><ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} /></span>
+                            <span style={{ marginLeft: "auto" }}><ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} /></span>
                           </>
                         ) : status === "accepted" ? (
                           <>
                             <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
-                            <span style={{ marginLeft: 10 }}><ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} /></span>
                             {tab.hasPayment && (
                               <ActionBtn
                                 label={paid ? "Unpaid" : "Mark Paid"}
@@ -523,6 +522,7 @@ function SheetPanel({ tab, showToast }) {
                                 onClick={() => setPayment(id, !paid)}
                               />
                             )}
+                            <span style={{ marginLeft: "auto" }}><ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} /></span>
                           </>
                         ) : (
                           <ActionBtn label="Undo" icon={<RotateCcw size={16} />} bg="#FFFFFF" color="#6B6B5A" border="rgba(200,153,58,0.3)" hoverBg="#F5E6C8" onClick={() => setApproval(id, "pending")} />
