@@ -15,7 +15,7 @@ const TABS = [
     sheetName: "CulinaryPartners",
     color: "#8A2A2A",
     lightBg: "#FBF0EE",
-    columns: ["First Name", "Last Name", "Professional Title", "Institution/Business", "Phone", "Email"],
+    columns: ["ID No", "First Name", "Last Name", "Professional Title", "Institution/Business", "Phone", "Email"],
   },
   {
     key: "volunteers",
@@ -24,7 +24,7 @@ const TABS = [
     sheetName: "Volunteers",
     color: "#2A3C8A",
     lightBg: "#EEF1FB",
-    columns: ["First Name", "Last Name", "Phone", "Email"],
+    columns: ["ID No", "First Name", "Last Name", "Phone", "Email"],
   },
   {
     key: "sponsors",
@@ -42,7 +42,7 @@ const TABS = [
     sheetName: "Vendors",
     color: "#633806",
     lightBg: "#FAEEDA",
-    columns: ["First Name", "Last Name", "Institution/Business", "Phone", "Email"],
+    columns: ["ID No", "First Name", "Last Name", "Institution/Business", "Phone", "Email"],
     hasPayment: true,
   },
   {
@@ -52,7 +52,7 @@ const TABS = [
     sheetName: "Musicians",
     color: "#533AB7",
     lightBg: "#EEEDFE",
-    columns: ["First Name", "Last Name", "Performer/Group", "Phone", "Email"],
+    columns: ["ID No", "First Name", "Last Name", "Performer/Group", "Phone", "Email"],
   },
 ];
 
@@ -422,6 +422,7 @@ function SheetPanel({ tab, showToast }) {
         <table style={{ width: "100%", minWidth: 1200, borderCollapse: "collapse", fontSize: 17 }}>
           <thead>
             <tr>
+              {tab.columns.includes("ID No") && <th style={{ ...th, cursor: "default", minWidth: 90 }}>ID No</th>}
               <th style={th} onClick={() => handleSort("name")}>Name <SortArrow k="name" /></th>
               <th style={{ ...th, minWidth: 180 }}>Email</th>
               <th style={{ ...th, minWidth: 120 }}>Phone</th>
@@ -444,6 +445,7 @@ function SheetPanel({ tab, showToast }) {
                 const id        = rowId(row);
                 const status    = statuses[id] || "pending";
                 const paid      = payments[id] || false;
+                const idNo      = row["ID No"] || "";
                 const name      = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim() || "—";
                 const email     = getVal(row, ["Email", "email"]);
                 const phone     = getVal(row, ["Phone", "phone"]);
@@ -457,6 +459,11 @@ function SheetPanel({ tab, showToast }) {
 
                 return (
                   <tr key={id} style={{ background: rowBg, borderBottom: "1px solid rgba(200,153,58,0.07)", transition: "background 0.1s" }}>
+                    {tab.columns.includes("ID No") && (
+                      <td style={{ ...td, fontSize: 13, fontWeight: 700, color: tab.color, whiteSpace: "nowrap", letterSpacing: "0.04em" }}>
+                        {idNo || "—"}
+                      </td>
+                    )}
                     <td style={td}>
                       <div style={{ fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 160 }}>{name}</div>
                     </td>
@@ -478,7 +485,6 @@ function SheetPanel({ tab, showToast }) {
                     <td style={{ ...td, fontSize: 14, color: "#9B9B8A", whiteSpace: "nowrap" }}>{ts}</td>
                     <td style={td}><StatusBadge status={status} /></td>
 
-                    {/* Payment column — vendors only */}
                     {tab.hasPayment && (
                       <td style={td}>
                         {status === "accepted" ? (
