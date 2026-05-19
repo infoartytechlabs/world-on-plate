@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   ChefHat, Users, Building2, Store, Music4,
-  RefreshCw, Download, CheckCircle2, XCircle,
+  RefreshCw, Download, CheckCircle2, XCircle, X,
   RotateCcw, Search, Loader2, ShieldCheck, CreditCard,
 } from "lucide-react";
 
@@ -79,6 +79,7 @@ function StatusBadge({ status }) {
     pending: { label: "● Pending", bg: "#FAEEDA", color: "#633806", border: "#EF9F27" },
     accepted: { label: "✔ Accepted", bg: "#EAF3DE", color: "#27500A", border: "#97C459" },
     declined: { label: "✗ Declined", bg: "#FCEBEB", color: "#791F1F", border: "#F09595" },
+    cancelled: { label: "✕ Cancelled", bg: "#F3F3F3", color: "#4A4A4A", border: "#BBBBBB" },
   };
   const s = map[status] || map.pending;
   return (
@@ -237,7 +238,7 @@ function SheetPanel({ tab, showToast }) {
         json.data.forEach(r => {
           const id = rowId(r);
           const sv = (r["Approved"] || r["Status"] || "").toString().toLowerCase().trim();
-          nextStatuses[id] = sv === "accepted" ? "accepted" : sv === "declined" ? "declined" : "pending";
+          nextStatuses[id] = sv === "accepted" ? "accepted" : sv === "declined" ? "declined" : sv === "cancelled" ? "cancelled" : "pending";
           if (tab.hasPayment) {
             const pv = (r["Payment"] || "").toString().toLowerCase().trim();
             nextPayments[id] = pv === "paid";
@@ -262,8 +263,8 @@ function SheetPanel({ tab, showToast }) {
     const row = allData.find(r => rowId(r) === id);
     if (!row) return;
     setStatuses(prev => ({ ...prev, [id]: value }));
-    const label = value === "accepted" ? "Accepted" : value === "declined" ? "Declined" : "Reset to pending";
-    const type = value === "accepted" ? "accept" : value === "declined" ? "decline" : "undo";
+    const label = value === "accepted" ? "Accepted" : value === "declined" ? "Declined" : value === "cancelled" ? "Cancelled" : "Reset to pending";
+    const type = value === "accepted" ? "accept" : value === "declined" ? "decline" : value === "cancelled" ? "decline" : "undo";
     showToast(label, type);
     try {
       await fetch(SCRIPT_URL, {
@@ -505,6 +506,7 @@ function SheetPanel({ tab, showToast }) {
                           <>
                             <ActionBtn label="Accept" icon={<CheckCircle2 size={16} />} bg="#EAF3DE" color="#27500A" border="#97C459" hoverBg="#d6ecbc" onClick={() => setApproval(id, "accepted")} />
                             <ActionBtn label="Decline" icon={<XCircle size={16} />} bg="#FCEBEB" color="#791F1F" border="#F09595" hoverBg="#fad8d8" onClick={() => setApproval(id, "declined")} />
+                            <ActionBtn label="Cancel" icon={<X size={16} />} bg="#F3F3F3" color="#4A4A4A" border="#BBBBBB" hoverBg="#E5E5E5" onClick={() => setApproval(id, "cancelled")} />
                           </>
                         ) : (
                           <>
