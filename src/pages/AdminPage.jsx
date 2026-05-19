@@ -76,7 +76,7 @@ const getVal = (row, keys) => {
 
 function StatusBadge({ status }) {
   const map = {
-    pending:  { label: "● Pending",  bg: "#FAEEDA", color: "#633806", border: "#EF9F27" },
+    pending: { label: "● Pending", bg: "#FAEEDA", color: "#633806", border: "#EF9F27" },
     accepted: { label: "✔ Accepted", bg: "#EAF3DE", color: "#27500A", border: "#97C459" },
     declined: { label: "✗ Declined", bg: "#FCEBEB", color: "#791F1F", border: "#F09595" },
   };
@@ -115,10 +115,10 @@ function PaymentBadge({ paid }) {
 
 function StatCard({ label, value, variant = "default", color, lightBg }) {
   const variants = {
-    default:  { bg: "#FFFFFF",  border: "rgba(200,153,58,0.2)", num: "#1A1A14" },
-    accepted: { bg: "#EAF3DE",  border: "#97C459",              num: "#27500A" },
-    declined: { bg: "#FCEBEB",  border: "#F09595",              num: "#791F1F" },
-    tab:      { bg: lightBg || "#F5E6C8", border: color || "#C8993A", num: color || "#C8993A" },
+    default: { bg: "#FFFFFF", border: "rgba(200,153,58,0.2)", num: "#1A1A14" },
+    accepted: { bg: "#EAF3DE", border: "#97C459", num: "#27500A" },
+    declined: { bg: "#FCEBEB", border: "#F09595", num: "#791F1F" },
+    tab: { bg: lightBg || "#F5E6C8", border: color || "#C8993A", num: color || "#C8993A" },
   };
   const v = variants[variant] || variants.default;
   return (
@@ -215,19 +215,19 @@ function EmptyState({ icon: Icon, title, sub, color }) {
 }
 
 function SheetPanel({ tab, showToast }) {
-  const [allData, setAllData]     = useState([]);
-  const [statuses, setStatuses]   = useState({});
-  const [payments, setPayments]   = useState({});
-  const [loading, setLoading]     = useState(false);
-  const [loaded, setLoaded]       = useState(false);
-  const [filter, setFilter]       = useState("all");
-  const [search, setSearch]       = useState("");
-  const [sort, setSort]           = useState({ key: "ts", dir: -1 });
+  const [allData, setAllData] = useState([]);
+  const [statuses, setStatuses] = useState({});
+  const [payments, setPayments] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState({ key: "ts", dir: -1 });
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const res  = await fetch(`${SCRIPT_URL}?action=getSheet&sheet=${encodeURIComponent(tab.sheetName)}&t=${Date.now()}`);
+      const res = await fetch(`${SCRIPT_URL}?action=getSheet&sheet=${encodeURIComponent(tab.sheetName)}&t=${Date.now()}`);
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         setAllData(json.data);
@@ -263,7 +263,7 @@ function SheetPanel({ tab, showToast }) {
     if (!row) return;
     setStatuses(prev => ({ ...prev, [id]: value }));
     const label = value === "accepted" ? "Accepted" : value === "declined" ? "Declined" : "Reset to pending";
-    const type  = value === "accepted" ? "accept"  : value === "declined" ? "decline"  : "undo";
+    const type = value === "accepted" ? "accept" : value === "declined" ? "decline" : "undo";
     showToast(label, type);
     try {
       await fetch(SCRIPT_URL, {
@@ -324,8 +324,8 @@ function SheetPanel({ tab, showToast }) {
     setSort(prev => ({ key, dir: prev.key === key ? prev.dir * -1 : 1 }));
 
   const counts = {
-    total:    allData.length,
-    pending:  Object.values(statuses).filter(s => s === "pending").length,
+    total: allData.length,
+    pending: Object.values(statuses).filter(s => s === "pending").length,
     accepted: Object.values(statuses).filter(s => s === "accepted").length,
     declined: Object.values(statuses).filter(s => s === "declined").length,
   };
@@ -334,7 +334,7 @@ function SheetPanel({ tab, showToast }) {
     .filter(r => {
       const id = rowId(r);
       const st = statuses[id] || "pending";
-      if (filter === "pending"  && st !== "pending")  return false;
+      if (filter === "pending" && st !== "pending") return false;
       if (filter === "accepted" && st !== "accepted") return false;
       if (filter === "declined" && st !== "declined") return false;
       if (!search) return true;
@@ -374,8 +374,8 @@ function SheetPanel({ tab, showToast }) {
   return (
     <div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 22 }}>
-        <StatCard label="Total"    value={counts.total    || "—"} variant="tab" color={tab.color} lightBg={tab.lightBg} />
-        <StatCard label="Pending"  value={counts.pending  || "—"} />
+        <StatCard label="Total" value={counts.total || "—"} variant="tab" color={tab.color} lightBg={tab.lightBg} />
+        <StatCard label="Pending" value={counts.pending || "—"} />
         <StatCard label="Accepted" value={counts.accepted || "—"} variant="accepted" />
         <StatCard label="Declined" value={counts.declined || "—"} variant="declined" />
       </div>
@@ -422,13 +422,17 @@ function SheetPanel({ tab, showToast }) {
         <table style={{ width: "100%", minWidth: 1200, borderCollapse: "collapse", fontSize: 17 }}>
           <thead>
             <tr>
-              {tab.columns.includes("ID No") && <th style={{ ...th, cursor: "default", minWidth: 90 }}>ID No</th>}
+              {tab.columns.includes("ID No") && (
+                <th style={{ ...th, minWidth: 90 }} onClick={() => handleSort("id")}>
+                  ID No <SortArrow k="id" />
+                </th>
+              )}
               <th style={th} onClick={() => handleSort("name")}>Name <SortArrow k="name" /></th>
               <th style={{ ...th, minWidth: 180 }}>Email</th>
               <th style={{ ...th, minWidth: 120 }}>Phone</th>
-              {tab.columns.includes("Professional Title")   && <th style={th}>Title</th>}
+              {tab.columns.includes("Professional Title") && <th style={th}>Title</th>}
               {tab.columns.includes("Institution/Business") && <th style={th}>Institution / Business</th>}
-              {tab.columns.includes("Performer/Group")      && <th style={th}>Performer / Group</th>}
+              {tab.columns.includes("Performer/Group") && <th style={th}>Performer / Group</th>}
               <th style={{ ...th, cursor: "default" }}>Submitted</th>
               <th style={th} onClick={() => handleSort("status")}>Approval <SortArrow k="status" /></th>
               {tab.hasPayment && <th style={{ ...th, cursor: "default" }}>Payment</th>}
@@ -442,20 +446,20 @@ function SheetPanel({ tab, showToast }) {
               <EmptyState icon={tab.icon} color={tab.color} title="No matches found" sub="Try adjusting your search or filter" />
             ) : (
               filtered.map((row, i) => {
-                const id        = rowId(row);
-                const status    = statuses[id] || "pending";
-                const paid      = payments[id] || false;
-                const idNo      = row["ID No"] || "";
-                const name      = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim() || "—";
-                const email     = getVal(row, ["Email", "email"]);
-                const phone     = getVal(row, ["Phone", "phone"]);
-                const title     = row["Professional Title"] || "";
-                const biz       = row["Institution/Business"] || "";
+                const id = rowId(row);
+                const status = statuses[id] || "pending";
+                const paid = payments[id] || false;
+                const idNo = row["ID No"] || "";
+                const name = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim() || "—";
+                const email = getVal(row, ["Email", "email"]);
+                const phone = getVal(row, ["Phone", "phone"]);
+                const title = row["Professional Title"] || "";
+                const biz = row["Institution/Business"] || "";
                 const performer = row["Performer/Group"] || row["performerName"] || "";
-                const ts        = fmtDate(row["Timestamp"]);
-                const rowBg     = status === "accepted" ? "#F5FBF0"
-                                : status === "declined" ? "#FEF7F7"
-                                : i % 2 === 0 ? "#FFFFFF" : "#FDFDFB";
+                const ts = fmtDate(row["Timestamp"]);
+                const rowBg = status === "accepted" ? "#F5FBF0"
+                  : status === "declined" ? "#FEF7F7"
+                    : i % 2 === 0 ? "#FFFFFF" : "#FDFDFB";
 
                 return (
                   <tr key={id} style={{ background: rowBg, borderBottom: "1px solid rgba(200,153,58,0.07)", transition: "background 0.1s" }}>
@@ -533,8 +537,8 @@ function SheetPanel({ tab, showToast }) {
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("culinary");
-  const [toast, setToast]         = useState({ visible: false, message: "", type: "info" });
-  const toastTimer                = useRef(null);
+  const [toast, setToast] = useState({ visible: false, message: "", type: "info" });
+  const toastTimer = useRef(null);
 
   const showToast = useCallback((message, type = "info") => {
     setToast({ visible: true, message, type });
@@ -566,7 +570,7 @@ export default function AdminPage() {
 
           <div style={{ display: "flex", gap: 4, marginBottom: 28, flexWrap: "wrap", borderBottom: "1px solid rgba(200,153,58,0.15)" }}>
             {TABS.map(tab => {
-              const Icon     = tab.icon;
+              const Icon = tab.icon;
               const isActive = activeTab === tab.key;
               return (
                 <button
