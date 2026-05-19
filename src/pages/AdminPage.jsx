@@ -3,6 +3,7 @@ import {
   ChefHat, Users, Building2, Store, Music4,
   RefreshCw, Download, CheckCircle2, XCircle, X,
   RotateCcw, Search, Loader2, ShieldCheck, CreditCard,
+  Lock, LockOpen, ChevronDown, ChevronUp,
 } from "lucide-react";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -212,6 +213,93 @@ function EmptyState({ icon: Icon, title, sub, color }) {
         </div>
       </td>
     </tr>
+  );
+}
+
+function RegistrationGate({ showToast }) {
+  const [open, setOpen] = useState(false);
+  const [closed, setClosed] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("wop_reg_closed") || "{}"); }
+    catch { return {}; }
+  });
+
+  const toggle = (key, label, color) => {
+    const next = { ...closed, [key]: !closed[key] };
+    setClosed(next);
+    localStorage.setItem("wop_reg_closed", JSON.stringify(next));
+    showToast(`${label} registration ${next[key] ? "closed" : "reopened"}`, next[key] ? "decline" : "accept");
+  };
+
+  const closedCount = Object.values(closed).filter(Boolean).length;
+
+  return (
+    <div style={{ marginBottom: 28, border: "1px solid rgba(200,153,58,0.2)", borderRadius: 12, background: "#FFFFFF", overflow: "hidden" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "14px 20px", background: "transparent", border: "none",
+          fontFamily: "'DM Sans', sans-serif", cursor: "pointer",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <Lock size={16} color="#C8993A" />
+          <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#1A1A14" }}>
+            Close Registration
+          </span>
+          {closedCount > 0 && (
+            <span style={{ background: "#FCEBEB", color: "#791F1F", border: "1px solid #F09595", borderRadius: 20, padding: "2px 10px", fontSize: 13, fontWeight: 600 }}>
+              {closedCount} closed
+            </span>
+          )}
+        </div>
+        {open ? <ChevronUp size={16} color="#6B6B5A" /> : <ChevronDown size={16} color="#6B6B5A" />}
+      </button>
+
+      {open && (
+        <div style={{ borderTop: "1px solid rgba(200,153,58,0.15)", padding: "16px 20px", display: "flex", flexWrap: "wrap", gap: 12 }}>
+          {TABS.map(tab => {
+            const Icon = tab.icon;
+            const isClosed = !!closed[tab.key];
+            return (
+              <div
+                key={tab.key}
+                style={{
+                  flex: "1 1 160px", display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "12px 16px", borderRadius: 10,
+                  border: `1px solid ${isClosed ? "#F09595" : "rgba(200,153,58,0.2)"}`,
+                  background: isClosed ? "#FEF7F7" : tab.lightBg,
+                  transition: "all 0.15s",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Icon size={15} color={isClosed ? "#791F1F" : tab.color} />
+                  <span style={{ fontSize: 14, fontWeight: 600, color: isClosed ? "#791F1F" : tab.color, whiteSpace: "nowrap" }}>
+                    {tab.label}
+                  </span>
+                </div>
+                <button
+                  onClick={() => toggle(tab.key, tab.label)}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 5,
+                    padding: "5px 12px", borderRadius: 20,
+                    border: `1px solid ${isClosed ? "#F09595" : "#97C459"}`,
+                    background: isClosed ? "#FCEBEB" : "#EAF3DE",
+                    color: isClosed ? "#791F1F" : "#27500A",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13, fontWeight: 600, cursor: "pointer",
+                    textTransform: "uppercase", letterSpacing: "0.05em",
+                    transition: "all 0.15s", whiteSpace: "nowrap",
+                  }}
+                >
+                  {isClosed ? <><Lock size={12} /> Closed</> : <><LockOpen size={12} /> Open</>}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -572,6 +660,8 @@ export default function AdminPage() {
               </h1>
             </div>
           </div>
+
+          <RegistrationGate showToast={showToast} />
 
           <div style={{ display: "flex", gap: 4, marginBottom: 28, flexWrap: "wrap", borderBottom: "1px solid rgba(200,153,58,0.15)" }}>
             {TABS.map(tab => {

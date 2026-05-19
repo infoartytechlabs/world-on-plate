@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   ArrowRight,
@@ -20,6 +20,9 @@ import {
 } from "lucide-react";
 
 import "../index.css";
+
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
 
 import food1 from "../assets/food1.webp";
 import food2 from "../assets/food2.webp";
@@ -93,57 +96,64 @@ export default function Home() {
 
   /* Volunteer form state */
   const [volunteerForm, setVolunteerForm] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    role: "",
-    notes: "",
+    firstName: "", lastName: "", phone: "", email: "", role: "", notes: "",
   });
-
   const [volunteerStatus, setVolunteerStatus] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  /* Update form fields */
+  /* Closed-registration state (synced with admin panel via localStorage) */
+  const [closedRegs, setClosedRegs] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("wop_reg_closed") || "{}"); }
+    catch { return {}; }
+  });
+  useEffect(() => {
+    const handler = () => {
+      try { setClosedRegs(JSON.parse(localStorage.getItem("wop_reg_closed") || "{}")); }
+      catch { setClosedRegs({}); }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
+  }, []);
+  const volunteersClosed = !!closedRegs["volunteers"];
+
   const handleVolunteerChange = (e) => {
     const { name, value } = e.target;
-
-    setVolunteerForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setVolunteerForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* Submit volunteer form to Netlify Function */
+  const handleVolunteerPhone = (e) => {
+    const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+    setVolunteerForm((prev) => ({ ...prev, phone: v }));
+  };
+
   const handleVolunteerSubmit = async (e) => {
     e.preventDefault();
+    const { firstName, lastName, phone, email, role } = volunteerForm;
+    if (!firstName?.trim() || !lastName?.trim() || !phone?.trim() || !email?.trim() || !role?.trim()) {
+      setVolunteerStatus("Please fill all required fields."); return;
+    }
+    if (phone.replace(/\D/g, "").length !== 10) {
+      setVolunteerStatus("Phone number must be exactly 10 digits."); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setVolunteerStatus("Please enter a valid email address."); return;
+    }
+
     setVolunteerStatus("Submitting...");
-
+    setSubmitting(true);
     try {
-      const response = await fetch("/api/submitVolunteer", {
+      await fetch(SCRIPT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(volunteerForm),
+        mode: "no-cors",
+        body: JSON.stringify({ formType: "volunteer", ...volunteerForm }),
       });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setVolunteerStatus("Thank you! Your volunteer interest was submitted.");
-        setVolunteerForm({
-          firstName: "",
-          lastName: "",
-          phone: "",
-          email: "",
-          role: "",
-          notes: "",
-        });
-      } else {
-        setVolunteerStatus("Something went wrong. Please try again.");
-      }
-    } catch (error) {
+      setVolunteerForm({ firstName: "", lastName: "", phone: "", email: "", role: "", notes: "" });
+      setVolunteerStatus("Thank you! Your volunteer interest was submitted.");
+      setTimeout(() => setVolunteerStatus(""), 4200);
+    } catch {
       setVolunteerStatus("Server error. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -436,39 +446,46 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="volunteer-form" onSubmit={handleVolunteerSubmit}>
-            <div className="form-row">
-              <input name="firstName" placeholder="First Name" value={volunteerForm.firstName} onChange={handleVolunteerChange} required />
-              <input name="lastName" placeholder="Last Name" value={volunteerForm.lastName} onChange={handleVolunteerChange} required />
+          {volunteersClosed ? (
+            <div className="volunteer-form" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, textAlign: "center", padding: "48px 24px" }}>
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#FCEBEB", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 28 }}>🔒</span>
+              </div>
+              <h3 style={{ fontFamily: "’DM Serif Display’, serif", fontSize: 26, color: "#1A1A14", margin: 0 }}>Sorry, Registrations Closed</h3>
+              <p style={{ fontSize: 16, color: "#6B6B5A", maxWidth: 300, margin: 0, lineHeight: 1.6 }}>
+                Volunteer registration is currently closed. Please check back later or contact us for more information.
+              </p>
             </div>
+          ) : (
+            <form className="volunteer-form" onSubmit={handleVolunteerSubmit}>
+              <div className="form-row">
+                <input name="firstName" placeholder="First Name *" value={volunteerForm.firstName} onChange={handleVolunteerChange} />
+                <input name="lastName" placeholder="Last Name *" value={volunteerForm.lastName} onChange={handleVolunteerChange} />
+              </div>
 
-            <div className="form-row">
-              <input name="phone" placeholder="Phone" value={volunteerForm.phone} onChange={handleVolunteerChange} required />
-              <input name="email" type="email" placeholder="Email" value={volunteerForm.email} onChange={handleVolunteerChange} required />
-            </div>
+              <div className="form-row">
+                <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} maxLength={10} />
+                <input name="email" type="email" placeholder="Email *" value={volunteerForm.email} onChange={handleVolunteerChange} />
+              </div>
 
-            <select name="role" value={volunteerForm.role} onChange={handleVolunteerChange} required>
-              <option value="">Which role are you interested in?</option>
-              <option value="Country Booth Volunteer">Country Booth Volunteer</option>
-              <option value="Merchandise Booth Volunteer">Merchandise Booth Volunteer</option>
-              <option value="Ticket / Visitor Experience">Ticket / Visitor Experience</option>
-              <option value="Information Booth">Information Booth</option>
-              <option value="Children’s Area">Children’s Area</option>
-            </select>
+              <select name="role" value={volunteerForm.role} onChange={handleVolunteerChange}>
+                <option value="">Which role are you interested in? *</option>
+                <option value="Country Booth Volunteer">Country Booth Volunteer</option>
+                <option value="Merchandise Booth Volunteer">Merchandise Booth Volunteer</option>
+                <option value="Ticket / Visitor Experience">Ticket / Visitor Experience</option>
+                <option value="Information Booth">Information Booth</option>
+                <option value="Children’s Area">Children’s Area</option>
+              </select>
 
-            <textarea
-              name="notes"
-              placeholder="Country booth preference or notes"
-              value={volunteerForm.notes}
-              onChange={handleVolunteerChange}
-            />
+              <textarea name="notes" placeholder="Country booth preference or notes" value={volunteerForm.notes} onChange={handleVolunteerChange} />
 
-            <button type="submit" className="wop-btn wop-btn-primary">
-              Submit Interest
-            </button>
+              <button type="submit" className="wop-btn wop-btn-primary" disabled={submitting}>
+                {submitting ? "Submitting…" : "Submit Interest"}
+              </button>
 
-            {volunteerStatus && <p className="form-status">{volunteerStatus}</p>}
-          </form>
+              {volunteerStatus && <p className="form-status">{volunteerStatus}</p>}
+            </form>
+          )}
         </div>
       </section>
 
@@ -554,37 +571,49 @@ export default function Home() {
               </div>
             </div>
 
-            <form className="volunteer-form" onSubmit={handleVolunteerSubmit}>
-              <div className="form-row">
-                <input name="firstName" placeholder="First Name" value={volunteerForm.firstName} onChange={handleVolunteerChange} required />
-                <input name="lastName" placeholder="Last Name" value={volunteerForm.lastName} onChange={handleVolunteerChange} required />
+            {volunteersClosed ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, textAlign: "center", padding: "32px 0" }}>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#FCEBEB", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 24 }}>🔒</span>
+                </div>
+                <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 22, color: "#1A1A14", margin: 0 }}>Sorry, Registrations Closed</h3>
+                <p style={{ fontSize: 15, color: "#6B6B5A", maxWidth: 280, margin: 0, lineHeight: 1.6 }}>
+                  Volunteer registration is currently closed. Please check back later.
+                </p>
               </div>
+            ) : (
+              <form className="volunteer-form" onSubmit={handleVolunteerSubmit}>
+                <div className="form-row">
+                  <input name="firstName" placeholder="First Name *" value={volunteerForm.firstName} onChange={handleVolunteerChange} />
+                  <input name="lastName" placeholder="Last Name *" value={volunteerForm.lastName} onChange={handleVolunteerChange} />
+                </div>
 
-              <div className="form-row">
-                <input name="phone" placeholder="Phone" value={volunteerForm.phone} onChange={handleVolunteerChange} required />
-                <input name="email" type="email" placeholder="Email" value={volunteerForm.email} onChange={handleVolunteerChange} required />
-              </div>
+                <div className="form-row">
+                  <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} maxLength={10} />
+                  <input name="email" type="email" placeholder="Email *" value={volunteerForm.email} onChange={handleVolunteerChange} />
+                </div>
 
-              <select name="role" value={volunteerForm.role} onChange={handleVolunteerChange} required>
-                <option value="">Which role(s) are you interested in?</option>
-                <option value="Country Booth Volunteer">Country Booth Volunteer</option>
-                <option value="Merchandise Booth Volunteer">Merchandise Booth Volunteer</option>
-                <option value="Ticket / Visitor Experience Volunteer">Ticket / Visitor Experience Volunteer</option>
-              </select>
+                <select name="role" value={volunteerForm.role} onChange={handleVolunteerChange}>
+                  <option value="">Which role(s) are you interested in? *</option>
+                  <option value="Country Booth Volunteer">Country Booth Volunteer</option>
+                  <option value="Merchandise Booth Volunteer">Merchandise Booth Volunteer</option>
+                  <option value="Ticket / Visitor Experience Volunteer">Ticket / Visitor Experience Volunteer</option>
+                </select>
 
-              <textarea
-                name="notes"
-                placeholder="If interested in booth staffing, note country preferences or other notes."
-                value={volunteerForm.notes}
-                onChange={handleVolunteerChange}
-              />
+                <textarea
+                  name="notes"
+                  placeholder="If interested in booth staffing, note country preferences or other notes."
+                  value={volunteerForm.notes}
+                  onChange={handleVolunteerChange}
+                />
 
-              <button type="submit" className="wop-btn wop-btn-primary">
-                Submit Volunteer Interest
-              </button>
+                <button type="submit" className="wop-btn wop-btn-primary" disabled={submitting}>
+                  {submitting ? "Submitting…" : "Submit Volunteer Interest"}
+                </button>
 
-              {volunteerStatus && <p className="form-status">{volunteerStatus}</p>}
-            </form>
+                {volunteerStatus && <p className="form-status">{volunteerStatus}</p>}
+              </form>
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
-    ArrowRight, Building2, Store, Music4, HandHeart, CheckCircle2,
+    ArrowRight, Building2, Store, Music4, HandHeart, CheckCircle2, Lock,
 } from "lucide-react";
 
 const SCRIPT_URL =
@@ -165,6 +165,8 @@ function VolunteerForm({ form, onChange, onPhone }) {
     );
 }
 
+const ADMIN_KEY_MAP = { sponsor: "sponsors", vendor: "vendors", musician: "musicians", volunteer: "volunteers" };
+
 export default function Registration() {
     const [activeType, setActiveType] = useState("sponsor");
     const [hoveredType, setHoveredType] = useState(null);
@@ -174,8 +176,23 @@ export default function Registration() {
     const [submitting, setSubmitting] = useState(false);
     const formRef = useRef(null);
 
+    const [closedRegs, setClosedRegs] = useState(() => {
+        try { return JSON.parse(localStorage.getItem("wop_reg_closed") || "{}"); }
+        catch { return {}; }
+    });
+
+    useEffect(() => {
+        const handler = () => {
+            try { setClosedRegs(JSON.parse(localStorage.getItem("wop_reg_closed") || "{}")); }
+            catch { setClosedRegs({}); }
+        };
+        window.addEventListener("storage", handler);
+        return () => window.removeEventListener("storage", handler);
+    }, []);
+
     const currentTab = TABS.find(t => t.type === activeType);
     const form = forms[activeType];
+    const isClosed = !!closedRegs[ADMIN_KEY_MAP[activeType]];
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -318,25 +335,47 @@ export default function Registration() {
                     </div>
 
                     {/* Right form */}
-                    <form className="volunteer-form" onSubmit={handleSubmit} noValidate>
+                    {isClosed ? (
+                        <div className="volunteer-form" style={{
+                            display: "flex", flexDirection: "column",
+                            alignItems: "center", justifyContent: "center",
+                            gap: 16, textAlign: "center", padding: "48px 24px",
+                        }}>
+                            <div style={{
+                                width: 64, height: 64, borderRadius: "50%",
+                                background: "#FCEBEB", display: "flex",
+                                alignItems: "center", justifyContent: "center",
+                            }}>
+                                <Lock size={28} color="#791F1F" />
+                            </div>
+                            <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 26, color: "#1A1A14", margin: 0 }}>
+                                Sorry, Registrations Closed
+                            </h3>
+                            <p style={{ fontSize: 16, color: "#6B6B5A", maxWidth: 300, margin: 0, lineHeight: 1.6 }}>
+                                {currentTab.label} registration is currently closed. Please check back later or contact us for more information.
+                            </p>
+                        </div>
+                    ) : (
+                        <form className="volunteer-form" onSubmit={handleSubmit} noValidate>
 
-                        {activeType === "sponsor" && <SponsorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
-                        {activeType === "vendor" && <VendorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
-                        {activeType === "musician" && <MusicianForm form={form} onChange={handleChange} onPhone={handlePhone} onNumber={handleNumber} />}
-                        {activeType === "volunteer" && <VolunteerForm form={form} onChange={handleChange} onPhone={handlePhone} />}
+                            {activeType === "sponsor" && <SponsorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
+                            {activeType === "vendor" && <VendorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
+                            {activeType === "musician" && <MusicianForm form={form} onChange={handleChange} onPhone={handlePhone} onNumber={handleNumber} />}
+                            {activeType === "volunteer" && <VolunteerForm form={form} onChange={handleChange} onPhone={handlePhone} />}
 
-                        <button
-                            type="submit"
-                            className="wop-btn wop-btn-primary"
-                            disabled={submitting}
-                        >
-                            {submitting ? "Submitting…" : "Submit Interest"}
-                            {!submitting && <ArrowRight size={18} />}
-                        </button>
+                            <button
+                                type="submit"
+                                className="wop-btn wop-btn-primary"
+                                disabled={submitting}
+                            >
+                                {submitting ? "Submitting…" : "Submit Interest"}
+                                {!submitting && <ArrowRight size={18} />}
+                            </button>
 
-                        {partnerStatus && <p className="form-status">{partnerStatus}</p>}
+                            {partnerStatus && <p className="form-status">{partnerStatus}</p>}
 
-                    </form>
+                        </form>
+                    )}
 
                 </div>
 
