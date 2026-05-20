@@ -14,7 +14,7 @@ import {
   Store,
   Users,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const SCRIPT_URL =
@@ -80,6 +80,7 @@ const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email || "");
 const isPhoneValid = (phone) => !phone || /^\d{7,15}$/.test(phone.replace(/\D/g, ""));
 
 export default function Contact() {
+  useEffect(() => { document.title = "Contact | World on a Plate"; }, []);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",

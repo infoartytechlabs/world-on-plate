@@ -12,7 +12,7 @@ import {
   UtensilsCrossed,
   Users,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const categories = [
   "All",
@@ -175,6 +175,7 @@ const highlights = [
 ];
 
 export default function FAQ() {
+  useEffect(() => { document.title = "FAQ | World on a Plate"; }, []);
   const [activeCategory, setActiveCategory] = useState("All");
   const [openIndex, setOpenIndex] = useState(0);
 

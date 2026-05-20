@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight, Building2, X, CheckCircle2, ExternalLink, Users, Trophy, Globe2, Radio, MapPin, Sparkles, Star, Leaf, Award, Newspaper, Globe, Heart } from "lucide-react";
 
 const SCRIPT_URL =
@@ -45,6 +45,7 @@ const officialPartners = [
 
 
 export default function Partnerships() {
+  useEffect(() => { document.title = "Partnerships | World on a Plate"; }, []);
   const [activeForm, setActiveForm] = useState(null);
   const [partnerForm, setPartnerForm] = useState({});
   const [partnerStatus, setPartnerStatus] = useState("");

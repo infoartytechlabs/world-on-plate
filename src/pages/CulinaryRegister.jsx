@@ -25,6 +25,7 @@ export default function CulinaryRegister() {
   const [loading, setLoading] = useState(false);
   const [successPopup, setSuccessPopup] = useState("");
 
+  useEffect(() => { document.title = "Culinary Registration | World on a Plate"; }, []);
   const [closedRegs, setClosedRegs] = useState(() => {
     try { return JSON.parse(localStorage.getItem("wop_reg_closed") || "{}"); }
     catch { return {}; }
@@ -77,7 +78,7 @@ export default function CulinaryRegister() {
     }
 
     if (!isPhoneValid(form.phone)) {
-      return "Phone number must be exactly 10 digits.";
+      return "Please enter a valid phone number (7–15 digits).";
     }
 
     if (!/^[A-Za-z\s'-]{2,40}$/.test(form.firstName)) {
@@ -106,46 +107,41 @@ if (!/^[A-Za-z\s'-]{2,40}$/.test(form.lastName)) {
     setStatus("");
 
     try {
-      const response = await fetch(
-  "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec",
-  {
-    method: "POST",
-body: JSON.stringify({
-  formType: "culinary",
-  firstName: form.firstName,
-  lastName: form.lastName,
-  professionalTitle: form.title,
-  institution: form.institution,
-  phone: `${form.countryCode} ${form.phone}`,
-  email: form.email,
-}),
-  }
-);
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify({
+            formType: "culinary",
+            firstName: form.firstName,
+            lastName: form.lastName,
+            professionalTitle: form.title,
+            institution: form.institution,
+            phone: `${form.countryCode} ${form.phone}`,
+            email: form.email,
+          }),
+        }
+      );
 
-      const result = await response.json();
+      setSuccessPopup(
+        "Application submitted successfully. Your culinary registration is now under review."
+      );
 
-      if (result.success) {
-        setSuccessPopup(
-          "Application submitted successfully. Your culinary registration is now under review."
-        );
+      setForm({
+        firstName: "",
+        lastName: "",
+        title: "",
+        institution: "",
+        countryCode: "+1",
+        phone: "",
+        email: "",
+      });
 
-        setTimeout(() => {
-          navigate("/auth/pending");
-        }, 2500);
-
-        setForm({
-          firstName: "",
-          lastName: "",
-          title: "",
-          institution: "",
-          countryCode: "+1",
-          phone: "",
-          email: "",
-        });
-      } else {
-        setStatus("Something went wrong. Please try again.");
-      }
-    } catch (error) {
+      setTimeout(() => {
+        navigate("/auth/pending");
+      }, 2500);
+    } catch {
       setStatus("Server error. Please try again.");
     }
 
@@ -284,7 +280,7 @@ body: JSON.stringify({
                     const v = e.target.value.replace(/[^\d+]/g, "").slice(0, 5);
                     setForm(prev => ({ ...prev, countryCode: v }));
                   }}
-                  style={{ width: 90, flexShrink: 0, textAlign: "center" }}
+                  style={{ width: "clamp(64px, 18%, 90px)", flexShrink: 0, textAlign: "center" }}
                 />
                 <input
                   name="phone"

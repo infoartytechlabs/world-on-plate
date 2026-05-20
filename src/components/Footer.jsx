@@ -152,10 +152,10 @@ export default function Footer() {
           </p>
 
           <div className="footer-socials" aria-label="Social links">
-            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">
+            <a href="#" aria-label="Instagram">
               <Share2 size={18} />
             </a>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+            <a href="#" aria-label="LinkedIn">
               <Send size={18} />
             </a>
             <a href="mailto:hello@worldonaplate.org" aria-label="Email">

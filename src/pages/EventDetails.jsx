@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Ticket,
   UtensilsCrossed,
@@ -8,6 +9,7 @@ import {
 } from "lucide-react";
 
 export default function EventDetails() {
+  useEffect(() => { document.title = "Event Details | World on a Plate"; }, []);
   return (
     <main className="wop-page inner-page">
 

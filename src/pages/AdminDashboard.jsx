@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Users,
   ChefHat,
@@ -23,6 +24,7 @@ const approvals = [
 ];
 
 export default function AdminDashboard() {
+  useEffect(() => { document.title = "Admin Dashboard | World on a Plate"; }, []);
   return (
     <main className="wop-page inner-page">
       <section className="admin-hero">

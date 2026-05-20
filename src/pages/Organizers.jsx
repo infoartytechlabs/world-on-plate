@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import oliver from "../assets/oliver.webp";
 import tony from "../assets/tony.webp";
 import carrie from "../assets/carrie.webp";
@@ -24,6 +25,7 @@ const organizers = [
 ];
 
 export default function Organizers() {
+  useEffect(() => { document.title = "Organizers | World on a Plate"; }, []);
   return (
     <main className="wop-page inner-page">
       <section className="organizer-hero">

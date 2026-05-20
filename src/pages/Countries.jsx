@@ -1,5 +1,6 @@
 import { Search, Globe2, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import food1 from "../assets/food1.webp";
 import food2 from "../assets/food2.webp";
@@ -45,6 +46,8 @@ const countries = [
 ];
 
 export default function Countries() {
+  useEffect(() => { document.title = "Countries & Dishes | World on a Plate"; }, []);
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [selectedDish, setSelectedDish] = useState(null);
@@ -104,7 +107,22 @@ export default function Countries() {
 
       <section className="countries-grid-section">
         <div className="wop-container countries-grid">
-          {filteredCountries.map((item) => (
+          {filteredCountries.length === 0 ? (
+            <div style={{
+              gridColumn: "1 / -1",
+              textAlign: "center",
+              padding: "64px 24px",
+              color: "#6B6B5A",
+            }}>
+              <Globe2 size={40} style={{ opacity: 0.25, marginBottom: 14 }} />
+              <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, color: "#1A1A14", margin: "0 0 8px" }}>
+                No results found
+              </p>
+              <p style={{ fontSize: 16, margin: 0 }}>
+                Try a different search term or filter.
+              </p>
+            </div>
+          ) : filteredCountries.map((item) => (
             <article className="country-experience-card" key={item.country}>
               <div className="country-image-wrap">
                 <img src={item.image} alt={item.country} />
@@ -122,7 +140,7 @@ export default function Countries() {
                 <h2>{item.country}</h2>
                 <p>{item.dish}</p>
 
-                <button onClick={() => setSelectedDish(item)}>
+                <button type="button" onClick={() => setSelectedDish(item)}>
                   Explore Dish <ArrowRight size={16} />
                 </button>
               </div>
@@ -135,8 +153,10 @@ export default function Countries() {
         <div className="dish-modal-backdrop">
           <div className="dish-modal">
             <button
+              type="button"
               className="dish-modal-close"
               onClick={() => setSelectedDish(null)}
+              aria-label="Close dish details"
             >
               ×
             </button>
@@ -160,10 +180,20 @@ export default function Countries() {
               </p>
 
               <div className="dish-modal-actions">
-                <button className="dashboard-secondary-btn">View Recipe</button>
+                <button
+                  type="button"
+                  className="dashboard-secondary-btn"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  View Recipe
+                </button>
 
                 {selectedDish.status === "Available" && (
-                  <button className="wop-btn wop-btn-primary">
+                  <button
+                    type="button"
+                    className="wop-btn wop-btn-primary"
+                    onClick={() => navigate("/auth/register")}
+                  >
                     Claim Dish
                   </button>
                 )}

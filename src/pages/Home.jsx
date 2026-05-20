@@ -242,7 +242,8 @@ function FoodFilmSection() {
                 <motion.img
                   key={scene.title}
                   src={scene.image}
-                  alt=""
+                  alt={scene.title || ""}
+                  aria-hidden="true"
                   style={{ opacity: frameOpacities[index], scale: filmScale, y: filmY }}
                 />
               )
@@ -337,6 +338,7 @@ function ExperienceModule() {
 }
 
 export default function Home() {
+  useEffect(() => { document.title = "World on a Plate | Seattle's Global Food Festival 2026"; }, []);
   const heroRef = useRef(null);
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
@@ -507,7 +509,7 @@ export default function Home() {
     >
       <section className="atelier-hero" ref={heroRef}>
         <motion.div className="atelier-hero-bg" style={{ y: heroBgY }}>
-          <motion.img src={market} alt="" style={{ scale: heroBgScale }} />
+          <motion.img src={market} alt="" aria-hidden="true" role="presentation" style={{ scale: heroBgScale }} />
         </motion.div>
         <div className="atelier-hero-grain" />
 

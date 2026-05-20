@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Clock3,
   MailCheck,
@@ -6,6 +7,7 @@ import {
 } from "lucide-react";
 
 export default function PendingApproval() {
+  useEffect(() => { document.title = "Application Pending | World on a Plate"; }, []);
   return (
     <main className="wop-page inner-page">
 

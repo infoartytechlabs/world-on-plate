@@ -1,4 +1,8 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ExternalLink, CheckCircle2 } from "lucide-react";
+
+const CULINARY_SESSION_KEY = "wop_culinary_session";
 
 const dishes = [
   {
@@ -32,6 +36,14 @@ const dishes = [
 ];
 
 export default function CulinaryDashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => { document.title = "Culinary Dashboard | World on a Plate"; }, []);
+  useEffect(() => {
+    const session = sessionStorage.getItem(CULINARY_SESSION_KEY);
+    if (!session) navigate("/auth/login", { replace: true });
+  }, [navigate]);
+
   return (
     <main className="wop-page inner-page">
       <section className="culinary-dashboard-hero">

@@ -59,7 +59,7 @@ function validate(form, type) {
     }
     if (type === "musician") {
         if (!form.performerName?.trim()) return "Please enter your performer/group name.";
-        if (!form.groupMembers?.trim()) return "Please enter the number of group members.";
+        if (!String(form.groupMembers ?? "").trim()) return "Please enter the number of group members.";
         if (!form.musicStyle?.trim()) return "Please describe your musical style.";
         if (!form.musicianAgreement) return "Please accept the volunteer terms to continue.";
     }
@@ -77,7 +77,7 @@ function ContactFields({ form, onChange, onPhone, onCountryCode }) {
                 <input name="lastName" placeholder="Last Name *" value={form.lastName || ""} onChange={onChange} />
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-                <input name="countryCode" placeholder="+1" value={form.countryCode || "+1"} onChange={onCountryCode} style={{ width: 90, flexShrink: 0, textAlign: "center" }} />
+                <input name="countryCode" placeholder="+1" value={form.countryCode || "+1"} onChange={onCountryCode} style={{ width: "clamp(64px, 18%, 90px)", flexShrink: 0, textAlign: "center" }} />
                 <input name="phone" placeholder="Phone *" value={form.phone || ""} onChange={onPhone} style={{ flex: 1 }} />
             </div>
             <input name="email" type="email" placeholder="Email *" value={form.email || ""} onChange={onChange} />
@@ -169,6 +169,7 @@ function VolunteerForm({ form, onChange, onPhone, onCountryCode }) {
 const ADMIN_KEY_MAP = { sponsor: "sponsors", vendor: "vendors", musician: "musicians", volunteer: "volunteers" };
 
 export default function Registration() {
+    useEffect(() => { document.title = "Registration | World on a Plate"; }, []);
     const [activeType, setActiveType] = useState("sponsor");
     const [hoveredType, setHoveredType] = useState(null);
     const [forms, setForms] = useState({ sponsor: {}, vendor: {}, musician: {}, volunteer: {} });

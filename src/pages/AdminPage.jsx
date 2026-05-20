@@ -311,12 +311,14 @@ function SheetPanel({ tab, showToast }) {
   const [payments, setPayments] = useState({});
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState({ key: "ts", dir: -1 });
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setLoadError(false);
     try {
       const res = await fetch(`${SCRIPT_URL}?action=getSheet&sheet=${encodeURIComponent(tab.sheetName)}&t=${Date.now()}`);
       const json = await res.json();
@@ -338,10 +340,12 @@ function SheetPanel({ tab, showToast }) {
         setPayments(nextPayments);
         showToast(`Loaded ${json.data.length} ${tab.label.toLowerCase()}`, "info");
       } else {
-        showToast(`No data in ${tab.label}`, "error");
+        setLoaded(true);
+        showToast(`No data found in ${tab.label}`, "info");
       }
     } catch {
-      showToast("Could not reach the script", "error");
+      setLoadError(true);
+      showToast("Could not reach the script — check your connection", "error");
     } finally {
       setLoading(false);
     }
@@ -531,7 +535,9 @@ function SheetPanel({ tab, showToast }) {
             </tr>
           </thead>
           <tbody>
-            {!loaded ? (
+            {loadError ? (
+              <EmptyState icon={tab.icon} color="#8A2A2A" title="Failed to load data" sub="Could not reach Google Sheets — check your connection and click Refresh" />
+            ) : !loaded ? (
               <EmptyState icon={tab.icon} color={tab.color} title={`No ${tab.label} loaded yet`} sub="Click Refresh to pull data from Google Sheets" />
             ) : !filtered.length ? (
               <EmptyState icon={tab.icon} color={tab.color} title="No matches found" sub="Try adjusting your search or filter" />
@@ -889,6 +895,7 @@ function AdminLoginGate({ onLogin }) {
 }
 
 export default function AdminPage() {
+  useEffect(() => { document.title = "Admin | World on a Plate"; }, []);
   const navigate = useNavigate();
   const [adminSession, setAdminSession] = useState(() => {
     try { return JSON.parse(sessionStorage.getItem(ADMIN_SESSION_KEY) || "null"); }

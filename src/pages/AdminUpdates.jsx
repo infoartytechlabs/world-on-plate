@@ -129,6 +129,7 @@ export default function AdminUpdates() {
   const toastTimer  = useRef(null);
   const fileInputRef = useRef(null);
 
+  useEffect(() => { document.title = "Send Updates | World on a Plate"; }, []);
   useEffect(() => {
     if (!adminSession) navigate("/admin", { replace: true });
   }, [adminSession, navigate]);

@@ -27,6 +27,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 /* ADMIN */
 import AdminPage from "./pages/AdminPage";
 import AdminUpdates from "./pages/AdminUpdates";
+import NotFound from "./pages/NotFound";
 
 import Registration from "./pages/Registration";
 
@@ -66,7 +67,7 @@ export default function App() {
         <Route path="/registration" element={<Registration />} />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
 
       </Routes>
 
