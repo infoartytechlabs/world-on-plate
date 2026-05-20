@@ -218,22 +218,14 @@ export default function AdminUpdates() {
       .filter(Boolean)
       .join(", ");
 
-    const buildFormData = () => {
-      const fd = new FormData();
-      fd.append("action",      "sendUpdate");
-      fd.append("groups",      selectedGroups.join(","));
-      fd.append("groupLabels", groupLabels);
-      fd.append("subject",     subject.trim());
-      fd.append("message",     message.trim());
-      fd.append("senderEmail", adminSession.email);
-      fd.append("senderName",  adminSession.name || adminSession.email);
-      fd.append("fileCount",   attachments.length);
-      attachments.forEach((att, i) => {
-        fd.append(`file_${i}_name`, att.name);
-        fd.append(`file_${i}_type`, att.type);
-        fd.append(`file_${i}_data`, att.base64);
-      });
-      return fd;
+    const baseParams = {
+      action:      "sendUpdate",
+      groups:      selectedGroups.join(","),
+      groupLabels,
+      subject:     subject.trim(),
+      message:     message.trim(),
+      senderName:  adminSession.name || adminSession.email,
+      senderEmail: adminSession.email,
     };
 
     const resetForm = () => {
@@ -245,47 +237,58 @@ export default function AdminUpdates() {
       setTimeout(() => setSent(false), 5000);
     };
 
-    // First try: CORS-enabled GET (text-only, no attachments in URL)
+    // ── Text-only: GET request (CORS-safe, returns readable JSON) ──
     if (attachments.length === 0) {
       try {
-        const params = new URLSearchParams({
-          action: "sendUpdate",
-          groups: selectedGroups.join(","),
-          groupLabels,
-          subject: subject.trim(),
-          message: message.trim(),
-          senderName:  adminSession.name || adminSession.email,
-          senderEmail: adminSession.email,
-          t: Date.now(),
-        });
+        const params = new URLSearchParams({ ...baseParams, t: Date.now() });
         const res  = await fetch(`${SCRIPT_URL}?${params.toString()}`);
         const json = await res.json();
         if (json.success) {
           showToast(`Update sent to ${selectedGroups.length} group${selectedGroups.length > 1 ? "s" : ""}!`, "success");
           resetForm();
-          setSending(false);
-          return;
+        } else {
+          showToast(json.message || "Failed to send. Please try again.", "error");
         }
-        showToast(json.message || "Failed to send. Please try again.", "error");
+      } catch {
+        showToast("Network error. Check your connection and try again.", "error");
+      } finally {
         setSending(false);
-        return;
-      } catch { /* fall through to POST */ }
+      }
+      return;
     }
 
-    // POST fallback (used when there are attachments, or CORS blocks GET)
+    // ── With attachments: POST JSON body ──
+    // Apps Script reads this from e.postData.contents
     try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: buildFormData(),
-        mode: "no-cors",
+      const payload = {
+        ...baseParams,
+        fileCount: attachments.length,
+      };
+      attachments.forEach((att, i) => {
+        payload[`file_${i}_name`] = att.name;
+        payload[`file_${i}_type`] = att.type;
+        payload[`file_${i}_data`] = att.base64;
       });
-      showToast(
-        attachments.length > 0
-          ? `Update with ${attachments.length} attachment${attachments.length > 1 ? "s" : ""} submitted — check Apps Script logs for delivery.`
-          : "Update submitted — check Apps Script logs for delivery status.",
-        "info"
-      );
-      resetForm();
+
+      // Apps Script Web Apps require the request to come without CORS preflight
+      // for no-cors mode — but we need to read the response too.
+      // Solution: encode everything as a GET param called "payload" on a GET request.
+      // This avoids the no-cors blind POST problem entirely.
+      const encoded = encodeURIComponent(JSON.stringify(payload));
+      const url = `${SCRIPT_URL}?payload=${encoded}&t=${Date.now()}`;
+
+      const res  = await fetch(url);
+      const json = await res.json();
+
+      if (json.success) {
+        showToast(
+          `Update with ${attachments.length} attachment${attachments.length > 1 ? "s" : ""} sent to ${selectedGroups.length} group${selectedGroups.length > 1 ? "s" : ""}!`,
+          "success"
+        );
+        resetForm();
+      } else {
+        showToast(json.message || "Failed to send. Please try again.", "error");
+      }
     } catch {
       showToast("Network error. Check your connection and try again.", "error");
     } finally {
