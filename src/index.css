@@ -3805,7 +3805,8 @@ body::after {
 .atelier-dishes-copy .wop-eyebrow,
 .atelier-route-copy .wop-eyebrow,
 .atelier-people-layout .wop-eyebrow,
-.atelier-story-head .wop-eyebrow {
+.atelier-story-head .wop-eyebrow,
+.atelier-cta .wop-eyebrow {
   color: var(--brown);
   background: rgba(255,255,255,0.66);
   border-color: rgba(255,255,255,0.74);
@@ -3948,9 +3949,10 @@ body::after {
   padding-bottom: 28px;
   overflow: hidden;
  
-  background: rgba(66, 66, 66, 0.493);
-  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255,255,255,0.86);
   backdrop-filter: blur(22px);
+  box-shadow: 0 24px 70px rgba(63, 35, 14, 0.1);
 }
 
 .atelier-facts div {
@@ -3958,16 +3960,16 @@ body::after {
   gap: 7px;
   min-height: 208px;
   padding: 24px;
-  color: white;
-  background: rgba(255,255,255,0.08);
+  color: var(--navy);
+  background: rgba(255,255,255,0.44);
 }
 
 .atelier-facts svg {
-  color: var(--gold);
+  color: var(--orange);
 }
 
 .atelier-facts span {
-  color: rgb(0, 0, 0);
+  color: var(--brown);
   font-size: 18px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -4016,8 +4018,9 @@ body::after {
 .atelier-ribbon {
   overflow: hidden;
   padding: 34px 0;
-  background: #101728;
-  color: rgba(255,255,255,0.12);
+  background:
+    linear-gradient(90deg, #e86635 0%, #d74e2e 42%, #23785a 100%);
+  color: rgba(255,255,255,0.24);
 }
 
 .atelier-ribbon-track {
@@ -4085,11 +4088,11 @@ body::after {
   position: relative;
   min-height: 300vh;
   padding: 120px 0;
-  color: white;
+  color: var(--navy);
   background:
-    radial-gradient(circle at 20% 12%, rgba(232,123,50,0.18), transparent 34%),
-    radial-gradient(circle at 80% 22%, rgba(216,164,65,0.14), transparent 32%),
-    linear-gradient(135deg, #101728 0%, #141b2e 54%, #26170f 100%);
+    radial-gradient(circle at 18% 10%, rgba(232,123,50,0.18), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(29,143,95,0.14), transparent 32%),
+    linear-gradient(135deg, #fffaf1 0%, #fff2df 50%, #f6dcc6 100%);
   overflow: visible;
 }
 
@@ -4099,8 +4102,8 @@ body::after {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(63,35,14,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63,35,14,0.045) 1px, transparent 1px);
   background-size: 58px 58px;
   mask-image: linear-gradient(to bottom, black, transparent 88%);
 }
@@ -4128,17 +4131,17 @@ body::after {
 }
 
 .food-film-copy .wop-eyebrow {
-  color: rgba(255,255,255,0.78);
-  background: rgba(255,255,255,0.11);
-  border-color: rgba(255,255,255,0.16);
-  box-shadow: none;
+  color: var(--brown);
+  background: rgba(255,255,255,0.62);
+  border-color: rgba(255,255,255,0.78);
+  box-shadow: 0 14px 38px rgba(63,35,14,0.08);
 }
 
 .food-film-copy h2 {
   margin: 20px 0 0;
   max-width: 820px;
   font-family: "Playfair Display", serif;
-  color: white;
+  color: var(--navy);
   font-size: clamp(42px, 6.4vw, 92px);
   line-height: 0.92;
   letter-spacing: -0.06em;
@@ -4147,7 +4150,7 @@ body::after {
 .food-film-copy p {
   margin: 20px 0 0;
   max-width: 640px;
-  color: rgba(255,255,255,0.68);
+  color: var(--muted);
   font-size: 17px;
   line-height: 1.75;
 }
@@ -4157,9 +4160,9 @@ body::after {
   min-height: min(620px, 60vh);
   overflow: hidden;
   border-radius: 22px;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: #101728;
-  box-shadow: 0 42px 120px rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.88);
+  background: #fffaf1;
+  box-shadow: 0 42px 110px rgba(126, 72, 25, 0.22);
 }
 
 .food-film-frame img,
@@ -4176,8 +4179,8 @@ body::after {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(16,23,40,0.74), transparent 52%),
-    radial-gradient(circle at center, transparent 42%, rgba(16,23,40,0.44) 100%);
+    linear-gradient(to top, rgba(43,26,18,0.68), transparent 50%),
+    radial-gradient(circle at center, transparent 46%, rgba(255,250,241,0.22) 100%);
   pointer-events: none;
 }
 
@@ -4190,9 +4193,10 @@ body::after {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,250,241,0.74);
+  border: 1px solid rgba(255,255,255,0.84);
   backdrop-filter: blur(16px);
+  box-shadow: 0 14px 34px rgba(63,35,14,0.16);
 }
 
 .food-film-play span {
@@ -4201,7 +4205,7 @@ body::after {
   margin-left: 4px;
   border-top: 9px solid transparent;
   border-bottom: 9px solid transparent;
-  border-left: 14px solid white;
+  border-left: 14px solid var(--orange);
 }
 
 .food-film-caption {
@@ -4233,7 +4237,7 @@ body::after {
   height: 3px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(63,35,14,0.12);
 }
 
 .food-film-progress span {
@@ -4254,7 +4258,7 @@ body::after {
 .food-storyline-card {
   position: relative;
   padding: 28px 0 28px 34px;
-  border-left: 1px solid rgba(255,255,255,0.18);
+  border-left: 1px solid rgba(63,35,14,0.14);
 }
 
 .food-storyline-card::before {
@@ -4272,7 +4276,7 @@ body::after {
 .food-storyline-card span {
   display: block;
   font-family: "Playfair Display", serif;
-  color: rgba(255,255,255,0.14);
+  color: rgba(232,123,50,0.18);
   font-size: 88px;
   line-height: 0.75;
   letter-spacing: -0.07em;
@@ -4281,7 +4285,7 @@ body::after {
 .food-storyline-card small {
   display: block;
   margin-top: 20px;
-  color: var(--gold);
+  color: var(--green);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -4290,7 +4294,7 @@ body::after {
 
 .food-storyline-card h3 {
   margin: 12px 0 0;
-  color: white;
+  color: var(--navy);
   font-size: clamp(26px, 3vw, 42px);
   line-height: 1.02;
   letter-spacing: -0.045em;
@@ -4298,7 +4302,7 @@ body::after {
 
 .food-storyline-card p {
   margin: 16px 0 0;
-  color: rgba(255,255,255,0.66);
+  color: var(--muted);
   font-size: 16px;
   line-height: 1.7;
 }
@@ -4307,7 +4311,7 @@ body::after {
   position: relative;
   padding: 112px 0 128px;
   background:
-    linear-gradient(180deg, #f8ead4 0%, #fffaf1 34%, #fffaf1 100%);
+    linear-gradient(180deg, #f8ead4 0%, #fffaf1 34%, #f7efe5 100%);
 }
 
 .atelier-module-layout {
@@ -4384,12 +4388,12 @@ body::after {
   grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
   overflow: hidden;
   border-radius: 22px;
-  color: white;
+  color: var(--navy);
   background:
-    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--module-accent) 28%, transparent), transparent 38%),
-    #101728;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 34px 110px rgba(16,23,40,0.2);
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--module-accent) 18%, transparent), transparent 38%),
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,246,234,0.92));
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 34px 110px rgba(126,72,25,0.16);
 }
 
 .atelier-module-image {
@@ -4402,7 +4406,7 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(16,23,40,0.28));
+  background: linear-gradient(90deg, transparent, rgba(255,250,241,0.44));
 }
 
 .atelier-module-image img {
@@ -4435,7 +4439,7 @@ body::after {
 .atelier-module-copy strong {
   margin-top: 24px;
   font-family: "Playfair Display", serif;
-  color: rgba(255,255,255,0.13);
+  color: rgba(63,35,14,0.1);
   font-size: clamp(78px, 10vw, 150px);
   line-height: 0.78;
   letter-spacing: -0.08em;
@@ -4444,7 +4448,7 @@ body::after {
 .atelier-module-copy h3 {
   margin: 16px 0 0;
   max-width: 680px;
-  color: white;
+  color: var(--navy);
   font-size: clamp(34px, 4.2vw, 64px);
   line-height: 0.96;
   letter-spacing: -0.055em;
@@ -4453,7 +4457,7 @@ body::after {
 .atelier-module-copy p {
   margin: 20px 0 0;
   max-width: 520px;
-  color: rgba(255,255,255,0.7);
+  color: var(--muted);
   font-size: 16px;
   line-height: 1.75;
 }
@@ -4566,8 +4570,11 @@ body::after {
 }
 
 .atelier-dishes-section {
-  background: #101728;
-  color: white;
+  color: var(--navy);
+  background:
+    radial-gradient(circle at 8% 18%, rgba(29,143,95,0.13), transparent 32%),
+    radial-gradient(circle at 92% 28%, rgba(232,123,50,0.14), transparent 30%),
+    linear-gradient(180deg, #fffaf1 0%, #f5e6d6 100%);
 }
 
 .atelier-dishes-layout {
@@ -4584,11 +4591,11 @@ body::after {
 
 .atelier-dishes-copy h2,
 .atelier-dishes-copy p {
-  color: white;
+  color: var(--navy);
 }
 
 .atelier-dishes-copy p {
-  color: rgba(255,255,255,0.72);
+  color: var(--muted);
   margin-bottom: 28px;
 }
 
@@ -4603,7 +4610,8 @@ body::after {
   min-height: 330px;
   overflow: hidden;
   border-radius: 18px;
-  background: #1c2740;
+  background: #fff4e6;
+  box-shadow: 0 22px 68px rgba(126,72,25,0.16);
 }
 
 .atelier-country-card:nth-child(1),
@@ -4616,7 +4624,7 @@ body::after {
   height: 100%;
   min-height: 330px;
   object-fit: cover;
-  opacity: 0.86;
+  opacity: 0.92;
   transition: transform 0.7s ease;
 }
 
@@ -4628,7 +4636,7 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(16,23,40,0.82), transparent 58%);
+  background: linear-gradient(to top, rgba(43,26,18,0.76), transparent 60%);
 }
 
 .atelier-country-card div {
@@ -4838,7 +4846,7 @@ body::after {
 
 .atelier-cta-section {
   padding-bottom: 120px;
-  background: linear-gradient(180deg, #fffaf1, #f8ead4);
+  background: linear-gradient(180deg, #fffaf1, #f7e0ca);
 }
 
 .atelier-cta {
@@ -4848,20 +4856,22 @@ body::after {
   align-items: center;
   padding: clamp(28px, 5vw, 58px);
   border-radius: 18px;
-  color: white;
+  color: var(--navy);
   background:
-    linear-gradient(135deg, rgba(16,23,40,0.94), rgba(28,39,64,0.94)),
+    linear-gradient(135deg, rgba(255,250,241,0.94), rgba(255,241,221,0.88)),
     url("../src/assets/market.webp");
-  box-shadow: 0 32px 100px rgba(16,23,40,0.22);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 32px 100px rgba(126,72,25,0.2);
 }
 
 .atelier-cta h2,
 .atelier-cta p {
-  color: white;
+  color: var(--navy);
 }
 
 .atelier-cta p {
-  color: rgba(255,255,255,0.72);
+  color: var(--muted);
 }
 
 .atelier-action-grid {
@@ -4877,11 +4887,11 @@ body::after {
   gap: 14px;
   align-items: center;
   padding: 16px;
-  border: 1px solid rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.86);
   border-radius: 14px;
-  color: white;
+  color: var(--navy);
   text-align: left;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.76);
   transition: transform 0.22s ease, background 0.22s ease;
 }
 
@@ -4892,7 +4902,7 @@ body::after {
 .atelier-action-grid a:hover,
 .atelier-action-grid button:hover {
   transform: translateY(-3px);
-  background: rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.92);
 }
 
 .atelier-action-grid > * > svg:first-child {
@@ -4915,7 +4925,7 @@ body::after {
 
 .atelier-action-grid span {
   margin-top: 3px;
-  color: rgba(255,255,255,0.68);
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.45;
 }

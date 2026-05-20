@@ -543,7 +543,7 @@ export default function Home() {
           position: "absolute",
           bottom: -80, left: -120, right: -120,
           height: "50%",
-          background: "#DCA84A",
+          background: "linear-gradient(135deg, #F4B66D, #F07B45)",
           borderRadius: "52% 48% 0 0 / 30% 30% 0 0",
           zIndex: 0,
           opacity: 0.38,
@@ -563,7 +563,7 @@ export default function Home() {
           <div key={i} aria-hidden="true" style={{
             position: "absolute", zIndex: 1,
             width: 18, height: 3,
-            background: "#C8993A",
+            background: "#E86635",
             borderRadius: 3,
             opacity: 0.55,
             transform: `rotate(${d.r}deg)`,
@@ -588,7 +588,7 @@ export default function Home() {
               whiteSpace: "nowrap",
             }}
           >
-            World on <span style={{ color: "#E87B32" }}>a Plate</span>
+            World on <span style={{ color: "#D95C2E" }}>a Plate</span>
           </motion.h1>
 
           <motion.div
@@ -600,7 +600,7 @@ export default function Home() {
             <span style={{
               fontFamily: "'DM Serif Display', serif",
               fontSize: "clamp(22px, 3vw, 42px)",
-              color: "#E87B32",
+              color: "#D95C2E",
               letterSpacing: "-0.02em",
               fontStyle: "italic",
             }}>
@@ -622,7 +622,7 @@ export default function Home() {
             width: 160,
             height: 160,
             clipPath: "polygon(50% 0%, 59.8% 13.3%, 75% 6.7%, 76.9% 23.1%, 93.3% 25%, 86.7% 40.2%, 100% 50%, 86.7% 59.8%, 93.3% 75%, 76.9% 76.9%, 75% 93.3%, 59.8% 86.7%, 50% 100%, 40.2% 86.7%, 25% 93.3%, 23.1% 76.9%, 6.7% 75%, 13.3% 59.8%, 0% 50%, 13.3% 40.2%, 6.7% 25%, 23.1% 23.1%, 25% 6.7%, 40.2% 13.3%)",
-            background: "#E87B32",
+            background: "linear-gradient(135deg, #E86635, #28795B)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -732,13 +732,13 @@ export default function Home() {
                 <span style={{
                   display: "inline-block",
                   padding: "6px 22px",
-                  background: "#FBF0EE",
-                  border: "2.5px solid #8A2A2A",
+                  background: "#FFF2EA",
+                  border: "2.5px solid #B83B2F",
                   borderRadius: 10,
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: "clamp(18px, 2.4vw, 32px)",
                   lineHeight: 1.15,
-                  color: "#8A2A2A",
+                  color: "#B83B2F",
                   fontStyle: "italic",
                   transform: "rotate(-6deg)",
                   display: "inline-block",
@@ -755,13 +755,13 @@ export default function Home() {
               <span style={{
                 display: "inline-block",
                 padding: "6px 22px",
-                background: "#F8F0E4",
-                border: "2.5px solid #C8993A",
+                background: "#F7F4E7",
+                border: "2.5px solid #28795B",
                 borderRadius: 10,
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: "clamp(18px, 2.4vw, 32px)",
                 lineHeight: 1.15,
-                color: "#7A4A00",
+                color: "#28795B",
                 fontStyle: "italic",
                 marginLeft: 40,
               }}>Cultural</span>
@@ -770,7 +770,7 @@ export default function Home() {
               <span style={{
                 display: "inline-block",
                 padding: "8px 26px",
-                background: "linear-gradient(135deg, #E87B32, #8A2A2A)",
+                background: "linear-gradient(135deg, #E86635, #B83B2F)",
                 borderRadius: 12,
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: "clamp(18px, 2.4vw, 32px)",
