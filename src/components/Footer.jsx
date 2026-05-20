@@ -41,9 +41,9 @@ const footerLinks = [
 ];
 
 const footerMoments = [
-  { icon: UtensilsCrossed, label: "195 dishes" },
-  { icon: Music4, label: "Live culture" },
-  { icon: Ticket, label: "Free entry" },
+  { icon: UtensilsCrossed, label: "195 national dishes" },
+  { icon: Music4, label: "Live performances" },
+  { icon: Ticket, label: "Free admission" },
 ];
 
 const footerFacts = [
@@ -67,9 +67,10 @@ export default function Footer() {
         <div>
           <span>World on a Plate</span>
           <span>Seattle</span>
+          <span>Free Admission</span>
           <span>195 National Dishes</span>
+          <span>Pioneer Square</span>
           <span>One Shared Table</span>
-          <span>World Record Attempt</span>
         </div>
       </div>
 
@@ -83,23 +84,23 @@ export default function Footer() {
         >
           <div className="footer-kicker">
             <Sparkles size={16} />
-            Seattle's global table
+            Final invitation
           </div>
 
           <h2>
-            Come hungry for the world.
+            Save your place at the world's table.
           </h2>
 
           <p>
-            World on a Plate brings 195 national dishes, cultural performance, and thousands of visitors together on one Seattle avenue.
+            A bright, walkable celebration of food, music, culture, and community across Seattle's Pioneer Square.
           </p>
 
           <div className="footer-hero-actions">
             <Link to="/registration">
               Register Now <ArrowRight size={18} />
             </Link>
-            <Link to="/partnerships">
-              Partner With Us
+            <Link to="/countries">
+              Explore Countries
             </Link>
           </div>
         </motion.div>
@@ -111,10 +112,19 @@ export default function Footer() {
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
         >
-          <img src={market} alt="World on a Plate marketplace" />
+          <div className="footer-photo footer-photo-main">
+            <img src={market} alt="World on a Plate marketplace" />
+          </div>
+          <div className="footer-photo footer-photo-one">
+            <img src={food1} alt="International dish" />
+          </div>
+          <div className="footer-photo footer-photo-two">
+            <img src={food2} alt="Global cuisine" />
+          </div>
           <div className="footer-poster-card">
-            <strong>195</strong>
-            <span>National dishes</span>
+            <span>September 26, 2026</span>
+            <strong>Free Entry</strong>
+            <small>Pioneer Square, Seattle</small>
           </div>
         </motion.div>
       </div>
@@ -148,7 +158,7 @@ export default function Footer() {
           </h3>
 
           <p>
-            A civic celebration of food, culture, community, and Seattle's international spirit.
+            A civic food celebration built around memory, movement, and the joy of sharing a meal in public.
           </p>
 
           <div className="footer-socials" aria-label="Social links">
@@ -177,7 +187,7 @@ export default function Footer() {
         ))}
 
         <div className="footer-cta">
-          <h4>Event snapshot</h4>
+          <h4>Keep Close</h4>
           <div className="footer-fact-list">
             {footerFacts.map((fact) => {
               const Icon = fact.icon;
@@ -191,9 +201,8 @@ export default function Footer() {
           </div>
 
           <div className="footer-mini-gallery" aria-hidden="true">
-            <img src={food1} alt="" />
-            <img src={food2} alt="" />
             <ChefHat size={18} />
+            <span>Bring appetite, curiosity, and a few friends.</span>
           </div>
         </div>
       </div>
