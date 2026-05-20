@@ -1257,8 +1257,8 @@ body::after {
 
 .volunteer-form {
   display: grid;
-  gap: 16px;
-  padding: 28px;
+  gap: 20px;
+  padding: 36px;
   border-radius: 34px;
   background: rgba(255,255,255,0.74);
   border: 1px solid rgba(255,255,255,0.9);
@@ -1268,7 +1268,7 @@ body::after {
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
 }
 
 .form-status {
@@ -1285,15 +1285,15 @@ body::after {
   border: 1px solid rgba(16,23,40,0.1);
   outline: none;
   border-radius: 18px;
-  padding: 16px 18px;
+  padding: 20px 22px;
   background: rgba(255,255,255,0.78);
   color: var(--navy);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
 }
 
 .volunteer-form textarea {
-  min-height: 120px;
+  min-height: 140px;
   resize: vertical;
 }
 
@@ -1694,6 +1694,7 @@ body::after {
 
 .partner-hero {
   padding: 80px 0 50px;
+  background: #fff;
 }
 
 .partner-section {
@@ -1766,6 +1767,30 @@ body::after {
     grid-template-columns: 1fr;
   }
 }
+.partner-orgs-section {
+  padding: 100px 0 100px;
+  background: linear-gradient(to bottom, #fff9ee 0%, #fffaf1 200px, #fff 480px);
+}
+
+.partnership-sticker {
+  position: fixed;
+  cursor: default;
+  user-select: none;
+  transition: transform 0.2s ease;
+  z-index: 5;
+}
+
+.partnership-sticker:hover {
+  animation: stickerWobble 0.5s ease-in-out infinite;
+}
+
+@keyframes stickerWobble {
+  0%   { transform: rotate(var(--rot)); }
+  25%  { transform: rotate(calc(var(--rot) - 10deg)); }
+  75%  { transform: rotate(calc(var(--rot) + 10deg)); }
+  100% { transform: rotate(var(--rot)); }
+}
+
 /* end of partnership page styles */
 
 
@@ -3219,16 +3244,18 @@ body::after {
 
 .auth-layout {
   position: relative;
-  padding: 70px 60px;
+  padding: 70px 40px;
   z-index: 2;
   display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
-  gap: 54px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 72px;
   align-items: center;
+  max-width: 1600px;
+  width: 100%;
 }
 
 .auth-copy {
-  max-width: 620px;
+  max-width: 100%;
   padding-top: 0;
 }
 
@@ -3255,7 +3282,7 @@ body::after {
 
 .auth-card {
   width: 100%;
-  max-width: 620px;
+  max-width: 780px;
   margin-left: auto;
   margin-top: 0;
 }
@@ -3263,24 +3290,24 @@ body::after {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
 }
 
 .auth-form input {
   width: 100%;
-  height: 58px;
+  height: 68px;
   border-radius: 20px;
   border: 1px solid rgba(232,123,50,0.16);
   background: rgba(255,255,255,0.78);
   backdrop-filter: blur(12px);
-  padding: 0 20px;
-  font-size: 15px;
+  padding: 0 24px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--navy);
   outline: none;
@@ -3292,9 +3319,10 @@ body::after {
 }
 
 .auth-form button {
-  min-height: 58px;
+  min-height: 68px;
   border-radius: 999px;
   margin-top: 4px;
+  font-size: 18px;
 }
 
 .form-status {

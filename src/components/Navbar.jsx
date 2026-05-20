@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
-import { Menu, X, Sparkles, ChefHat, ShieldCheck, ClipboardList } from "lucide-react";
+import { Menu, X, ChefHat, ShieldCheck, ClipboardList } from "lucide-react";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -53,20 +53,15 @@ export default function Navbar() {
             Admin
           </Link>
 
-          <Link to="/auth/login" className="wop-nav-login">
-            <ChefHat size={16} />
-            Culinary
-          </Link>
-
           <Link to="/registration" className="wop-nav-register">
             <ClipboardList size={16} />
             Register
           </Link>
 
-          <a href="/#volunteer" className="wop-nav-cta">
-            <Sparkles size={16} />
-            Volunteer
-          </a>
+          <Link to="/auth/register" className="wop-nav-cta">
+            <ChefHat size={16} />
+            Culinary Register
+          </Link>
         </div>
 
         <button
@@ -100,22 +95,19 @@ export default function Navbar() {
             Admin
           </Link>
 
-          <Link to="/auth/login" onClick={() => setOpen(false)}>
-            Culinary Login
+          <Link to="/auth/register" onClick={() => setOpen(false)}>
+            Culinary Register
           </Link>
 
           <Link to="/registration" className="wop-mobile-register" onClick={() => setOpen(false)}>
             <ClipboardList size={14} />
             Register
           </Link>
-            <a
-          
-            href="/#volunteer"
-            className="wop-mobile-cta"
-            onClick={() => setOpen(false)}
-          >
-            Volunteer
-          </a>
+
+          <Link to="/auth/register" className="wop-mobile-cta" onClick={() => setOpen(false)}>
+            <ChefHat size={14} />
+            Culinary Register
+          </Link>
         </div>
       )}
     </header>

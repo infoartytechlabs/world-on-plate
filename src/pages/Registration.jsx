@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import {
-    ArrowRight, Building2, Store, Music4, HandHeart, CheckCircle2, Lock,
+    ArrowRight, Building2, Store, Music4, HandHeart, CheckCircle2, Lock, ChefHat,
 } from "lucide-react";
 
 const SCRIPT_URL =
@@ -38,7 +38,7 @@ const TABS = [
 ];
 
 const isEmailValid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || "");
-const isPhoneValid = (v) => v?.replace(/\D/g, "").length === 10;
+const isPhoneValid = (v) => /^\d{7,15}$/.test(v?.replace(/\D/g, "") || "");
 const isNameValid = (v) => /^[A-Za-z\s'-]{2,40}$/.test(v || "");
 
 function validate(form, type) {
@@ -46,7 +46,7 @@ function validate(form, type) {
     for (const f of base) if (!form[f]?.trim()) return "Please fill all required contact fields.";
     if (!isNameValid(form.firstName)) return "First name should contain only letters.";
     if (!isNameValid(form.lastName)) return "Last name should contain only letters.";
-    if (!isPhoneValid(form.phone)) return "Phone number must be exactly 10 digits.";
+    if (!isPhoneValid(form.phone)) return "Please enter a valid phone number (7–15 digits).";
     if (!isEmailValid(form.email)) return "Please enter a valid email address.";
     if (type === "sponsor") {
         if (!form.businessName?.trim()) return "Please enter your business name.";
@@ -69,35 +69,36 @@ function validate(form, type) {
     return "";
 }
 
-function ContactFields({ form, onChange, onPhone }) {
+function ContactFields({ form, onChange, onPhone, onCountryCode }) {
     return (
         <>
             <div className="form-row">
                 <input name="firstName" placeholder="First Name *" value={form.firstName || ""} onChange={onChange} />
                 <input name="lastName" placeholder="Last Name *" value={form.lastName || ""} onChange={onChange} />
             </div>
-            <div className="form-row">
-                <input name="phone" placeholder="Phone *" value={form.phone || ""} maxLength={10} onChange={onPhone} />
-                <input name="email" type="email" placeholder="Email *" value={form.email || ""} onChange={onChange} />
+            <div style={{ display: "flex", gap: 8 }}>
+                <input name="countryCode" placeholder="+1" value={form.countryCode || "+1"} onChange={onCountryCode} style={{ width: 90, flexShrink: 0, textAlign: "center" }} />
+                <input name="phone" placeholder="Phone *" value={form.phone || ""} onChange={onPhone} style={{ flex: 1 }} />
             </div>
+            <input name="email" type="email" placeholder="Email *" value={form.email || ""} onChange={onChange} />
         </>
     );
 }
 
-function SponsorForm({ form, onChange, onPhone }) {
+function SponsorForm({ form, onChange, onPhone, onCountryCode }) {
     return (
         <>
-            <ContactFields form={form} onChange={onChange} onPhone={onPhone} />
+            <ContactFields form={form} onChange={onChange} onPhone={onPhone} onCountryCode={onCountryCode} />
             <input name="businessName" placeholder="Business / Organization Name *" value={form.businessName || ""} onChange={onChange} />
             <input name="title" placeholder="Title *" value={form.title || ""} onChange={onChange} />
         </>
     );
 }
 
-function VendorForm({ form, onChange, onPhone }) {
+function VendorForm({ form, onChange, onPhone, onCountryCode }) {
     return (
         <>
-            <ContactFields form={form} onChange={onChange} onPhone={onPhone} />
+            <ContactFields form={form} onChange={onChange} onPhone={onPhone} onCountryCode={onCountryCode} />
             <input name="businessName" placeholder="Business / Organization Name *" value={form.businessName || ""} onChange={onChange} />
             <textarea
                 name="productDetail"
@@ -117,10 +118,10 @@ function VendorForm({ form, onChange, onPhone }) {
     );
 }
 
-function MusicianForm({ form, onChange, onPhone, onNumber }) {
+function MusicianForm({ form, onChange, onPhone, onNumber, onCountryCode }) {
     return (
         <>
-            <ContactFields form={form} onChange={onChange} onPhone={onPhone} />
+            <ContactFields form={form} onChange={onChange} onPhone={onPhone} onCountryCode={onCountryCode} />
             <input name="performerName" placeholder="Name of Performer / Group *" value={form.performerName || ""} onChange={onChange} />
             <input
                 name="groupMembers"
@@ -143,10 +144,10 @@ function MusicianForm({ form, onChange, onPhone, onNumber }) {
     );
 }
 
-function VolunteerForm({ form, onChange, onPhone }) {
+function VolunteerForm({ form, onChange, onPhone, onCountryCode }) {
     return (
         <>
-            <ContactFields form={form} onChange={onChange} onPhone={onPhone} />
+            <ContactFields form={form} onChange={onChange} onPhone={onPhone} onCountryCode={onCountryCode} />
             <select name="role" value={form.role || ""} onChange={onChange}>
                 <option value="">Which role are you interested in? *</option>
                 <option value="Country Booth Volunteer">Country Booth Volunteer</option>
@@ -200,8 +201,13 @@ export default function Registration() {
     };
 
     const handlePhone = (e) => {
-        const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+        const v = e.target.value.replace(/\D/g, "").slice(0, 15);
         setForms(p => ({ ...p, [activeType]: { ...p[activeType], phone: v } }));
+    };
+
+    const handleCountryCode = (e) => {
+        const v = e.target.value.replace(/[^\d+]/g, "").slice(0, 5);
+        setForms(p => ({ ...p, [activeType]: { ...p[activeType], countryCode: v } }));
     };
 
     const handleNumber = (name) => (e) => {
@@ -255,6 +261,15 @@ export default function Registration() {
                         and culture. Whether you're a business, a food artisan, a musician, or
                         simply want to give your time — there's a place for you here.
                     </p>
+
+                    <a href="/auth/register" style={{ marginTop: 28, display: "inline-flex", alignItems: "center", gap: 12, padding: "13px 22px", borderRadius: 8, background: "#fff", border: "1px solid rgba(200,153,58,0.4)", boxShadow: "0 2px 12px rgba(0,0,0,0.08)", textDecoration: "none" }}>
+                        <ChefHat size={17} color="#8A2A2A" />
+                        <span style={{ fontSize: 16, fontWeight: 500, color: "#1A1A14" }}>Culinary Partners Registration</span>
+                        <span style={{ width: 1, height: 16, background: "rgba(200,153,58,0.4)" }} />
+                        <span style={{ fontSize: 16, fontWeight: 700, color: "#fff", background: "#8A2A2A", padding: "6px 14px", borderRadius: 6, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            Apply here <ArrowRight size={14} />
+                        </span>
+                    </a>
                 </div>
             </section>
 
@@ -262,7 +277,7 @@ export default function Registration() {
             <section className="volunteer-section" ref={formRef}>
 
                 {/* Option menu — above the card */}
-                <div className="wop-container" style={{ marginBottom: 24 }}>
+                <div className="wop-container" style={{ marginBottom: 24, maxWidth: 1500 }}>
                     <div style={{
                         display: "flex",
                         flexWrap: "wrap",
@@ -314,7 +329,7 @@ export default function Registration() {
                     </div>
                 </div>
 
-                <div className="wop-container volunteer-card">
+                <div className="wop-container volunteer-card" style={{ maxWidth: 1500 }}>
 
                     {/* Left copy */}
                     <div className="volunteer-copy">
@@ -358,10 +373,10 @@ export default function Registration() {
                     ) : (
                         <form className="volunteer-form" onSubmit={handleSubmit} noValidate>
 
-                            {activeType === "sponsor" && <SponsorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
-                            {activeType === "vendor" && <VendorForm form={form} onChange={handleChange} onPhone={handlePhone} />}
-                            {activeType === "musician" && <MusicianForm form={form} onChange={handleChange} onPhone={handlePhone} onNumber={handleNumber} />}
-                            {activeType === "volunteer" && <VolunteerForm form={form} onChange={handleChange} onPhone={handlePhone} />}
+                            {activeType === "sponsor" && <SponsorForm form={form} onChange={handleChange} onPhone={handlePhone} onCountryCode={handleCountryCode} />}
+                            {activeType === "vendor" && <VendorForm form={form} onChange={handleChange} onPhone={handlePhone} onCountryCode={handleCountryCode} />}
+                            {activeType === "musician" && <MusicianForm form={form} onChange={handleChange} onPhone={handlePhone} onNumber={handleNumber} onCountryCode={handleCountryCode} />}
+                            {activeType === "volunteer" && <VolunteerForm form={form} onChange={handleChange} onPhone={handlePhone} onCountryCode={handleCountryCode} />}
 
                             <button
                                 type="submit"

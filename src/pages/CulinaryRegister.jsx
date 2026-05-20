@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowRight, ChefHat, CheckCircle2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowRight, ChefHat, CheckCircle2, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import culinaryBg from "../assets/culinary-template-bg.webp";
@@ -16,6 +16,7 @@ export default function CulinaryRegister() {
     lastName: "",
     title: "",
     institution: "",
+    countryCode: "+1",
     phone: "",
     email: "",
   });
@@ -23,6 +24,20 @@ export default function CulinaryRegister() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [successPopup, setSuccessPopup] = useState("");
+
+  const [closedRegs, setClosedRegs] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("wop_reg_closed") || "{}"); }
+    catch { return {}; }
+  });
+  useEffect(() => {
+    const handler = () => {
+      try { setClosedRegs(JSON.parse(localStorage.getItem("wop_reg_closed") || "{}")); }
+      catch { setClosedRegs({}); }
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
+  }, []);
+  const isClosed = !!closedRegs["culinary"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +53,7 @@ export default function CulinaryRegister() {
   };
 
   const isPhoneValid = (phone) => {
-    return /^\d{10}$/.test(phone || "");
+    return /^\d{7,15}$/.test(phone || "");
   };
 
   const validateForm = () => {
@@ -101,7 +116,7 @@ body: JSON.stringify({
   lastName: form.lastName,
   professionalTitle: form.title,
   institution: form.institution,
-  phone: form.phone,
+  phone: `${form.countryCode} ${form.phone}`,
   email: form.email,
 }),
   }
@@ -123,6 +138,7 @@ body: JSON.stringify({
           lastName: "",
           title: "",
           institution: "",
+          countryCode: "+1",
           phone: "",
           email: "",
         });
@@ -141,25 +157,34 @@ body: JSON.stringify({
       <section
   className="auth-section"
   style={{
-    backgroundImage: `url(${culinaryBg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+    marginTop: "-130px",
+    paddingTop: "130px",
+    position: "relative",
   }}
 >
-        <div className="auth-glow auth-glow-one" />
-        <div className="auth-glow auth-glow-two" />
+        <div style={{
+          position: "absolute", inset: 0, zIndex: 0,
+          backgroundImage: `url(${culinaryBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center 90%",
+          backgroundRepeat: "no-repeat",
+          filter: "blur(8px)",
+          transform: "scale(1.05)",
+        }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "rgba(0,0,0,0.08)" }} />
+        <div className="auth-glow auth-glow-one" style={{ zIndex: 1 }} />
+        <div className="auth-glow auth-glow-two" style={{ zIndex: 1 }} />
 
      
 
-        <div className="wop-container auth-layout">
+        <div className="wop-container auth-layout" style={{ position: "relative", zIndex: 2 }}>
           <div className="auth-copy">
             <div className="wop-eyebrow">
               Culinary Registration
             </div>
 
             <h1 className="wop-title">
-              Join the <span>culinary team.</span>
+              Join the <br /><span>culinary team.</span>
             </h1>
 
             <p className="wop-subtitle">
@@ -169,6 +194,19 @@ body: JSON.stringify({
               World on a Plate.
             </p>
 
+            <ul style={{ listStyle: "none", padding: 0, margin: "20px 0 28px", display: "flex", flexDirection: "column", gap: 12 }}>
+              {[
+                "Participants commit to preparing approximately 4,000 sample servings per dish.",
+                "Participants may sign up for multiple national dishes.",
+                "Participants are responsible for transport, serving equipment, and post-event cleanup.",
+                "Recipes may be refined while maintaining authenticity.",
+              ].map((point) => (
+                <li key={point} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ marginTop: 3, flexShrink: 0, width: 6, height: 6, borderRadius: "50%", background: "#C8993A", display: "inline-block" }} />
+                  <span style={{ fontSize: 18, lineHeight: 1.6, opacity: 0.88, fontWeight: 900 }}>{point}</span>
+                </li>
+              ))}
+            </ul>
 
             <div className="culinary-feature-cards">
             <div className="culinary-feature-card green">
@@ -193,6 +231,19 @@ body: JSON.stringify({
           </div>
 
           <div className="auth-card">
+            {isClosed ? (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, textAlign: "center", padding: "60px 32px", background: "rgba(255,255,255,0.85)", borderRadius: 24, backdropFilter: "blur(12px)" }}>
+                <div style={{ width: 72, height: 72, borderRadius: "50%", background: "#FCEBEB", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <Lock size={32} color="#791F1F" />
+                </div>
+                <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 28, color: "#1A1A14", margin: 0 }}>
+                  Sorry, Registrations Closed
+                </h3>
+                <p style={{ fontSize: 16, color: "#6B6B5A", maxWidth: 320, margin: 0, lineHeight: 1.6 }}>
+                  Culinary Partner registration is currently closed. Please check back later or contact us for more information.
+                </p>
+              </div>
+            ) : (
             <form className="auth-form" onSubmit={handleSubmit}>
               <div className="form-row">
                 <input
@@ -224,22 +275,28 @@ body: JSON.stringify({
                 onChange={handleChange}
               />
 
-              <input
-                name="phone"
-                placeholder="Phone Number *"
-                maxLength={10}
-                value={form.phone}
-                onChange={(e) => {
-                  const onlyNumbers = e.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 10);
-
-                  setForm((prev) => ({
-                    ...prev,
-                    phone: onlyNumbers,
-                  }));
-                }}
-              />
+              <div style={{ display: "flex", gap: 10 }}>
+                <input
+                  name="countryCode"
+                  placeholder="+1"
+                  value={form.countryCode}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/[^\d+]/g, "").slice(0, 5);
+                    setForm(prev => ({ ...prev, countryCode: v }));
+                  }}
+                  style={{ width: 90, flexShrink: 0, textAlign: "center" }}
+                />
+                <input
+                  name="phone"
+                  placeholder="Phone Number *"
+                  value={form.phone}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, "").slice(0, 15);
+                    setForm(prev => ({ ...prev, phone: v }));
+                  }}
+                  style={{ flex: 1 }}
+                />
+              </div>
 
               <input
                 name="email"
@@ -262,6 +319,7 @@ body: JSON.stringify({
                 <p className="form-status">{status}</p>
               )}
             </form>
+            )}
           </div>
         </div>
       </section>

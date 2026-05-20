@@ -96,7 +96,7 @@ export default function Home() {
 
   /* Volunteer form state */
   const [volunteerForm, setVolunteerForm] = useState({
-    firstName: "", lastName: "", phone: "", email: "", role: "", notes: "",
+    firstName: "", lastName: "", countryCode: "+1", phone: "", email: "", role: "", notes: "",
   });
   const [volunteerStatus, setVolunteerStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -122,8 +122,13 @@ export default function Home() {
   };
 
   const handleVolunteerPhone = (e) => {
-    const v = e.target.value.replace(/\D/g, "").slice(0, 10);
+    const v = e.target.value.replace(/\D/g, "").slice(0, 15);
     setVolunteerForm((prev) => ({ ...prev, phone: v }));
+  };
+
+  const handleVolunteerCountryCode = (e) => {
+    const v = e.target.value.replace(/[^\d+]/g, "").slice(0, 5);
+    setVolunteerForm((prev) => ({ ...prev, countryCode: v }));
   };
 
   const handleVolunteerSubmit = async (e) => {
@@ -132,8 +137,8 @@ export default function Home() {
     if (!firstName?.trim() || !lastName?.trim() || !phone?.trim() || !email?.trim() || !role?.trim()) {
       setVolunteerStatus("Please fill all required fields."); return;
     }
-    if (phone.replace(/\D/g, "").length !== 10) {
-      setVolunteerStatus("Phone number must be exactly 10 digits."); return;
+    if (!/^\d{7,15}$/.test(phone.replace(/\D/g, ""))) {
+      setVolunteerStatus("Please enter a valid phone number (7–15 digits)."); return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setVolunteerStatus("Please enter a valid email address."); return;
@@ -145,9 +150,9 @@ export default function Home() {
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        body: JSON.stringify({ formType: "volunteer", ...volunteerForm }),
+        body: JSON.stringify({ formType: "volunteer", ...volunteerForm, phone: `${volunteerForm.countryCode} ${volunteerForm.phone}` }),
       });
-      setVolunteerForm({ firstName: "", lastName: "", phone: "", email: "", role: "", notes: "" });
+      setVolunteerForm({ firstName: "", lastName: "", countryCode: "+1", phone: "", email: "", role: "", notes: "" });
       setVolunteerStatus("Thank you! Your volunteer interest was submitted.");
       setTimeout(() => setVolunteerStatus(""), 4200);
     } catch {
@@ -188,9 +193,9 @@ export default function Home() {
             </motion.p>
 
             <motion.div className="hero-actions" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
-              <button type="button" className="wop-btn wop-btn-primary" onClick={() => setShowVolunteer(true)}>
-                Volunteer Now <ArrowRight size={18} />
-              </button>
+              <a href="/registration" className="wop-btn wop-btn-primary">
+                Register Now <ArrowRight size={18} />
+              </a>
 
               <a href="/event-details" className="wop-btn wop-btn-secondary">
                 Explore Event
@@ -464,7 +469,10 @@ export default function Home() {
               </div>
 
               <div className="form-row">
-                <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} maxLength={10} />
+                <div style={{ display: "flex", gap: 8 }}>
+                    <input name="countryCode" placeholder="+1" value={volunteerForm.countryCode} onChange={handleVolunteerCountryCode} style={{ width: 72, flexShrink: 0, textAlign: "center" }} />
+                    <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} style={{ flex: 1 }} />
+                  </div>
                 <input name="email" type="email" placeholder="Email *" value={volunteerForm.email} onChange={handleVolunteerChange} />
               </div>
 
@@ -589,7 +597,10 @@ export default function Home() {
                 </div>
 
                 <div className="form-row">
-                  <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} maxLength={10} />
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input name="countryCode" placeholder="+1" value={volunteerForm.countryCode} onChange={handleVolunteerCountryCode} style={{ width: 72, flexShrink: 0, textAlign: "center" }} />
+                    <input name="phone" placeholder="Phone *" value={volunteerForm.phone} onChange={handleVolunteerPhone} style={{ flex: 1 }} />
+                  </div>
                   <input name="email" type="email" placeholder="Email *" value={volunteerForm.email} onChange={handleVolunteerChange} />
                 </div>
 
