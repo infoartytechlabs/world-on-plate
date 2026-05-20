@@ -699,11 +699,11 @@ function AdminLoginGate({ onLogin }) {
         display: "grid",
         gridTemplateColumns: "minmax(0, 1fr) 430px",
         gap: 34,
-        alignItems: "stretch",
+        alignItems: "start",
       }}>
         <div style={{
-          minHeight: 520,
-          padding: "44px",
+          minHeight: 360,
+          padding: "32px",
           borderRadius: 24,
           color: "#fff",
           background:
@@ -733,46 +733,19 @@ function AdminLoginGate({ onLogin }) {
             </div>
 
             <h1 style={{
-              margin: "24px 0 0",
+              margin: "16px 0 0",
               fontFamily: "'DM Serif Display', serif",
-              fontSize: "clamp(48px, 6vw, 82px)",
-              lineHeight: 0.92,
-              letterSpacing: "-0.055em",
+              fontSize: "clamp(42px, 5vw, 68px)",
+              lineHeight: 1,
+              letterSpacing: "-0.04em",
             }}>
               Secure access for event operations.
             </h1>
 
-            <p style={{
-              margin: "22px 0 0",
-              maxWidth: 560,
-              color: "rgba(255,255,255,0.68)",
-              fontSize: 18,
-              lineHeight: 1.75,
-            }}>
-              Review submissions, approve partners, export records, and manage registration gates from one protected admin workspace.
-            </p>
+           
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-            gap: 10,
-          }}>
-            {["Sheets data", "Access code", "Admin session"].map(item => (
-              <div key={item} style={{
-                minHeight: 82,
-                padding: 14,
-                borderRadius: 14,
-                background: "rgba(255,255,255,0.08)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                color: "rgba(255,255,255,0.78)",
-                fontSize: 13,
-                fontWeight: 800,
-              }}>
-                {item}
-              </div>
-            ))}
-          </div>
+          
         </div>
 
         <form onSubmit={handleSubmit} style={{

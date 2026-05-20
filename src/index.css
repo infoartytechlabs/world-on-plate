@@ -3944,11 +3944,11 @@ body::after {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  margin-top: -92px;
+  margin-top: 250px;
   padding-bottom: 28px;
   overflow: hidden;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.14);
+ 
+  background: rgba(66, 66, 66, 0.493);
   border: 1px solid rgba(255,255,255,0.16);
   backdrop-filter: blur(22px);
 }
@@ -3956,7 +3956,7 @@ body::after {
 .atelier-facts div {
   display: grid;
   gap: 7px;
-  min-height: 118px;
+  min-height: 208px;
   padding: 24px;
   color: white;
   background: rgba(255,255,255,0.08);
@@ -3967,15 +3967,15 @@ body::after {
 }
 
 .atelier-facts span {
-  color: rgba(255,255,255,0.6);
-  font-size: 11px;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .atelier-facts strong {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(38px, 2vw, 24px);
   line-height: 1.1;
 }
 

@@ -361,6 +361,24 @@ export default function Home() {
     damping: 28,
   });
 
+  const EVENT_DATE = new Date("2026-09-26T09:00:00");
+  const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  useEffect(() => {
+    const tick = () => {
+      const diff = EVENT_DATE - Date.now();
+      if (diff <= 0) { setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
+      setCountdown({
+        days:    Math.floor(diff / 86400000),
+        hours:   Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000)  / 60000),
+        seconds: Math.floor((diff % 60000)    / 1000),
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
   const [showVolunteer, setShowVolunteer] = useState(false);
   const [volunteerForm, setVolunteerForm] = useState({
     firstName: "",
@@ -507,91 +525,296 @@ export default function Home() {
         document.documentElement.style.setProperty("--my", `${e.clientY}px`);
       }}
     >
-      <section className="atelier-hero" ref={heroRef}>
-        <motion.div className="atelier-hero-bg" style={{ y: heroBgY }}>
-          <motion.img src={market} alt="" aria-hidden="true" role="presentation" style={{ scale: heroBgScale }} />
-        </motion.div>
-        <div className="atelier-hero-grain" />
+      <section
+        ref={heroRef}
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          minHeight: "110vh",
+          background: "#FFF9F4",
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "clamp(80px, 10vw, 110px)",
+          fontFamily: "'DM Sans', sans-serif",
+        }}
+      >
+        {/* ── Large solid amber blob at the bottom (Feastie's pink blob equivalent) ── */}
+        <div style={{
+          position: "absolute",
+          bottom: -80, left: -120, right: -120,
+          height: "50%",
+          background: "#DCA84A",
+          borderRadius: "52% 48% 0 0 / 30% 30% 0 0",
+          zIndex: 0,
+          opacity: 0.38,
+        }} />
 
-        <div className="wop-container atelier-hero-stage">
-          <motion.div
-            className="atelier-hero-copy"
-            style={{ y: heroCopyY }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <div className="wop-eyebrow">Seattle - September 26, 2026</div>
-            <h1>
-              {["The world,", "plated on one", "Seattle avenue."].map((line, index) => (
-                <span className="atelier-title-line" key={line}>
-                  <motion.span
-                    initial={{ y: "110%" }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.82, delay: 0.08 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {line}
-                  </motion.span>
-                </span>
-              ))}
-            </h1>
-            <p>
-              A global culinary celebration and Guinness World Record attempt bringing 195 national dishes, live culture, and thousands of neighbors to Pioneer Square.
-            </p>
+        {/* Scattered short dash decorations (like feastie) */}
+        {[
+          { top: "19%", left: "7%",   r: 10  },
+          { top: "16%", left: "11%",  r: -25 },
+          { top: "23%", left: "5.5%", r: 40  },
+          { top: "36%", left: "48%",  r: 15  },
+          { top: "39%", left: "50%",  r: -10 },
+          { top: "28%", right: "3%",  r: 20  },
+          { top: "32%", right: "1%",  r: -30 },
+          { bottom: "38%", right: "3%", r: 5 },
+        ].map((d, i) => (
+          <div key={i} aria-hidden="true" style={{
+            position: "absolute", zIndex: 1,
+            width: 18, height: 3,
+            background: "#C8993A",
+            borderRadius: 3,
+            opacity: 0.55,
+            transform: `rotate(${d.r}deg)`,
+            top: d.top, bottom: d.bottom,
+            left: d.left, right: d.right,
+          }} />
+        ))}
 
-            <div className="atelier-hero-actions">
-              <a href="/registration" className="wop-btn wop-btn-primary">
-                Register Now <ArrowRight size={18} />
-              </a>
-              <a href="/event-details" className="wop-btn wop-btn-secondary">
-                Explore Event
-              </a>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="atelier-photo-board"
-            style={{ y: heroPlateY }}
-            initial={{ opacity: 0, y: 28 }}
+        {/* ── FULL-WIDTH TITLE spanning top ── */}
+        <div style={{ position: "relative", zIndex: 2, padding: "clamp(40px, 6vw, 80px) clamp(16px, 4vw, 56px) 0", textAlign: "center" }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.12, ease: "easeOut" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: "clamp(64px, 11.5vw, 158px)",
+              lineHeight: 0.88,
+              letterSpacing: "-0.045em",
+              color: "#1A1A14",
+              margin: 0,
+              whiteSpace: "nowrap",
+            }}
           >
-            <div className="atelier-photo-main">
-              <img src={food1} alt="International dish" />
-              <div>
-                <span>Featured Taste</span>
-                <strong>195 dishes, one shared route</strong>
-              </div>
-            </div>
+            World on <span style={{ color: "#E87B32" }}>a Plate</span>
+          </motion.h1>
 
-            <div className="atelier-photo-column">
-              <div className="atelier-photo-stat">
-                <strong>195</strong>
-                <span>National dishes</span>
-              </div>
-
-              <div className="atelier-photo-secondary">
-                <img src={food2} alt="Prepared dish" />
-                <div>
-                  <span>Free Admission</span>
-                  <strong>First 8,000 sample tickets</strong>
-                </div>
-              </div>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            style={{ marginTop: 16, paddingLeft: 650 }}
+          >
+            <span style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: "clamp(22px, 3vw, 42px)",
+              color: "#E87B32",
+              letterSpacing: "-0.02em",
+              fontStyle: "italic",
+            }}>
+              September 26, 2026
+            </span>
           </motion.div>
         </div>
 
-        <div className="atelier-scroll-cue" aria-hidden="true">
-          <span>Scroll</span>
-          <i />
+        {/* ── FREE ENTRY starburst sticker ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6, rotate: 15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 15 }}
+          transition={{ duration: 0.55, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: "absolute",
+            top: "26%",
+            right: "5%",
+            zIndex: 3,
+            width: 160,
+            height: 160,
+            clipPath: "polygon(50% 0%, 59.8% 13.3%, 75% 6.7%, 76.9% 23.1%, 93.3% 25%, 86.7% 40.2%, 100% 50%, 86.7% 59.8%, 93.3% 75%, 76.9% 76.9%, 75% 93.3%, 59.8% 86.7%, 50% 100%, 40.2% 86.7%, 25% 93.3%, 23.1% 76.9%, 6.7% 75%, 13.3% 59.8%, 0% 50%, 13.3% 40.2%, 6.7% 25%, 23.1% 23.1%, 25% 6.7%, 40.2% 13.3%)",
+            background: "#E87B32",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            cursor: "default",
+            boxShadow: "0 8px 32px rgba(232,123,50,0.45)",
+          }}
+        >
+          <span style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 9,
+            fontWeight: 900,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.8)",
+          }}>✦ admission ✦</span>
+          <span style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: 22,
+            fontWeight: 400,
+            color: "#fff",
+            lineHeight: 1.1,
+            letterSpacing: "-0.01em",
+          }}>FREE<br/>ENTRY</span>
+          <span style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 8,
+            fontWeight: 900,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.8)",
+            marginTop: 2,
+          }}>Sep 26, 2026</span>
+        </motion.div>
+
+        {/* ── Center images ── */}
+        <div style={{
+          position: "absolute",
+          top: "90%",
+          left: "0",
+          right: "0",
+          transform: "translateY(-50%)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "clamp(16px, 2.5vw, 32px)",
+          zIndex: 2,
+          pointerEvents: "none",
+        }}>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            display: "flex",
+            gap: "clamp(16px, 2.5vw, 32px)",
+            alignItems: "center",
+            pointerEvents: "auto",
+          }}
+        >
+          <div style={{
+            width: "clamp(380px, 45vw, 640px)",
+            height: "clamp(500px, 62vw, 860px)",
+            borderRadius: "999px",
+            overflow: "hidden",
+            flexShrink: 0,
+            boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
+            transform: "rotate(8deg)",
+          }}>
+            <img src={food1} alt="International dish" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+          <div style={{
+            width: "clamp(380px, 45vw, 640px)",
+            height: "clamp(560px, 70vw, 960px)",
+            borderRadius: "999px",
+            overflow: "hidden",
+            flexShrink: 0,
+            boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
+            transform: "translateY(-60px) rotate(-8deg)",
+          }}>
+            <img src={food2} alt="Global cuisine" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+        </motion.div>
         </div>
 
-        <div className="wop-container atelier-facts">
+        {/* ── Content below title ── */}
+        <div style={{
+          position: "relative", zIndex: 2,
+          paddingTop: "clamp(16px,3vw,32px)",
+          paddingRight: "clamp(16px,4vw,56px)",
+          paddingBottom: "clamp(60px,8vw,100px)",
+          paddingLeft: "clamp(200px, 28vw, 480px)",
+        }}>
+
+          {/* ── LEFT: Stacked word blocks + content ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.18 }}
+          >
+            {/* Stacked colored word blocks — like feastie's SIP / SNACK / FESTIVAL */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, marginBottom: 22, width: "100%" }}>
+
+              {/* Row 1: "Culinary" block + "&" */}
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <span style={{
+                  display: "inline-block",
+                  padding: "6px 22px",
+                  background: "#FBF0EE",
+                  border: "2.5px solid #8A2A2A",
+                  borderRadius: 10,
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: "clamp(18px, 2.4vw, 32px)",
+                  lineHeight: 1.15,
+                  color: "#8A2A2A",
+                  fontStyle: "italic",
+                  transform: "rotate(-6deg)",
+                  display: "inline-block",
+                }}>Culinary</span>
+                <span style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: "clamp(20px, 2.8vw, 36px)",
+                  color: "#1A1A14",
+                  lineHeight: 1,
+                }}>&amp;</span>
+              </div>
+
+              {/* Row 2: "Cultural" block */}
+              <span style={{
+                display: "inline-block",
+                padding: "6px 22px",
+                background: "#F8F0E4",
+                border: "2.5px solid #C8993A",
+                borderRadius: 10,
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: "clamp(18px, 2.4vw, 32px)",
+                lineHeight: 1.15,
+                color: "#7A4A00",
+                fontStyle: "italic",
+                marginLeft: 40,
+              }}>Cultural</span>
+
+              {/* Row 3: FESTIVAL */}
+              <span style={{
+                display: "inline-block",
+                padding: "8px 26px",
+                background: "linear-gradient(135deg, #E87B32, #8A2A2A)",
+                borderRadius: 12,
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: "clamp(18px, 2.4vw, 32px)",
+                lineHeight: 1.15,
+                color: "#fff",
+                letterSpacing: "0.06em",
+                fontStyle: "italic",
+                transform: "rotate(-3deg)",
+                boxShadow: "0 6px 24px rgba(232,123,50,0.4), 0 3px 0 rgba(138,42,42,0.5)",
+              }}>FESTIVAL</span>
+
+            </div>
+
+
+            {/* Countdown */}
+            
+
+            {/* CTAs */}
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 80, justifyContent: "center" }}>
+              <a href="/registration" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
+                Culinary Register <ArrowRight size={18} />
+              </a>
+              <a href="/partnerships" style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "17px 34px", borderRadius: 12,
+                border: "2px solid rgba(26,26,20,0.16)",
+                background: "rgba(255,255,255,0.85)",
+                color: "#1A1A14", fontSize: 18, fontWeight: 700,
+                textDecoration: "none",
+              }}>
+                Become a Sponsor
+              </a>
+            </div>
+          </motion.div>
+
+        </div>
+
+        {/* ── Bottom facts bar ── */}
+        <div className="atelier-facts" style={{ position: "relative", zIndex: 2 }}>
           {eventFacts.map((fact) => {
             const Icon = fact.icon;
             return (
               <div key={fact.label}>
-                <Icon size={19} />
+                <Icon size={25} />
                 <span>{fact.label}</span>
                 <strong>{fact.value}</strong>
               </div>
