@@ -32,6 +32,7 @@ import carrie from "../assets/carrie.webp";
 import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
 import seattleMap from "../../map.jpg";
+import spaceNeedle from "../assets/spaceneedle.png";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -658,6 +659,27 @@ export default function Home() {
             marginTop: 2,
           }}>Sep 26, 2026</span>
         </motion.div>
+
+        {/* ── Space Needle image on the right ── */}
+        <motion.img
+          src={spaceNeedle}
+          alt="Space Needle"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: "absolute",
+            right: "4%",
+            bottom: "12%",
+            top: "10%",
+            zIndex: 2,
+            height: "clamp(220px, 28vw, 1520px)",
+            width: "auto",
+            objectFit: "contain",
+            filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.18))",
+            pointerEvents: "none",
+          }}
+        />
 
         {/* ── Center images ── */}
         <div style={{
