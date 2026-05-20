@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./styles/wop-theme.css";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 /* PUBLIC PAGES */
 import Home from "./pages/Home";
@@ -10,6 +11,8 @@ import EventDetails from "./pages/EventDetails";
 import Countries from "./pages/Countries";
 import Partnerships from "./pages/Partnerships";
 import Organizers from "./pages/Organizers";
+import FAQ from "./pages/faq";
+import Contact from "./pages/Contact";
 
 /* AUTH */
 import CulinaryLogin from "./pages/CulinaryLogin";
@@ -42,6 +45,8 @@ export default function App() {
         <Route path="/countries" element={<Countries />} />
         <Route path="/partnerships" element={<Partnerships />} />
         <Route path="/organizers" element={<Organizers />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* AUTH */}
         <Route path="/auth/login" element={<CulinaryLogin />} />
@@ -61,6 +66,8 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
+
+      <Footer />
 
     </BrowserRouter>
   );

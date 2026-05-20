@@ -1,10 +1,10 @@
 .wop-nav-wrap {
   position: fixed;
-  top: 18px;
+  top: 16px;
   left: 0;
   right: 0;
   z-index: 9999;
-  padding: 0 22px;
+  padding: 0 18px;
   transition: 0.35s ease;
 }
 
@@ -13,16 +13,17 @@
 }
 
 .wop-nav {
-  width: min(1180px, 100%);
-  height: 78px;
+  width: min(1420px, 100%);
+  min-height: 76px;
   margin: 0 auto;
-  padding: 10px 12px 10px 14px;
+  padding: 10px 12px 10px 16px;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
 
-  border-radius: 999px;
+  border-radius: 30px;
 
   background:
     linear-gradient(
@@ -44,7 +45,8 @@
 }
 
 .wop-nav-wrap.is-scrolled .wop-nav {
-  height: 68px;
+  min-height: 66px;
+  border-radius: 26px;
   box-shadow:
     0 20px 70px rgba(73, 43, 20, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -53,13 +55,13 @@
 .wop-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-width: 210px;
+  gap: 10px;
+  min-width: 174px;
 }
 
 .wop-brand-mark {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
 
   display: grid;
@@ -88,7 +90,7 @@
 .wop-brand span {
   display: flex;
   flex-direction: column;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
   font-weight: 900;
   color: var(--navy);
@@ -99,7 +101,7 @@
 .wop-brand b {
   margin-top: 2px;
   font-family: "Playfair Display", serif;
-  font-size: 20px;
+  font-size: 19px;
   line-height: 0.9;
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -111,8 +113,10 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 7px;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px;
 
   border-radius: 999px;
 
@@ -124,11 +128,12 @@
   position: relative;
   isolation: isolate;
 
-  padding: 11px 15px;
+  padding: 10px 11px;
   border-radius: 999px;
 
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
+  white-space: nowrap;
   color: rgba(16, 23, 40, 0.68);
 
   transition:
@@ -166,13 +171,15 @@
 .wop-nav-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .wop-nav-login,
 .wop-nav-cta {
-  min-height: 46px;
-  padding: 0 17px;
+  min-height: 44px;
+  padding: 0 14px;
 
   display: inline-flex;
   align-items: center;
@@ -180,8 +187,9 @@
 
   border-radius: 999px;
 
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
+  white-space: nowrap;
 
   transition:
     transform 0.25s ease,
@@ -234,8 +242,8 @@
 .wop-menu-btn {
   display: none;
 
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
 
   border: 0;
   border-radius: 50%;
@@ -249,7 +257,7 @@
 }
 
 .wop-mobile-menu {
-  width: min(1180px, calc(100% - 44px));
+  width: min(1420px, calc(100% - 36px));
   margin: 12px auto 0;
   padding: 18px;
 
@@ -301,7 +309,7 @@
   }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1220px) {
   .wop-brand {
     min-width: auto;
   }
@@ -353,10 +361,11 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 11px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
   color: var(--wop-muted, #6B6B5A);
   text-decoration: none;
   border: 1px solid transparent;
@@ -412,8 +421,8 @@
 
 /* Register button — desktop (mirrors .wop-nav-login) */
 .wop-nav-register {
-  min-height: 46px;
-  padding: 0 17px;
+  min-height: 44px;
+  padding: 0 14px;
 
   display: inline-flex;
   align-items: center;
@@ -421,8 +430,9 @@
 
   border-radius: 999px;
 
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
+  white-space: nowrap;
 
   color: var(--navy);
   background: rgba(255, 255, 255, 0.62);

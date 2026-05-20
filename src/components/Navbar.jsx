@@ -23,6 +23,8 @@ export default function Navbar() {
     { label: "Countries", path: "/countries" },
     { label: "Partnerships", path: "/partnerships" },
     { label: "Organizers", path: "/organizers" },
+    { label: "FAQ", path: "/faq" },
+    { label: "Contact", path: "/contact" },
   ];
 
   return (
@@ -93,10 +95,6 @@ export default function Navbar() {
           >
             <ShieldCheck size={14} />
             Admin
-          </Link>
-
-          <Link to="/auth/register" onClick={() => setOpen(false)}>
-            Culinary Register
           </Link>
 
           <Link to="/registration" className="wop-mobile-register" onClick={() => setOpen(false)}>
