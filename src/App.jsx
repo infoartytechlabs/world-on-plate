@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 /* ADMIN */
 import AdminPage from "./pages/AdminPage";
+import AdminUpdates from "./pages/AdminUpdates";
 
 import Registration from "./pages/Registration";
 
@@ -61,6 +62,7 @@ export default function App() {
 
         {/* ADMIN PARTNERSHIPS PAGE */}
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin/updates" element={<AdminUpdates />} />
         <Route path="/registration" element={<Registration />} />
 
         {/* FALLBACK */}

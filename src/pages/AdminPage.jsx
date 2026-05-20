@@ -1,9 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ChefHat, Users, Building2, Store, Music4,
   RefreshCw, Download, CheckCircle2, XCircle, X,
   RotateCcw, Search, Loader2, ShieldCheck, CreditCard,
-  Lock, LockOpen, ChevronDown, ChevronUp,
+  Lock, LockOpen, ChevronDown, ChevronUp, Send,
 } from "lucide-react";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -888,6 +889,7 @@ function AdminLoginGate({ onLogin }) {
 }
 
 export default function AdminPage() {
+  const navigate = useNavigate();
   const [adminSession, setAdminSession] = useState(() => {
     try { return JSON.parse(sessionStorage.getItem(ADMIN_SESSION_KEY) || "null"); }
     catch { return null; }
@@ -935,6 +937,29 @@ export default function AdminPage() {
               <span style={{ color: "#6B6B5A", fontSize: 14 }}>
                 Signed in as <strong style={{ color: "#1A1A14" }}>{adminSession.name || adminSession.email}</strong>
               </span>
+              <button
+                type="button"
+                onClick={() => navigate("/admin/updates")}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 7,
+                  minHeight: 38,
+                  padding: "0 16px",
+                  borderRadius: 999,
+                  border: "none",
+                  background: "linear-gradient(135deg, #E87B32, #B83B2F)",
+                  color: "#fff",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  boxShadow: "0 6px 20px rgba(232,123,50,0.28)",
+                }}
+              >
+                <Send size={14} />
+                Send Updates
+              </button>
               <button
                 type="button"
                 onClick={logout}
