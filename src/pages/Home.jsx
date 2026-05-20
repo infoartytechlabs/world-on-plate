@@ -29,6 +29,8 @@ import culinaryBg from "../assets/culinary-template-bg.webp";
 import oliver from "../assets/oliver.webp";
 import tony from "../assets/tony.webp";
 import carrie from "../assets/carrie.webp";
+import chefPlatingVideo from "../assets/chef-plating.mp4";
+import worldfoodmarket from "../assets/world-food-market.mp4";
 import seattleMap from "../../map.jpg";
 
 const SCRIPT_URL =
@@ -140,6 +142,38 @@ const moments = [
   },
 ];
 
+const filmScenes = [
+  {
+    number: "01",
+    kicker: "Prep",
+    title: "The day starts in kitchens.",
+    text: "Ingredients, hands, heat, and timing come together before the avenue opens.",
+    image: culinaryBg,
+    video: chefPlatingVideo,
+  },
+  {
+    number: "02",
+    kicker: "Plate",
+    title: "Dishes become invitations.",
+    text: "Each sample is a small doorway into a national story.",
+    image: food1,
+  },
+  {
+    number: "03",
+    kicker: "Move",
+    title: "The crowd follows the flavor.",
+    text: "Visitors drift between booths, performances, and marketplace stalls.",
+    image: market,
+  },
+  {
+    number: "04",
+    kicker: "Remember",
+    title: "The record attempt becomes a memory.",
+    text: "One city, one table, and 195 dishes turn into a moment people can carry home.",
+    image: food2,
+  },
+];
+
 function ScrollRibbon() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -160,6 +194,94 @@ function ScrollRibbon() {
           <span key={item}>{item}</span>
         ))}
       </motion.div>
+    </section>
+  );
+}
+
+function FoodFilmSection() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 28, mass: 0.35 });
+  const progressScale = useSpring(scrollYProgress, { stiffness: 80, damping: 24, mass: 0.3 });
+
+  const frameOneOpacity = useTransform(progress, [0, 0.2, 0.3], [1, 1, 0]);
+  const frameTwoOpacity = useTransform(progress, [0.2, 0.34, 0.48], [0, 1, 0]);
+  const frameThreeOpacity = useTransform(progress, [0.42, 0.58, 0.72], [0, 1, 0]);
+  const frameFourOpacity = useTransform(progress, [0.66, 0.82, 1], [0, 1, 1]);
+  const frameOpacities = [frameOneOpacity, frameTwoOpacity, frameThreeOpacity, frameFourOpacity];
+  const filmScale = useTransform(progress, [0, 1], [1.08, 1]);
+  const filmY = useTransform(progress, [0, 1], [24, -24]);
+
+  return (
+    <section className="food-film-section" ref={ref}>
+      <div className="wop-container food-film-layout">
+        <div className="food-film-sticky">
+          <div className="food-film-copy">
+            <div className="wop-eyebrow">Food Film</div>
+            <h2>Let the story move before the words arrive.</h2>
+            <p>
+              This behaves like a quiet food video now, using layered animated frames. When you have a real event or plating video, this section is ready for it.
+            </p>
+          </div>
+
+          <div className="food-film-frame">
+            {filmScenes.map((scene, index) =>
+              scene.video ? (
+                <motion.video
+                  key={scene.title}
+                  src={scene.video}
+                  poster={scene.image}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  style={{ opacity: frameOpacities[index], scale: filmScale, y: filmY }}
+                />
+              ) : (
+                <motion.img
+                  key={scene.title}
+                  src={scene.image}
+                  alt=""
+                  style={{ opacity: frameOpacities[index], scale: filmScale, y: filmY }}
+                />
+              )
+            )}
+
+            <div className="food-film-vignette" />
+            <div className="food-film-play" aria-hidden="true">
+              <span />
+            </div>
+            <div className="food-film-caption">
+              <strong>World on a Plate</strong>
+              <span>Seattle - 195 dishes - one route</span>
+            </div>
+          </div>
+
+          <div className="food-film-progress" aria-hidden="true">
+            <motion.span style={{ scaleX: progressScale }} />
+          </div>
+        </div>
+
+        <div className="food-storyline">
+          {filmScenes.map((scene, index) => (
+            <motion.article
+              className="food-storyline-card"
+              key={scene.title}
+              initial={{ opacity: 0, y: 46 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.45 }}
+              transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span>{scene.number}</span>
+              <small>{scene.kicker}</small>
+              <h3>{scene.title}</h3>
+              <p>{scene.text}</p>
+              {index < filmScenes.length - 1 && <i aria-hidden="true" />}
+            </motion.article>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -499,6 +621,8 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      <FoodFilmSection />
 
       <ExperienceModule />
 

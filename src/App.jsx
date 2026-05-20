@@ -4,6 +4,7 @@ import "./styles/wop-theme.css";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 /* PUBLIC PAGES */
 import Home from "./pages/Home";
@@ -67,6 +68,7 @@ export default function App() {
 
       </Routes>
 
+      <ScrollToTopButton />
       <Footer />
 
     </BrowserRouter>

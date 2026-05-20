@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
+const ADMIN_SESSION_KEY = "wop_admin_session";
 
 const TABS = [
   {
@@ -628,7 +629,269 @@ function SheetPanel({ tab, showToast }) {
   );
 }
 
+function AdminLoginGate({ onLogin }) {
+  const [form, setForm] = useState({ email: "", accessCode: "" });
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = form.email.trim().toLowerCase();
+    const accessCode = form.accessCode.trim();
+
+    if (!email || !accessCode) {
+      setStatus("Enter your admin email and access code.");
+      return;
+    }
+
+    setLoading(true);
+    setStatus("Checking access...");
+
+    try {
+      const url = `${SCRIPT_URL}?action=adminLogin&email=${encodeURIComponent(email)}&accessCode=${encodeURIComponent(accessCode)}&t=${Date.now()}`;
+      const res = await fetch(url);
+      const json = await res.json();
+
+      if (!json.success || json.authenticated !== true) {
+        setStatus(json.message || "Invalid admin access.");
+        return;
+      }
+
+      const session = {
+        email,
+        name: json.name || email,
+        role: json.role || "admin",
+        ts: Date.now(),
+      };
+      sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
+      onLogin(session);
+    } catch {
+      setStatus("Login check failed. Confirm Apps Script supports adminLogin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <main className="wop-page inner-page" style={{
+      minHeight: "100vh",
+      display: "grid",
+      placeItems: "center",
+      padding: "130px 20px 70px",
+      background:
+        "radial-gradient(circle at 16% 18%, rgba(232,123,50,0.18), transparent 32%), linear-gradient(135deg, #fffaf1, #f8ead4)",
+      fontFamily: "'DM Sans', sans-serif",
+    }}>
+      <section style={{
+        width: "min(1080px, 100%)",
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) 430px",
+        gap: 34,
+        alignItems: "stretch",
+      }}>
+        <div style={{
+          minHeight: 520,
+          padding: "44px",
+          borderRadius: 24,
+          color: "#fff",
+          background:
+            "linear-gradient(135deg, rgba(16,23,40,0.94), rgba(28,39,64,0.9)), radial-gradient(circle at 80% 20%, rgba(232,123,50,0.28), transparent 32%)",
+          boxShadow: "0 34px 100px rgba(63,35,14,0.14)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}>
+          <div>
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "9px 13px",
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.16)",
+              color: "rgba(255,255,255,0.78)",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+            }}>
+              <ShieldCheck size={15} />
+              Admin Control
+            </div>
+
+            <h1 style={{
+              margin: "24px 0 0",
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: "clamp(48px, 6vw, 82px)",
+              lineHeight: 0.92,
+              letterSpacing: "-0.055em",
+            }}>
+              Secure access for event operations.
+            </h1>
+
+            <p style={{
+              margin: "22px 0 0",
+              maxWidth: 560,
+              color: "rgba(255,255,255,0.68)",
+              fontSize: 18,
+              lineHeight: 1.75,
+            }}>
+              Review submissions, approve partners, export records, and manage registration gates from one protected admin workspace.
+            </p>
+          </div>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gap: 10,
+          }}>
+            {["Sheets data", "Access code", "Admin session"].map(item => (
+              <div key={item} style={{
+                minHeight: 82,
+                padding: 14,
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                color: "rgba(255,255,255,0.78)",
+                fontSize: 13,
+                fontWeight: 800,
+              }}>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{
+          padding: 30,
+          borderRadius: 24,
+          background: "rgba(255,255,255,0.82)",
+          border: "1px solid rgba(255,255,255,0.9)",
+          boxShadow: "0 28px 90px rgba(63,35,14,0.13)",
+          backdropFilter: "blur(22px)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}>
+          <div style={{
+            width: 62,
+            height: 62,
+            display: "grid",
+            placeItems: "center",
+            borderRadius: 18,
+            color: "#fff",
+            background: "linear-gradient(135deg, #E87B32, #B83B2F)",
+            boxShadow: "0 18px 42px rgba(232,123,50,0.3)",
+            marginBottom: 22,
+          }}>
+            <Lock size={24} />
+          </div>
+
+          <h2 style={{
+            margin: 0,
+            color: "#101728",
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: 38,
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
+          }}>
+            Admin Login
+          </h2>
+
+          <p style={{
+            margin: "12px 0 24px",
+            color: "#6D6255",
+            lineHeight: 1.65,
+          }}>
+            Use the admin email and access code stored in your Google Sheet.
+          </p>
+
+          <label style={{ display: "grid", gap: 8, marginBottom: 14 }}>
+            <span style={{ color: "#5D3519", fontSize: 12, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              Email
+            </span>
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="admin@example.com"
+              autoComplete="email"
+              style={{
+                minHeight: 52,
+                padding: "0 15px",
+                borderRadius: 14,
+                border: "1px solid rgba(16,23,40,0.12)",
+                background: "#fff",
+                color: "#101728",
+                fontSize: 16,
+                outline: "none",
+              }}
+            />
+          </label>
+
+          <label style={{ display: "grid", gap: 8, marginBottom: 18 }}>
+            <span style={{ color: "#5D3519", fontSize: 12, fontWeight: 900, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              Access Code
+            </span>
+            <input
+              name="accessCode"
+              type="password"
+              value={form.accessCode}
+              onChange={handleChange}
+              placeholder="Enter access code"
+              autoComplete="current-password"
+              style={{
+                minHeight: 52,
+                padding: "0 15px",
+                borderRadius: 14,
+                border: "1px solid rgba(16,23,40,0.12)",
+                background: "#fff",
+                color: "#101728",
+                fontSize: 16,
+                outline: "none",
+              }}
+            />
+          </label>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="wop-btn wop-btn-primary"
+            style={{ width: "100%" }}
+          >
+            {loading ? "Checking..." : "Enter Admin"}
+            {loading ? <Loader2 size={18} style={{ animation: "spin 0.8s linear infinite" }} /> : <ShieldCheck size={18} />}
+          </button>
+
+          {status && (
+            <p style={{
+              minHeight: 24,
+              margin: "16px 0 0",
+              color: status.includes("failed") || status.includes("Invalid") ? "#8A2A2A" : "#6D6255",
+              fontSize: 14,
+              lineHeight: 1.5,
+            }}>
+              {status}
+            </p>
+          )}
+        </form>
+      </section>
+    </main>
+  );
+}
+
 export default function AdminPage() {
+  const [adminSession, setAdminSession] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem(ADMIN_SESSION_KEY) || "null"); }
+    catch { return null; }
+  });
   const [activeTab, setActiveTab] = useState("culinary");
   const [toast, setToast] = useState({ visible: false, message: "", type: "info" });
   const toastTimer = useRef(null);
@@ -640,6 +903,15 @@ export default function AdminPage() {
   }, []);
 
   const currentTab = TABS.find(t => t.key === activeTab);
+
+  const logout = () => {
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    setAdminSession(null);
+  };
+
+  if (!adminSession) {
+    return <AdminLoginGate onLogin={setAdminSession} />;
+  }
 
   return (
     <>
@@ -658,6 +930,28 @@ export default function AdminPage() {
               <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, lineHeight: 1.15, color: "#1A1A14" }}>
                 Partnership <em style={{ fontStyle: "italic", color: "#C8993A" }}>Admin</em>
               </h1>
+            </div>
+            <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
+              <span style={{ color: "#6B6B5A", fontSize: 14 }}>
+                Signed in as <strong style={{ color: "#1A1A14" }}>{adminSession.name || adminSession.email}</strong>
+              </span>
+              <button
+                type="button"
+                onClick={logout}
+                style={{
+                  minHeight: 38,
+                  padding: "0 14px",
+                  borderRadius: 999,
+                  border: "1px solid rgba(200,153,58,0.28)",
+                  background: "#fff",
+                  color: "#1A1A14",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                }}
+              >
+                Logout
+              </button>
             </div>
           </div>
 
