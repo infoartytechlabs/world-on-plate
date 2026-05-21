@@ -175,6 +175,35 @@ const filmScenes = [
   },
 ];
 
+const flavorBursts = [
+  {
+    icon: Globe2,
+    word: "STAMP",
+    kicker: "Passport",
+    text: "Pick a country booth and turn one bite into a tiny travel story.",
+    image: market,
+    accent: "#e86635",
+  },
+  {
+    icon: UtensilsCrossed,
+    word: "TASTE",
+    kicker: "Samples",
+    text: "Small plates, big flavor, and a route that changes with every stop.",
+    image: food1,
+    accent: "#28795b",
+  },
+  {
+    icon: Music4,
+    word: "MOVE",
+    kicker: "Culture",
+    text: "Follow the sound of live music, marketplace stalls, and street energy.",
+    image: food2,
+    accent: "#b83b2f",
+  },
+];
+
+const routeLayers = ["Pick a booth", "Trade a ticket", "Taste the story", "Find the next flavor"];
+
 function ScrollRibbon() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -195,6 +224,97 @@ function ScrollRibbon() {
           <span key={item}>{item}</span>
         ))}
       </motion.div>
+    </section>
+  );
+}
+
+function TastePlayground() {
+  return (
+    <section className="taste-playground">
+      <div className="taste-playground-marquee" aria-hidden="true">
+        <div>
+          <span>Bite by bite</span>
+          <span>Stamp your route</span>
+          <span>195 flavors</span>
+          <span>Follow the aroma</span>
+          <span>Bring a friend</span>
+        </div>
+      </div>
+
+      <div className="wop-container taste-playground-layout">
+        <motion.div
+          className="taste-playground-copy"
+          initial={{ opacity: 0, y: 34 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.36 }}
+          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="wop-eyebrow">Fun Route</div>
+          <h2>Make the event feel snackable.</h2>
+          <p>
+            Jump between country booths, sample-size surprises, live sounds, and quick choices that make the route feel playful from the first bite.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="taste-video-card"
+          initial={{ opacity: 0, rotate: 4, y: 40 }}
+          whileInView={{ opacity: 1, rotate: -2, y: 0 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <video src={worldfoodmarket} poster={market} autoPlay loop muted playsInline preload="metadata" />
+          <div className="taste-video-label">
+            <span>Festival pulse</span>
+            <strong>8 blocks alive</strong>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="wop-container taste-burst-grid">
+        {flavorBursts.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <motion.article
+              className="taste-burst-card"
+              key={item.word}
+              style={{ "--taste-accent": item.accent }}
+              initial={{ opacity: 0, y: 30, rotate: index % 2 === 0 ? -2 : 2 }}
+              whileInView={{ opacity: 1, y: 0, rotate: index % 2 === 0 ? 1 : -1 }}
+              viewport={{ once: true, amount: 0.42 }}
+              transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <img src={item.image} alt="" aria-hidden="true" />
+              <div className="taste-burst-content">
+                <Icon size={22} />
+                <small>{item.kicker}</small>
+                <strong>{item.word}</strong>
+                <p>{item.text}</p>
+              </div>
+            </motion.article>
+          );
+        })}
+      </div>
+
+      <div className="wop-container taste-route-builder">
+        <div>
+          <span>Build your route</span>
+          <strong>No wrong order. Just follow what smells good.</strong>
+        </div>
+        <div className="taste-route-layers">
+          {routeLayers.map((layer, index) => (
+            <motion.span
+              key={layer}
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ delay: index * 0.07 }}
+            >
+              {index + 1}. {layer}
+            </motion.span>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -868,6 +988,8 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      <TastePlayground />
 
       <FoodFilmSection />
 

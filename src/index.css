@@ -4084,6 +4084,276 @@ body::after {
   font-weight: 900;
 }
 
+.taste-playground {
+  position: relative;
+  overflow: hidden;
+  padding: 0 0 98px;
+  color: #21140f;
+  background:
+    linear-gradient(180deg, #f7e0ca 0%, #ffd955 16%, #ffd955 78%, #fffaf1 100%);
+}
+
+.taste-playground::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.26;
+  background-image:
+    linear-gradient(45deg, rgba(33,20,15,0.18) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(33,20,15,0.18) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(33,20,15,0.18) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(33,20,15,0.18) 75%);
+  background-position: 0 0, 0 14px, 14px -14px, -14px 0;
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 84%, transparent 100%);
+}
+
+.taste-playground-marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 18px 0;
+  color: #fffaf1;
+  background: #21140f;
+}
+
+.taste-playground-marquee div {
+  display: flex;
+  width: max-content;
+  gap: 28px;
+  white-space: nowrap;
+  animation: tasteMarquee 24s linear infinite;
+}
+
+.taste-playground-marquee span {
+  font-family: "Playfair Display", serif;
+  font-size: 58px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.taste-playground-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.58fr);
+  gap: 42px;
+  align-items: center;
+  padding-top: 88px;
+}
+
+.taste-playground-copy .wop-eyebrow {
+  color: #21140f;
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(255,255,255,0.9);
+}
+
+.taste-playground-copy h2 {
+  max-width: 760px;
+  margin: 18px 0 0;
+  font-family: "Playfair Display", serif;
+  color: #21140f;
+  font-size: 88px;
+  line-height: 0.94;
+}
+
+.taste-playground-copy p {
+  max-width: 620px;
+  margin: 20px 0 0;
+  color: rgba(33,20,15,0.74);
+  font-size: 18px;
+  line-height: 1.72;
+  font-weight: 800;
+}
+
+.taste-video-card {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 10px solid #fffaf1;
+  background: #21140f;
+  box-shadow: 0 32px 90px rgba(101, 54, 20, 0.26);
+}
+
+.taste-video-card video {
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  object-fit: cover;
+  filter: saturate(1.12) contrast(1.04);
+}
+
+.taste-video-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(33,20,15,0.7), transparent 58%);
+}
+
+.taste-video-label {
+  position: absolute;
+  z-index: 2;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-end;
+  color: white;
+}
+
+.taste-video-label span {
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.taste-video-label strong {
+  max-width: 250px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.taste-burst-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding-top: 54px;
+}
+
+.taste-burst-card {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 6px solid #fffaf1;
+  background: var(--taste-accent);
+  box-shadow: 0 26px 70px rgba(101, 54, 20, 0.22);
+  transition: transform 0.28s ease;
+}
+
+.taste-burst-card:hover {
+  transform: translateY(-8px) rotate(0deg);
+}
+
+.taste-burst-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.36;
+  filter: saturate(1.15) contrast(1.05);
+  transition: transform 0.55s ease;
+}
+
+.taste-burst-card:hover img {
+  transform: scale(1.08);
+}
+
+.taste-burst-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, color-mix(in srgb, var(--taste-accent) 84%, #21140f), transparent 58%),
+    linear-gradient(135deg, color-mix(in srgb, var(--taste-accent) 78%, #fffaf1), transparent 54%);
+}
+
+.taste-burst-content {
+  position: relative;
+  z-index: 1;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 26px;
+  color: white;
+}
+
+.taste-burst-content svg {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  margin-bottom: auto;
+  border-radius: 50%;
+  color: #21140f;
+  background: #fffaf1;
+}
+
+.taste-burst-content small {
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.taste-burst-content strong {
+  font-family: "Playfair Display", serif;
+  font-size: 64px;
+  line-height: 0.9;
+}
+
+.taste-burst-content p {
+  margin: 16px 0 0;
+  max-width: 330px;
+  color: rgba(255,255,255,0.82);
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.taste-route-builder {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.62fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  margin-top: 54px;
+  padding: 26px;
+  border-radius: 24px;
+  color: #21140f;
+  background: #fffaf1;
+  border: 3px solid #21140f;
+  box-shadow: 10px 10px 0 #21140f;
+}
+
+.taste-route-builder span {
+  display: block;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.taste-route-builder strong {
+  display: block;
+  max-width: 520px;
+  margin-top: 8px;
+  font-size: 28px;
+  line-height: 1.08;
+}
+
+.taste-route-layers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.taste-route-layers span {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  border-radius: 16px;
+  color: white;
+  background: #21140f;
+}
+
 .food-film-section {
   position: relative;
   min-height: 300vh;
@@ -4956,6 +5226,12 @@ body::after {
   }
 }
 
+@keyframes tasteMarquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 1100px) {
   .atelier-hero-stage,
   .atelier-dishes-layout,
@@ -5000,6 +5276,19 @@ body::after {
   .food-storyline {
     gap: 18px;
     padding: 10px 0 0;
+  }
+
+  .taste-playground-layout,
+  .taste-route-builder {
+    grid-template-columns: 1fr;
+  }
+
+  .taste-burst-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .taste-route-layers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -5104,6 +5393,35 @@ body::after {
     align-items: start;
   }
 
+  .taste-playground {
+    padding-bottom: 72px;
+  }
+
+  .taste-playground-marquee span {
+    font-size: 42px;
+  }
+
+  .taste-playground-layout {
+    padding-top: 62px;
+  }
+
+  .taste-playground-copy h2 {
+    font-size: 54px;
+  }
+
+  .taste-video-card,
+  .taste-video-card video {
+    min-height: 340px;
+  }
+
+  .taste-route-layers {
+    grid-template-columns: 1fr;
+  }
+
+  .taste-route-builder {
+    box-shadow: 6px 6px 0 #21140f;
+  }
+
   .food-storyline-card {
     padding-left: 26px;
   }
@@ -5151,6 +5469,8 @@ body::after {
   .atelier-module-image img,
   .food-film-frame img,
   .food-film-frame video,
+  .taste-burst-card,
+  .taste-burst-card img,
   .atelier-stat {
     transition: none;
   }
