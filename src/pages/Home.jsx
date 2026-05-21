@@ -36,6 +36,17 @@ import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
 import seattleMap from "../../map.jpg";
 import spaceNeedle from "../assets/spaceneedle.png";
+import c3 from "../assets/c3.png";
+import c4 from "../assets/c4.png";
+import c5 from "../assets/c5.png";
+import c6 from "../assets/c6.png";
+import c8 from "../assets/c8.png";
+import c11 from "../assets/c11.png";
+import c12 from "../assets/c12.png";
+import c13 from "../assets/c13.png";
+import c15 from "../assets/c15.png";
+import c16 from "../assets/c16.png";
+import c17 from "../assets/c17.png";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -208,29 +219,33 @@ const flavorBursts = [
 const routeLayers = ["Pick a booth", "Trade a ticket", "Taste the story", "Find the next flavor"];
 
 const ribbonWidgets = [
-  { icon: UtensilsCrossed, title: "Plate Tent", text: "Country booths open like tiny festival tents." },
-  { icon: ChefHat, title: "Chef Hat", text: "Cooks bring home recipes into the street." },
-  { icon: Store, title: "Food Cart", text: "Marketplace energy keeps the route moving." },
-  { icon: Flag, title: "Flags Up", text: "Every dish carries a country story." },
-  { icon: Flame, title: "Fire Line", text: "A little heat, a lot of appetite." },
-  { icon: CookingPot, title: "Big Pot", text: "Shared food turns strangers into neighbors." },
+  { icon: Store, title: "Food Cart", text: "Marketplace energy keeps the route moving.", image: c3 },
+  { icon: Flag, title: "Flags Up", text: "Every dish carries a country story.", image: c4 },
+  { icon: Flame, title: "Fire Line", text: "A little heat, a lot of appetite.", image: c5 },
+  { icon: CookingPot, title: "Big Pot", text: "Shared food turns strangers into neighbors.", image: c6 },
+  { icon: UtensilsCrossed, title: "Plate Tent", text: "Country booths open like tiny festival tents.", image: c8 },
+  { icon: ChefHat, title: "Chef Hat", text: "Cooks bring home recipes into the street.", image: c11 },
+  { icon: Store, title: "Market Walk", text: "Each stop adds color to the tasting route.", image: c12 },
+  { icon: Globe2, title: "World Bite", text: "Small plates carry big cultural stories.", image: c13 },
+  { icon: Sparkles, title: "Street Spark", text: "Festival energy fills every block.", image: c15 },
+  { icon: UtensilsCrossed, title: "Sample Stop", text: "Guests follow the flavors booth by booth.", image: c16 },
+  { icon: Music4, title: "Culture Beat", text: "Food, music, and movement share the street.", image: c17 },
 ];
 
 function ScrollRibbon() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], ["4%", "-38%"]);
-
   return (
-    <section className="atelier-ribbon" ref={ref}>
-      <motion.div className="atelier-ribbon-track" style={{ x }}>
+    <section className="atelier-ribbon">
+      <div className="atelier-ribbon-track">
         {[...ribbonWidgets, ...ribbonWidgets].map((item, index) => {
           const Icon = item.icon;
           return (
             <article className="atelier-ribbon-widget" key={`${item.title}-${index}`}>
-              <div className="atelier-ribbon-icon">
-                <Icon strokeWidth={1.55} />
-              </div>
+              <figure className="atelier-ribbon-media">
+                <img src={item.image} alt={item.title} />
+                <span className="atelier-ribbon-icon">
+                  <Icon strokeWidth={1.75} />
+                </span>
+              </figure>
               <div>
                 <strong>{item.title}</strong>
                 <span>{item.text}</span>
@@ -238,7 +253,7 @@ function ScrollRibbon() {
             </article>
           );
         })}
-      </motion.div>
+      </div>
     </section>
   );
 }
