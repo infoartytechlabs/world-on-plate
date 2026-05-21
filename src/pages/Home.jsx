@@ -233,9 +233,13 @@ const ribbonWidgets = [
 ];
 
 function ScrollRibbon() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const x = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+
   return (
-    <section className="atelier-ribbon">
-      <div className="atelier-ribbon-track">
+    <section className="atelier-ribbon" ref={ref}>
+      <motion.div className="atelier-ribbon-track" style={{ x }}>
         {ribbonWidgets.map((item, index) => {
           const Icon = item.icon;
           return (
@@ -246,14 +250,10 @@ function ScrollRibbon() {
                   <Icon strokeWidth={1.75} />
                 </span>
               </figure>
-              <div>
-                <strong>{item.title}</strong>
-                <span>{item.text}</span>
-              </div>
             </article>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }
