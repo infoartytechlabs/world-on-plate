@@ -35,7 +35,7 @@ import carrie from "../assets/carrie.webp";
 import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
 import seattleMap from "../../map.jpg";
-import spaceNeedle from "../assets/spaceneedle.png";
+import spaceNeedle from "../assets/spaceneedleicon.png";
 import c3 from "../assets/c3.png";
 import c4 from "../assets/c4.png";
 import c5 from "../assets/c5.png";
@@ -713,6 +713,59 @@ export default function Home() {
           }} />
         ))}
 
+        {/* ── Decorative icons spread across left side ── */}
+        {[
+          { Icon: ChefHat,       left: "3%",  top: "18%", size: 48, color: "#28795B", rot:  12, delay: 0.3 },
+          { Icon: Globe2,        left: "9%",  top: "28%", size: 52, color: "#E86635", rot:  -8, delay: 0.4 },
+          { Icon: Music4,        left: "2%",  top: "42%", size: 42, color: "#D8A441", rot:  18, delay: 0.35 },
+          { Icon: Flag,          left: "13%", top: "16%", size: 40, color: "#D95C2E", rot: -14, delay: 0.45 },
+          { Icon: Trophy,        left: "7%",  top: "55%", size: 46, color: "#28795B", rot:   8, delay: 0.5  },
+          { Icon: Award,         left: "16%", top: "38%", size: 38, color: "#E86635", rot: -10, delay: 0.38 },
+          { Icon: Ticket,        left: "4%",  top: "68%", size: 44, color: "#D8A441", rot:  20, delay: 0.55 },
+          { Icon: MapPin,        left: "14%", top: "62%", size: 40, color: "#D95C2E", rot:  -6, delay: 0.42 },
+          { Icon: HandHeart,     left: "10%", top: "76%", size: 46, color: "#28795B", rot:  15, delay: 0.48 },
+          { Icon: Store,         left: "2%",  top: "83%", size: 42, color: "#E86635", rot:  -18, delay: 0.52 },
+          { Icon: CookingPot,    left: "18%", top: "22%", size: 44, color: "#D8A441", rot:  10, delay: 0.43 },
+          { Icon: Flame,         left: "17%", top: "72%", size: 38, color: "#D95C2E", rot:  -8, delay: 0.46 },
+        ].map(({ Icon, left, top, size, color, rot, delay }, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay }}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left, top, zIndex: 2,
+              pointerEvents: "none",
+              transform: `rotate(${rot}deg)`,
+            }}
+          >
+            <Icon size={size} color={color} strokeWidth={1.3} style={{ opacity: 0.55 }} />
+          </motion.div>
+        ))}
+
+        {/* ── Food icons between Festival and countdown ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.65 }}
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: "42%",
+            top: "31%",
+            zIndex: 2,
+            pointerEvents: "none",
+            width: 140,
+            height: 160,
+          }}
+        >
+          <UtensilsCrossed size={52} color="#E86635" strokeWidth={1.4} style={{ opacity: 0.7, transform: "rotate(-20deg)", position: "absolute", top: 0, left: 0 }} />
+          <CookingPot size={58} color="#28795B" strokeWidth={1.4} style={{ opacity: 0.65, position: "absolute", top: 50, left: 55 }} />
+          <Sparkles size={48} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.7, transform: "rotate(12deg)", position: "absolute", top: 100, left: 10 }} />
+        </motion.div>
+
         {/* ── FULL-WIDTH TITLE spanning top ── */}
         <div style={{ position: "relative", zIndex: 2, padding: "clamp(40px, 6vw, 80px) clamp(16px, 4vw, 56px) 0", textAlign: "center" }}>
           <motion.h1
@@ -747,6 +800,65 @@ export default function Home() {
             }}>
               September 26, 2026
             </span>
+
+            <div style={{ position: "relative", height: 0, overflow: "visible" }}>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.6 }}
+              style={{ position: "absolute", top: 48, left: 0, right: 0, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
+            >
+              {[
+                { value: countdown.days,    label: "Days" },
+                { value: countdown.hours,   label: "Hours" },
+                { value: countdown.minutes, label: "Mins" },
+                { value: countdown.seconds, label: "Secs" },
+              ].map(({ value, label }, i) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{
+                    display: "flex", flexDirection: "column", alignItems: "center",
+                    background: "rgba(255,255,255,0.82)",
+                    border: "2px solid rgba(232,102,53,0.22)",
+                    borderRadius: 14,
+                    padding: "14px 22px",
+                    minWidth: 82,
+                    boxShadow: "0 4px 18px rgba(232,102,53,0.12)",
+                    backdropFilter: "blur(6px)",
+                  }}>
+                    <span style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: "clamp(36px, 4.2vw, 56px)",
+                      lineHeight: 1,
+                      color: "#D95C2E",
+                      fontVariantNumeric: "tabular-nums",
+                      letterSpacing: "-0.02em",
+                    }}>
+                      {String(value).padStart(2, "0")}
+                    </span>
+                    <span style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "#888",
+                      marginTop: 5,
+                    }}>{label}</span>
+                  </div>
+                  {i < 3 && (
+                    <span style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: "clamp(28px, 3.4vw, 44px)",
+                      color: "#D95C2E",
+                      lineHeight: 1,
+                      opacity: 0.45,
+                      marginTop: -6,
+                    }}>:</span>
+                  )}
+                </div>
+              ))}
+            </motion.div>
+            </div>
           </motion.div>
         </div>
 
@@ -763,7 +875,7 @@ export default function Home() {
             width: 160,
             height: 160,
             clipPath: "polygon(50% 0%, 59.8% 13.3%, 75% 6.7%, 76.9% 23.1%, 93.3% 25%, 86.7% 40.2%, 100% 50%, 86.7% 59.8%, 93.3% 75%, 76.9% 76.9%, 75% 93.3%, 59.8% 86.7%, 50% 100%, 40.2% 86.7%, 25% 93.3%, 23.1% 76.9%, 6.7% 75%, 13.3% 59.8%, 0% 50%, 13.3% 40.2%, 6.7% 25%, 23.1% 23.1%, 25% 6.7%, 40.2% 13.3%)",
-            background: "linear-gradient(135deg, #E86635, #28795B)",
+            background: "linear-gradient(135deg, #F4A056, #E86635)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -809,11 +921,11 @@ export default function Home() {
           transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: "absolute",
-            right: "4%",
+            right: "-2%",
             bottom: "12%",
-            top: "10%",
+            top: "2%",
             zIndex: 2,
-            height: "clamp(220px, 28vw, 1520px)",
+            height: "clamp(320px, 47vw, 3000px)",
             width: "auto",
             objectFit: "contain",
             filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.18))",
@@ -874,7 +986,7 @@ export default function Home() {
         {/* ── Content below title ── */}
         <div style={{
           position: "relative", zIndex: 2,
-          paddingTop: "clamp(16px,3vw,32px)",
+          paddingTop: "0px",
           paddingRight: "clamp(16px,4vw,56px)",
           paddingBottom: "clamp(60px,8vw,100px)",
           paddingLeft: "clamp(200px, 28vw, 480px)",
@@ -931,31 +1043,32 @@ export default function Home() {
               {/* Row 3: FESTIVAL */}
               <span style={{
                 display: "inline-block",
-                padding: "8px 26px",
-                background: "linear-gradient(135deg, #E86635, #B83B2F)",
-                borderRadius: 12,
                 fontFamily: "'DM Serif Display', serif",
-                fontSize: "clamp(18px, 2.4vw, 32px)",
-                lineHeight: 1.15,
-                color: "#fff",
-                letterSpacing: "0.06em",
+                fontSize: "clamp(32px, 5vw, 72px)",
+                lineHeight: 1,
+                color: "#E86635",
+                letterSpacing: "-0.02em",
                 fontStyle: "italic",
                 transform: "rotate(-3deg)",
-                boxShadow: "0 6px 24px rgba(232,123,50,0.4), 0 3px 0 rgba(138,42,42,0.5)",
-              }}>FESTIVAL</span>
+                textShadow: "3px 4px 0px rgba(184,59,47,0.35), 0 8px 24px rgba(232,102,53,0.18)",
+              }}>Festival</span>
 
             </div>
 
 
-            {/* Countdown */}
-            
-
             {/* CTAs */}
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 80, justifyContent: "center" }}>
-              <a href="/registration" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
+            <div style={{ position: "relative", marginTop: 60 }}>
+              {/* Scattered icons near buttons */}
+              <Sparkles size={22} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.7, position: "absolute", top: -28, left: -10, transform: "rotate(-15deg)" }} />
+              <ChefHat size={26} color="#28795B" strokeWidth={1.4} style={{ opacity: 0.6, position: "absolute", top: -32, left: 180, transform: "rotate(10deg)" }} />
+              <UtensilsCrossed size={20} color="#E86635" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", top: -24, left: 340, transform: "rotate(-20deg)" }} />
+              <Globe2 size={22} color="#D95C2E" strokeWidth={1.4} style={{ opacity: 0.5, position: "absolute", bottom: -22, left: 80, transform: "rotate(8deg)" }} />
+              <Music4 size={20} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", bottom: -20, left: 260, transform: "rotate(-12deg)" }} />
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-start" }}>
+              <a href="/auth/register" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
                 Culinary Register <ArrowRight size={18} />
               </a>
-              <a href="/partnerships" style={{
+              <a href="/registration" style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 padding: "17px 34px", borderRadius: 12,
                 border: "2px solid rgba(26,26,20,0.16)",
@@ -965,6 +1078,7 @@ export default function Home() {
               }}>
                 Become a Sponsor
               </a>
+            </div>
             </div>
           </motion.div>
 
