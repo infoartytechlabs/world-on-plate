@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import "../index.css";
+import CursorTrail from "../components/CursorTrail";
 
 import food1 from "../assets/food1.webp";
 import food2 from "../assets/food2.webp";
@@ -45,6 +46,8 @@ import icon6 from "../assets/icons/icon_6.png";
 import icon7 from "../assets/icons/icon_7.png";
 import icon8 from "../assets/icons/icon_8.png";
 import icon9 from "../assets/icons/icon_9.png";
+
+const CURSOR_IMAGES = [food1, food2, market, culinaryBg];
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -664,11 +667,13 @@ export default function Home() {
   return (
     <main
       className="wop-page home-page home-atelier"
+      style={{ cursor: "none" }}
       onMouseMove={(e) => {
         document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
         document.documentElement.style.setProperty("--my", `${e.clientY}px`);
       }}
     >
+      <CursorTrail images={CURSOR_IMAGES} />
       <section
         ref={heroRef}
         style={{
