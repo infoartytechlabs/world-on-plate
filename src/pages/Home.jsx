@@ -7,6 +7,9 @@ import {
   Building2,
   CalendarDays,
   ChefHat,
+  CookingPot,
+  Flag,
+  Flame,
   Globe2,
   HandHeart,
   Map,
@@ -204,25 +207,37 @@ const flavorBursts = [
 
 const routeLayers = ["Pick a booth", "Trade a ticket", "Taste the story", "Find the next flavor"];
 
+const ribbonWidgets = [
+  { icon: UtensilsCrossed, title: "Plate Tent", text: "Country booths open like tiny festival tents." },
+  { icon: ChefHat, title: "Chef Hat", text: "Cooks bring home recipes into the street." },
+  { icon: Store, title: "Food Cart", text: "Marketplace energy keeps the route moving." },
+  { icon: Flag, title: "Flags Up", text: "Every dish carries a country story." },
+  { icon: Flame, title: "Fire Line", text: "A little heat, a lot of appetite." },
+  { icon: CookingPot, title: "Big Pot", text: "Shared food turns strangers into neighbors." },
+];
+
 function ScrollRibbon() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-24%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["4%", "-38%"]);
 
   return (
     <section className="atelier-ribbon" ref={ref}>
       <motion.div className="atelier-ribbon-track" style={{ x }}>
-        {[
-          "195 National Dishes",
-          "Seattle",
-          "Global Music",
-          "Free Admission",
-          "World Record Attempt",
-          "Pioneer Square",
-          "Food Culture Community",
-        ].map((item) => (
-          <span key={item}>{item}</span>
-        ))}
+        {[...ribbonWidgets, ...ribbonWidgets].map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <article className="atelier-ribbon-widget" key={`${item.title}-${index}`}>
+              <div className="atelier-ribbon-icon">
+                <Icon strokeWidth={1.55} />
+              </div>
+              <div>
+                <strong>{item.title}</strong>
+                <span>{item.text}</span>
+              </div>
+            </article>
+          );
+        })}
       </motion.div>
     </section>
   );
