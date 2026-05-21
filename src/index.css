@@ -2032,7 +2032,7 @@ body::after {
 }
 
 .culinary-feature-card.gold {
-  background: linear-gradient(180deg, rgba(255,247,211,0.9), rgba(255,255,255,0.7));
+  background: linear-gradient(180deg, rgba(252, 198, 140, 0.9), rgba(255,255,255,0.7));
 }
 
 .culinary-feature-card.blue {
@@ -4162,7 +4162,9 @@ body::after {
   padding: 0 0 98px;
   color: #21140f;
   background:
-    linear-gradient(180deg, #f7e0ca 0%, #ffd955 16%, #ffd955 78%, #fffaf1 100%);
+    radial-gradient(circle at 15% 18%, rgba(232, 123, 50, 0.18), transparent 32%),
+    radial-gradient(circle at 86% 22%, rgba(40, 121, 91, 0.14), transparent 34%),
+    linear-gradient(180deg, #fffaf1 0%, #ffe9d2 42%, #f7dcc4 78%, #fffaf1 100%);
 }
 
 .taste-playground::before {
@@ -4170,39 +4172,15 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.26;
+  opacity: 0.12;
   background-image:
-    linear-gradient(45deg, rgba(33,20,15,0.18) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(33,20,15,0.18) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(33,20,15,0.18) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(33,20,15,0.18) 75%);
+    linear-gradient(45deg, rgba(33,20,15,0.16) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(33,20,15,0.16) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(33,20,15,0.16) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(33,20,15,0.16) 75%);
   background-position: 0 0, 0 14px, 14px -14px, -14px 0;
   background-size: 28px 28px;
   mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 84%, transparent 100%);
-}
-
-.taste-playground-marquee {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  padding: 18px 0;
-  color: #fffaf1;
-  background: #21140f;
-}
-
-.taste-playground-marquee div {
-  display: flex;
-  width: max-content;
-  gap: 28px;
-  white-space: nowrap;
-  animation: tasteMarquee 24s linear infinite;
-}
-
-.taste-playground-marquee span {
-  font-family: "Playfair Display", serif;
-  font-size: 58px;
-  font-weight: 900;
-  line-height: 1;
 }
 
 .taste-playground-layout {
@@ -5298,12 +5276,6 @@ body::after {
   }
 }
 
-@keyframes tasteMarquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @media (max-width: 1100px) {
   .atelier-hero-stage,
   .atelier-dishes-layout,
@@ -5468,10 +5440,6 @@ body::after {
 
   .taste-playground {
     padding-bottom: 72px;
-  }
-
-  .taste-playground-marquee span {
-    font-size: 42px;
   }
 
   .taste-playground-layout {

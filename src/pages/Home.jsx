@@ -246,16 +246,6 @@ function ScrollRibbon() {
 function TastePlayground() {
   return (
     <section className="taste-playground">
-      <div className="taste-playground-marquee" aria-hidden="true">
-        <div>
-          <span>Bite by bite</span>
-          <span>Stamp your route</span>
-          <span>195 flavors</span>
-          <span>Follow the aroma</span>
-          <span>Bring a friend</span>
-        </div>
-      </div>
-
       <div className="wop-container taste-playground-layout">
         <motion.div
           className="taste-playground-copy"
