@@ -236,7 +236,7 @@ function ScrollRibbon() {
   return (
     <section className="atelier-ribbon">
       <div className="atelier-ribbon-track">
-        {[...ribbonWidgets, ...ribbonWidgets].map((item, index) => {
+        {ribbonWidgets.map((item, index) => {
           const Icon = item.icon;
           return (
             <article className="atelier-ribbon-widget" key={`${item.title}-${index}`}>
