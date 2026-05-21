@@ -4017,7 +4017,7 @@ body::after {
 
 .atelier-ribbon {
   overflow: hidden;
-  padding: clamp(22px, 3vw, 40px) 0;
+  padding: clamp(14px, 2vw, 26px) 0 clamp(4px, 1vw, 12px);
   background: transparent;
   color: #20243a;
   width: 100%;
@@ -4027,8 +4027,8 @@ body::after {
   display: flex;
   align-items: center;
   width: max-content;
-  min-height: clamp(150px, 18vw, 230px);
-  gap: clamp(40px, 5vw, 80px);
+  min-height: clamp(132px, 13vw, 180px);
+  gap: clamp(28px, 4vw, 64px);
   padding: 0;
   margin: 0;
   will-change: transform;
@@ -4078,7 +4078,7 @@ body::after {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .atelier-ribbon-media::after {
@@ -4240,52 +4240,218 @@ body::after {
 }
 
 .atelier-stat-section {
-  padding: 90px 0 50px;
-  background: linear-gradient(180deg, #fffaf1, #f8ead4);
+  position: relative;
+  overflow: hidden;
+  padding: 54px 0 70px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(232,123,50,0.14), transparent 30%),
+    radial-gradient(circle at 86% 20%, rgba(29,143,95,0.12), transparent 30%),
+    linear-gradient(180deg, #fffaf1 0%, #f8ead4 100%);
   --container: 1480px;
+}
+
+.atelier-stat-section::before {
+  content: "";
+  position: absolute;
+  inset: 18px 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,59,47,0.24), rgba(216,164,65,0.34), transparent);
+}
+
+.atelier-stat-section::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232,123,50,0.28), rgba(29,143,95,0.22), transparent);
+  box-shadow: 0 0 24px rgba(232,123,50,0.18);
+}
+
+.atelier-stat-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.atelier-stat-head {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.atelier-stat-head span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.atelier-stat-head span::before,
+.atelier-stat-head span::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.atelier-stat-head h2 {
+  margin: 16px 0 0;
+  font-family: "Playfair Display", serif;
+  color: var(--navy);
+  font-size: clamp(36px, 4.3vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.atelier-stat-head p {
+  max-width: 650px;
+  margin: 16px auto 0;
+  color: rgba(93, 53, 25, 0.72);
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 700;
 }
 
 .atelier-stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
 .atelier-stat {
-  min-height: 230px;
+  position: relative;
+  isolation: isolate;
+  min-height: 188px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 28px;
-  border-radius: 16px;
+  gap: 14px;
+  padding: 28px 22px 24px;
+  border-radius: 20px;
   color: var(--navy);
-  background: rgba(255,255,255,0.76);
-  border: 1px solid rgba(255,255,255,0.84);
-  box-shadow: 0 18px 54px rgba(63,35,14,0.1);
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,241,0.84));
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow:
+    0 22px 64px rgba(63,35,14,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.98),
+    0 0 36px color-mix(in srgb, var(--stat-accent) 18%, transparent);
+  backdrop-filter: blur(18px);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.atelier-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--stat-accent) 42%, transparent), transparent 48%),
+    linear-gradient(90deg, transparent 12%, var(--stat-accent), transparent 88%);
+  opacity: 0.55;
+  mask-image: linear-gradient(to bottom, black 0 4px, transparent 4px);
+}
+
+.atelier-stat::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  z-index: -1;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--stat-accent) 30%, transparent);
+  opacity: 0.7;
 }
 
 .atelier-stat:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 28px 76px rgba(63,35,14,0.16);
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--stat-accent) 28%, white);
+  box-shadow:
+    0 30px 80px rgba(63,35,14,0.17),
+    0 12px 38px color-mix(in srgb, var(--stat-accent) 18%, transparent);
 }
 
-.atelier-stat svg {
-  color: var(--orange);
+.atelier-stat-icon {
+  position: relative;
+  overflow: hidden;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 42% 54% 46%;
+  color: var(--stat-accent);
+  background: color-mix(in srgb, var(--stat-accent) 11%, white);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--stat-accent) 42%, transparent),
+    0 0 24px color-mix(in srgb, var(--stat-accent) 34%, transparent);
+  transition:
+    border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s ease;
+}
+
+.atelier-stat-icon svg {
+  position: relative;
+  z-index: 2;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.atelier-stat-icon i {
+  position: absolute;
+  inset: 9px;
+  border-radius: 58% 42% 48% 52%;
+  background: color-mix(in srgb, var(--stat-accent) 18%, transparent);
+  transform: rotate(18deg) scale(0.82);
+  transition:
+    border-radius 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+.atelier-stat:hover .atelier-stat-icon {
+  border-radius: 34% 66% 42% 58%;
+  transform: rotate(16deg) scale(1.08);
+  background: color-mix(in srgb, var(--stat-accent) 17%, white);
+}
+
+.atelier-stat:hover .atelier-stat-icon svg {
+  transform: rotate(-16deg) scale(1.04);
+}
+
+.atelier-stat:hover .atelier-stat-icon i {
+  opacity: 0.95;
+  border-radius: 42% 58% 68% 32%;
+  transform: rotate(-155deg) scale(1.12);
 }
 
 .atelier-stat strong {
   font-family: "Playfair Display", serif;
-  font-size: clamp(48px, 6vw, 86px);
+  font-size: clamp(52px, 5.5vw, 84px);
   line-height: 0.9;
   letter-spacing: -0.06em;
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--stat-accent) 38%, transparent),
+    0 8px 28px rgba(0,0,0,0.26);
 }
 
-.atelier-stat span {
+.atelier-stat-label {
   color: var(--muted);
+  font-size: 13px;
   font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .taste-playground {
@@ -4734,40 +4900,100 @@ body::after {
 
 .food-storyline {
   display: grid;
-  gap: 42vh;
-  padding: 32vh 0 40vh;
+  gap: 34vh;
+  padding: 30vh 0 38vh;
+  perspective: 1200px;
 }
 
 .food-storyline-card {
   position: relative;
-  padding: 28px 0 28px 34px;
-  border-left: 1px solid rgba(63,35,14,0.14);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 20px;
+  color: var(--navy);
+  background:
+    radial-gradient(circle at 92% 10%, rgba(232,123,50,0.15), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,250,241,0.72));
+  border: 1px solid rgba(255,255,255,0.88);
+  box-shadow:
+    0 28px 80px rgba(63,35,14,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.86);
+  backdrop-filter: blur(18px);
+  transform-origin: center;
+  will-change: transform, opacity;
 }
 
-.food-storyline-card::before {
+.food-storyline-card:nth-child(even) {
+  margin-left: -34px;
+}
+
+.food-storyline-card:nth-child(odd) {
+  margin-right: -18px;
+}
+
+.food-storyline-card::after {
   content: "";
   position: absolute;
-  left: -7px;
-  top: 35px;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--orange);
-  box-shadow: 0 0 0 10px rgba(232,123,50,0.12), 0 0 30px rgba(232,123,50,0.5);
+  inset: 12px;
+  pointer-events: none;
+  border-radius: 14px;
+  border: 1px solid rgba(232,123,50,0.14);
 }
 
-.food-storyline-card span {
-  display: block;
+.food-storyline-card figure {
+  position: relative;
+  height: 128px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #21140f;
+  box-shadow: 0 18px 38px rgba(63,35,14,0.16);
+}
+
+.food-storyline-card figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.84;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+}
+
+.food-storyline-card:hover figure img {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.food-storyline-card figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(16,23,40,0.58), transparent 58%);
+}
+
+.food-storyline-card b {
+  position: absolute;
+  left: 12px;
+  bottom: 8px;
+  z-index: 1;
   font-family: "Playfair Display", serif;
-  color: rgba(232,123,50,0.18);
-  font-size: 88px;
-  line-height: 0.75;
+  color: rgba(255,250,241,0.86);
+  font-size: 46px;
+  line-height: 0.8;
   letter-spacing: -0.07em;
+}
+
+.food-storyline-card > div {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
 }
 
 .food-storyline-card small {
   display: block;
-  margin-top: 20px;
   color: var(--green);
   font-size: 12px;
   font-weight: 900;
@@ -4776,18 +5002,18 @@ body::after {
 }
 
 .food-storyline-card h3 {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: var(--navy);
-  font-size: clamp(26px, 3vw, 42px);
+  font-size: clamp(24px, 2.45vw, 34px);
   line-height: 1.02;
   letter-spacing: -0.045em;
 }
 
 .food-storyline-card p {
-  margin: 16px 0 0;
+  margin: 12px 0 0;
   color: var(--muted);
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.62;
 }
 
 .atelier-module-section {
@@ -5483,6 +5709,13 @@ body::after {
   .food-storyline {
     gap: 18px;
     padding: 10px 0 0;
+    perspective: none;
+  }
+
+  .food-storyline-card,
+  .food-storyline-card:nth-child(even),
+  .food-storyline-card:nth-child(odd) {
+    margin: 0;
   }
 
   .taste-playground-layout,
@@ -5590,9 +5823,54 @@ body::after {
     padding: 24px 0;
   }
 
+  .atelier-stat-section {
+    padding: 56px 0;
+  }
+
+  .atelier-stat-head {
+    margin-bottom: 22px;
+    text-align: left;
+  }
+
+  .atelier-stat-head h2 {
+    font-size: clamp(38px, 12vw, 56px);
+  }
+
+  .atelier-stat-head p {
+    margin-left: 0;
+    margin-right: 0;
+    font-size: 15px;
+  }
+
+  .atelier-stat {
+    min-height: 168px;
+    align-items: flex-start;
+    text-align: left;
+    padding: 24px;
+  }
+
+  .atelier-stat-icon {
+    width: 38px;
+    height: 38px;
+  }
+
   .food-film-frame {
     min-height: 360px;
     border-radius: 18px;
+  }
+
+  .food-storyline-card {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 14px;
+    padding: 12px;
+  }
+
+  .food-storyline-card figure {
+    height: 112px;
+  }
+
+  .food-storyline-card b {
+    font-size: 36px;
   }
 
   .food-film-caption {

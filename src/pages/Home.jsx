@@ -65,6 +65,8 @@ const stats = [
   { icon: Trophy, number: "1", label: "record attempt" },
 ];
 
+const statAccents = ["#e87b32", "#1d8f5f", "#d8a441", "#b83b2f"];
+
 const journey = [
   {
     icon: ChefHat,
@@ -412,22 +414,42 @@ function FoodFilmSection() {
         </div>
 
         <div className="food-storyline">
-          {filmScenes.map((scene, index) => (
-            <motion.article
-              className="food-storyline-card"
-              key={scene.title}
-              initial={{ opacity: 0, y: 46 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.45 }}
-              transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span>{scene.number}</span>
-              <small>{scene.kicker}</small>
-              <h3>{scene.title}</h3>
-              <p>{scene.text}</p>
-              {index < filmScenes.length - 1 && <i aria-hidden="true" />}
-            </motion.article>
-          ))}
+          {filmScenes.map((scene, index) => {
+            const fromLeft = index % 2 === 0;
+
+            return (
+              <motion.article
+                className="food-storyline-card"
+                key={scene.title}
+                initial={{
+                  opacity: 0,
+                  x: fromLeft ? -58 : 58,
+                  y: 40,
+                  rotate: fromLeft ? -5 : 5,
+                  scale: 0.92,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  rotate: 0,
+                  scale: 1,
+                }}
+                viewport={{ once: false, amount: 0.5, margin: "-10% 0px -16% 0px" }}
+                transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <figure>
+                  <img src={scene.image} alt="" aria-hidden="true" />
+                  <b>{scene.number}</b>
+                </figure>
+                <div>
+                  <small>{scene.kicker}</small>
+                  <h3>{scene.title}</h3>
+                  <p>{scene.text}</p>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1135,24 +1157,36 @@ export default function Home() {
       <ScrollRibbon />
 
       <section className="atelier-stat-section">
-        <div className="wop-container atelier-stat-grid">
-          {stats.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                className="atelier-stat"
-                key={item.label}
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.55 }}
-                transition={{ delay: index * 0.06 }}
-              >
-                <Icon size={24} />
-                <strong>{item.number}</strong>
-                <span>{item.label}</span>
-              </motion.div>
-            );
-          })}
+        <div className="wop-container atelier-stat-shell">
+          <div className="atelier-stat-head">
+            <span>Event Scale</span>
+            <h2>A record-setting table for Seattle.</h2>
+            <p>Four numbers explain the ambition: every country represented, thousands of samples, and one city-scale celebration.</p>
+          </div>
+
+          <div className="atelier-stat-grid">
+            {stats.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  className="atelier-stat"
+                  key={item.label}
+                  style={{ "--stat-accent": statAccents[index] }}
+                  initial={{ opacity: 0, y: 26 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.55 }}
+                  transition={{ delay: index * 0.06 }}
+                >
+                  <span className="atelier-stat-icon">
+                    <Icon size={22} />
+                    <i aria-hidden="true" />
+                  </span>
+                  <strong>{item.number}</strong>
+                  <span className="atelier-stat-label">{item.label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
