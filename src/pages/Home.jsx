@@ -36,17 +36,15 @@ import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
 import seattleMap from "../../map.jpg";
 import spaceNeedle from "../assets/spaceneedleicon.png";
-import c3 from "../assets/c3.png";
-import c4 from "../assets/c4.png";
-import c5 from "../assets/c5.png";
-import c6 from "../assets/c6.png";
-import c8 from "../assets/c8.png";
-import c11 from "../assets/c11.png";
-import c12 from "../assets/c12.png";
-import c13 from "../assets/c13.png";
-import c15 from "../assets/c15.png";
-import c16 from "../assets/c16.png";
-import c17 from "../assets/c17.png";
+import icon1 from "../assets/icons/icon_1.png";
+import icon2 from "../assets/icons/icon_2.png";
+import icon3 from "../assets/icons/icon_3.png";
+import icon4 from "../assets/icons/icon_4.png";
+import icon5 from "../assets/icons/icon_5.png";
+import icon6 from "../assets/icons/icon_6.png";
+import icon7 from "../assets/icons/icon_7.png";
+import icon8 from "../assets/icons/icon_8.png";
+import icon9 from "../assets/icons/icon_9.png";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
@@ -219,41 +217,31 @@ const flavorBursts = [
 const routeLayers = ["Pick a booth", "Trade a ticket", "Taste the story", "Find the next flavor"];
 
 const ribbonWidgets = [
-  { icon: Store, title: "Food Cart", text: "Marketplace energy keeps the route moving.", image: c3 },
-  { icon: Flag, title: "Flags Up", text: "Every dish carries a country story.", image: c4 },
-  { icon: Flame, title: "Fire Line", text: "A little heat, a lot of appetite.", image: c5 },
-  { icon: CookingPot, title: "Big Pot", text: "Shared food turns strangers into neighbors.", image: c6 },
-  { icon: UtensilsCrossed, title: "Plate Tent", text: "Country booths open like tiny festival tents.", image: c8 },
-  { icon: ChefHat, title: "Chef Hat", text: "Cooks bring home recipes into the street.", image: c11 },
-  { icon: Store, title: "Market Walk", text: "Each stop adds color to the tasting route.", image: c12 },
-  { icon: Globe2, title: "World Bite", text: "Small plates carry big cultural stories.", image: c13 },
-  { icon: Sparkles, title: "Street Spark", text: "Festival energy fills every block.", image: c15 },
-  { icon: UtensilsCrossed, title: "Sample Stop", text: "Guests follow the flavors booth by booth.", image: c16 },
-  { icon: Music4, title: "Culture Beat", text: "Food, music, and movement share the street.", image: c17 },
+  { icon: Store, title: "Food Cart", text: "Marketplace energy keeps the route moving.", image: icon1 },
+  { icon: Flag, title: "Flags Up", text: "Every dish carries a country story.", image: icon2 },
+  { icon: Flame, title: "Fire Line", text: "A little heat, a lot of appetite.", image: icon3 },
+  { icon: CookingPot, title: "Big Pot", text: "Shared food turns strangers into neighbors.", image: icon4 },
+  { icon: UtensilsCrossed, title: "Plate Tent", text: "Country booths open like tiny festival tents.", image: icon5 },
+  { icon: ChefHat, title: "Chef Hat", text: "Cooks bring home recipes into the street.", image: icon6 },
+  { icon: Store, title: "Market Walk", text: "Each stop adds color to the tasting route.", image: icon7 },
+  { icon: Globe2, title: "World Bite", text: "Small plates carry big cultural stories.", image: icon8 },
+  { icon: Sparkles, title: "Street Spark", text: "Festival energy fills every block.", image: icon9 },
+  { icon: UtensilsCrossed, title: "Sample Stop", text: "Guests follow the flavors booth by booth.", image: icon4 },
+  { icon: Music4, title: "Culture Beat", text: "Food, music, and movement share the street.", image: icon7 },
 ];
 
 function ScrollRibbon() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-
   return (
-    <section className="atelier-ribbon" ref={ref}>
-      <motion.div className="atelier-ribbon-track" style={{ x }}>
-        {ribbonWidgets.map((item, index) => {
-          const Icon = item.icon;
-          return (
-            <article className="atelier-ribbon-widget" key={`${item.title}-${index}`}>
-              <figure className="atelier-ribbon-media">
-                <img src={item.image} alt={item.title} />
-                <span className="atelier-ribbon-icon">
-                  <Icon strokeWidth={1.75} />
-                </span>
-              </figure>
-            </article>
-          );
-        })}
-      </motion.div>
+    <section className="atelier-ribbon">
+      <div className="atelier-ribbon-track">
+        {[...ribbonWidgets, ...ribbonWidgets].map((item, index) => (
+          <article className="atelier-ribbon-widget" key={`${item.title}-${index}`}>
+            <figure className="atelier-ribbon-media">
+              <img src={item.image} alt={item.title} />
+            </figure>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -317,21 +305,36 @@ function TastePlayground() {
       </div>
 
       <div className="wop-container taste-route-builder">
-        <div>
-          <span>Build your route</span>
-          <strong>No wrong order. Just follow what smells good.</strong>
-        </div>
+        <motion.div
+          className="taste-route-heading"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="wop-eyebrow">Your Journey</div>
+          <h3>Build your route</h3>
+          <p>No wrong order. Just follow what smells good.</p>
+        </motion.div>
         <div className="taste-route-layers">
-          {routeLayers.map((layer, index) => (
-            <motion.span
-              key={layer}
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ delay: index * 0.07 }}
+          {[
+            { step: "01", label: "Pick a booth",       accent: "#E86635" },
+            { step: "02", label: "Trade a ticket",     accent: "#28795B" },
+            { step: "03", label: "Taste the story",    accent: "#D8A441" },
+            { step: "04", label: "Find the next flavor", accent: "#B83B2F" },
+          ].map(({ step, label, accent }, index) => (
+            <motion.div
+              className="taste-route-card"
+              key={step}
+              style={{ "--card-accent": accent }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ delay: index * 0.09, duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
             >
-              {index + 1}. {layer}
-            </motion.span>
+              <span className="taste-route-card-num">{step}</span>
+              <strong>{label}</strong>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -509,10 +512,10 @@ export default function Home() {
       const diff = EVENT_DATE - Date.now();
       if (diff <= 0) { setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
       setCountdown({
-        days:    Math.floor(diff / 86400000),
-        hours:   Math.floor((diff % 86400000) / 3600000),
-        minutes: Math.floor((diff % 3600000)  / 60000),
-        seconds: Math.floor((diff % 60000)    / 1000),
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000) / 60000),
+        seconds: Math.floor((diff % 60000) / 1000),
       });
     };
     tick();
@@ -692,13 +695,13 @@ export default function Home() {
 
         {/* Scattered short dash decorations (like feastie) */}
         {[
-          { top: "19%", left: "7%",   r: 10  },
-          { top: "16%", left: "11%",  r: -25 },
-          { top: "23%", left: "5.5%", r: 40  },
-          { top: "36%", left: "48%",  r: 15  },
-          { top: "39%", left: "50%",  r: -10 },
-          { top: "28%", right: "3%",  r: 20  },
-          { top: "32%", right: "1%",  r: -30 },
+          { top: "19%", left: "7%", r: 10 },
+          { top: "16%", left: "11%", r: -25 },
+          { top: "23%", left: "5.5%", r: 40 },
+          { top: "36%", left: "48%", r: 15 },
+          { top: "39%", left: "50%", r: -10 },
+          { top: "28%", right: "3%", r: 20 },
+          { top: "32%", right: "1%", r: -30 },
           { bottom: "38%", right: "3%", r: 5 },
         ].map((d, i) => (
           <div key={i} aria-hidden="true" style={{
@@ -715,18 +718,18 @@ export default function Home() {
 
         {/* ── Decorative icons spread across left side ── */}
         {[
-          { Icon: ChefHat,       left: "3%",  top: "18%", size: 48, color: "#28795B", rot:  12, delay: 0.3 },
-          { Icon: Globe2,        left: "9%",  top: "28%", size: 52, color: "#E86635", rot:  -8, delay: 0.4 },
-          { Icon: Music4,        left: "2%",  top: "42%", size: 42, color: "#D8A441", rot:  18, delay: 0.35 },
-          { Icon: Flag,          left: "13%", top: "16%", size: 40, color: "#D95C2E", rot: -14, delay: 0.45 },
-          { Icon: Trophy,        left: "7%",  top: "55%", size: 46, color: "#28795B", rot:   8, delay: 0.5  },
-          { Icon: Award,         left: "16%", top: "38%", size: 38, color: "#E86635", rot: -10, delay: 0.38 },
-          { Icon: Ticket,        left: "4%",  top: "68%", size: 44, color: "#D8A441", rot:  20, delay: 0.55 },
-          { Icon: MapPin,        left: "14%", top: "62%", size: 40, color: "#D95C2E", rot:  -6, delay: 0.42 },
-          { Icon: HandHeart,     left: "10%", top: "76%", size: 46, color: "#28795B", rot:  15, delay: 0.48 },
-          { Icon: Store,         left: "2%",  top: "83%", size: 42, color: "#E86635", rot:  -18, delay: 0.52 },
-          { Icon: CookingPot,    left: "18%", top: "22%", size: 44, color: "#D8A441", rot:  10, delay: 0.43 },
-          { Icon: Flame,         left: "17%", top: "72%", size: 38, color: "#D95C2E", rot:  -8, delay: 0.46 },
+          { Icon: ChefHat, left: "3%", top: "18%", size: 48, color: "#28795B", rot: 12, delay: 0.3 },
+          { Icon: Globe2, left: "9%", top: "28%", size: 52, color: "#E86635", rot: -8, delay: 0.4 },
+          { Icon: Music4, left: "2%", top: "42%", size: 42, color: "#D8A441", rot: 18, delay: 0.35 },
+          { Icon: Flag, left: "13%", top: "16%", size: 40, color: "#D95C2E", rot: -14, delay: 0.45 },
+          { Icon: Trophy, left: "7%", top: "55%", size: 46, color: "#28795B", rot: 8, delay: 0.5 },
+          { Icon: Award, left: "16%", top: "38%", size: 38, color: "#E86635", rot: -10, delay: 0.38 },
+          { Icon: Ticket, left: "4%", top: "68%", size: 44, color: "#D8A441", rot: 20, delay: 0.55 },
+          { Icon: MapPin, left: "14%", top: "62%", size: 40, color: "#D95C2E", rot: -6, delay: 0.42 },
+          { Icon: HandHeart, left: "10%", top: "76%", size: 46, color: "#28795B", rot: 15, delay: 0.48 },
+          { Icon: Store, left: "2%", top: "83%", size: 42, color: "#E86635", rot: -18, delay: 0.52 },
+          { Icon: CookingPot, left: "18%", top: "22%", size: 44, color: "#D8A441", rot: 10, delay: 0.43 },
+          { Icon: Flame, left: "17%", top: "72%", size: 38, color: "#D95C2E", rot: -8, delay: 0.46 },
         ].map(({ Icon, left, top, size, color, rot, delay }, i) => (
           <motion.div
             key={i}
@@ -802,65 +805,90 @@ export default function Home() {
             </span>
 
             <div style={{ position: "relative", height: 0, overflow: "visible" }}>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.6 }}
-              style={{ position: "absolute", top: 48, left: 0, right: 0, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
-            >
-              {[
-                { value: countdown.days,    label: "Days" },
-                { value: countdown.hours,   label: "Hours" },
-                { value: countdown.minutes, label: "Mins" },
-                { value: countdown.seconds, label: "Secs" },
-              ].map(({ value, label }, i) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{
-                    display: "flex", flexDirection: "column", alignItems: "center",
-                    background: "rgba(255,255,255,0.82)",
-                    border: "2px solid rgba(232,102,53,0.22)",
-                    borderRadius: 14,
-                    padding: "14px 22px",
-                    minWidth: 82,
-                    boxShadow: "0 4px 18px rgba(232,102,53,0.12)",
-                    backdropFilter: "blur(6px)",
-                  }}>
-                    <span style={{
-                      fontFamily: "'DM Serif Display', serif",
-                      fontSize: "clamp(36px, 4.2vw, 56px)",
-                      lineHeight: 1,
-                      color: "#D95C2E",
-                      fontVariantNumeric: "tabular-nums",
-                      letterSpacing: "-0.02em",
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.6 }}
+                style={{ position: "absolute", top: 48, left: 0, right: 0, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
+              >
+                {[
+                  { value: countdown.days, label: "Days" },
+                  { value: countdown.hours, label: "Hours" },
+                  { value: countdown.minutes, label: "Mins" },
+                  { value: countdown.seconds, label: "Secs" },
+                ].map(({ value, label }, i) => (
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div style={{
+                      display: "flex", flexDirection: "column", alignItems: "center",
+                      background: "rgba(255,255,255,0.82)",
+                      border: "2px solid rgba(232,102,53,0.22)",
+                      borderRadius: 14,
+                      padding: "14px 22px",
+                      minWidth: 82,
+                      boxShadow: "0 4px 18px rgba(232,102,53,0.12)",
+                      backdropFilter: "blur(6px)",
                     }}>
-                      {String(value).padStart(2, "0")}
-                    </span>
-                    <span style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: "#888",
-                      marginTop: 5,
-                    }}>{label}</span>
+                      <span style={{
+                        fontFamily: "'DM Serif Display', serif",
+                        fontSize: "clamp(36px, 4.2vw, 56px)",
+                        lineHeight: 1,
+                        color: "#D95C2E",
+                        fontVariantNumeric: "tabular-nums",
+                        letterSpacing: "-0.02em",
+                      }}>
+                        {String(value).padStart(2, "0")}
+                      </span>
+                      <span style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        color: "#888",
+                        marginTop: 5,
+                      }}>{label}</span>
+                    </div>
+                    {i < 3 && (
+                      <span style={{
+                        fontFamily: "'DM Serif Display', serif",
+                        fontSize: "clamp(28px, 3.4vw, 44px)",
+                        color: "#D95C2E",
+                        lineHeight: 1,
+                        opacity: 0.45,
+                        marginTop: -6,
+                      }}>:</span>
+                    )}
                   </div>
-                  {i < 3 && (
-                    <span style={{
-                      fontFamily: "'DM Serif Display', serif",
-                      fontSize: "clamp(28px, 3.4vw, 44px)",
-                      color: "#D95C2E",
-                      lineHeight: 1,
-                      opacity: 0.45,
-                      marginTop: -6,
-                    }}>:</span>
-                  )}
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </motion.div>
             </div>
           </motion.div>
         </div>
+        {/* ── Meet us text below countdown ── */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          style={{
+            position: "absolute",
+            top: "44%",
+            left: "55%",
+            transform: "translateX(-50%)",
+            zIndex: 3,
+            pointerEvents: "none",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "clamp(12px, 1.1vw, 15px)",
+            color: "#888",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            fontWeight: 800,
+            whiteSpace: "nowrap",
+            margin: 0,
+          }}
+        >
+          📍 Meet us at Occidental Ave
+        </motion.p>
+
 
         {/* ── FREE ENTRY starburst sticker ── */}
         <motion.div
@@ -900,7 +928,7 @@ export default function Home() {
             color: "#fff",
             lineHeight: 1.1,
             letterSpacing: "-0.01em",
-          }}>FREE<br/>ENTRY</span>
+          }}>FREE<br />ENTRY</span>
           <span style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 8,
@@ -947,40 +975,40 @@ export default function Home() {
           zIndex: 2,
           pointerEvents: "none",
         }}>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            display: "flex",
-            gap: "clamp(16px, 2.5vw, 32px)",
-            alignItems: "center",
-            pointerEvents: "auto",
-          }}
-        >
-          <div style={{
-            width: "clamp(380px, 45vw, 640px)",
-            height: "clamp(500px, 62vw, 860px)",
-            borderRadius: "999px",
-            overflow: "hidden",
-            flexShrink: 0,
-            boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
-            transform: "rotate(8deg)",
-          }}>
-            <img src={food1} alt="International dish" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          </div>
-          <div style={{
-            width: "clamp(380px, 45vw, 640px)",
-            height: "clamp(560px, 70vw, 960px)",
-            borderRadius: "999px",
-            overflow: "hidden",
-            flexShrink: 0,
-            boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
-            transform: "translateY(-60px) rotate(-8deg)",
-          }}>
-            <img src={food2} alt="Global cuisine" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          </div>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              display: "flex",
+              gap: "clamp(16px, 2.5vw, 32px)",
+              alignItems: "center",
+              pointerEvents: "auto",
+            }}
+          >
+            <div style={{
+              width: "clamp(380px, 45vw, 640px)",
+              height: "clamp(500px, 62vw, 860px)",
+              borderRadius: "999px",
+              overflow: "hidden",
+              flexShrink: 0,
+              boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
+              transform: "rotate(8deg)",
+            }}>
+              <img src={food1} alt="International dish" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+            <div style={{
+              width: "clamp(380px, 45vw, 640px)",
+              height: "clamp(560px, 70vw, 960px)",
+              borderRadius: "999px",
+              overflow: "hidden",
+              flexShrink: 0,
+              boxShadow: "0 16px 48px rgba(0,0,0,0.14)",
+              transform: "translateY(-60px) rotate(-8deg)",
+            }}>
+              <img src={food2} alt="Global cuisine" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          </motion.div>
         </div>
 
         {/* ── Content below title ── */}
@@ -1064,21 +1092,21 @@ export default function Home() {
               <UtensilsCrossed size={20} color="#E86635" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", top: -24, left: 340, transform: "rotate(-20deg)" }} />
               <Globe2 size={22} color="#D95C2E" strokeWidth={1.4} style={{ opacity: 0.5, position: "absolute", bottom: -22, left: 80, transform: "rotate(8deg)" }} />
               <Music4 size={20} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", bottom: -20, left: 260, transform: "rotate(-12deg)" }} />
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-start" }}>
-              <a href="/auth/register" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
-                Culinary Register <ArrowRight size={18} />
-              </a>
-              <a href="/registration" style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "17px 34px", borderRadius: 12,
-                border: "2px solid rgba(26,26,20,0.16)",
-                background: "rgba(255,255,255,0.85)",
-                color: "#1A1A14", fontSize: 18, fontWeight: 700,
-                textDecoration: "none",
-              }}>
-                Become a Sponsor
-              </a>
-            </div>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-start" }}>
+                <a href="/auth/register" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
+                  Culinary Register <ArrowRight size={18} />
+                </a>
+                <a href="/registration" style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "17px 34px", borderRadius: 12,
+                  border: "2px solid rgba(26,26,20,0.16)",
+                  background: "rgba(255,255,255,0.85)",
+                  color: "#1A1A14", fontSize: 18, fontWeight: 700,
+                  textDecoration: "none",
+                }}>
+                  Become a Sponsor
+                </a>
+              </div>
             </div>
           </motion.div>
 
