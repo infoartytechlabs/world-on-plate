@@ -38,7 +38,6 @@ import worldfoodmarket from "../assets/world-food-market.mp4";
 import foodFilmWorldMap from "../assets/food-film-world-map.png";
 import worldArrival from "../assets/world.webp";
 import seattleMap from "../../map.jpg";
-import spaceNeedle from "../assets/spaceneedleicon.png";
 import icon1 from "../assets/icons/icon_1.png";
 import icon2 from "../assets/icons/icon_2.png";
 import icon3 from "../assets/icons/icon_3.png";
@@ -931,26 +930,6 @@ export default function Home() {
         </motion.div>
 
         {/* ── Space Needle image on the right ── */}
-        <motion.img
-          src={spaceNeedle}
-          alt="Space Needle"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: "absolute",
-            right: "-2%",
-            bottom: "12%",
-            top: "2%",
-            zIndex: 2,
-            height: "clamp(320px, 47vw, 3000px)",
-            width: "auto",
-            objectFit: "contain",
-            filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.18))",
-            pointerEvents: "none",
-          }}
-        />
-
         {/* ── Center images ── */}
         <div style={{
           position: "absolute",
