@@ -35,6 +35,8 @@ import tony from "../assets/tony.webp";
 import carrie from "../assets/carrie.webp";
 import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
+import foodFilmWorldMap from "../assets/food-film-world-map.png";
+import worldArrival from "../assets/world.webp";
 import seattleMap from "../../map.jpg";
 import spaceNeedle from "../assets/spaceneedleicon.png";
 import icon1 from "../assets/icons/icon_1.png";
@@ -363,13 +365,18 @@ function FoodFilmSection() {
 
   return (
     <section className="food-film-section" ref={ref}>
+      <div className="food-film-map" aria-hidden="true">
+        <div className="food-film-map-sticky">
+          <img src={foodFilmWorldMap} alt="" />
+        </div>
+      </div>
       <div className="wop-container food-film-layout">
         <div className="food-film-sticky">
           <div className="food-film-copy">
             <div className="wop-eyebrow">Food Film</div>
-            <h2>Let the story move before the words arrive.</h2>
+            <h2>A moving route across one world table.</h2>
             <p>
-              This behaves like a quiet food video now, using layered animated frames. When you have a real event or plating video, this section is ready for it.
+              Follow the day from prep to plate to a city-wide memory. The cards drift in like passport stamps while the background keeps the global route in view.
             </p>
           </div>
 
@@ -414,7 +421,7 @@ function FoodFilmSection() {
         </div>
 
         <div className="food-storyline">
-          {filmScenes.map((scene, index) => {
+          {filmScenes.slice(1).map((scene, index) => {
             const fromLeft = index % 2 === 0;
 
             return (
@@ -709,6 +716,36 @@ export default function Home() {
           fontFamily: "'DM Sans', sans-serif",
         }}
       >
+        <motion.img
+          src={worldArrival}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center top",
+            opacity: 0.76,
+            scale: heroBgScale,
+            y: heroBgY,
+            filter: "saturate(1.02) contrast(1.04)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 1,
+            background:
+              "linear-gradient(90deg, rgba(255,249,244,0.74) 0%, rgba(255,249,244,0.48) 34%, rgba(255,249,244,0.16) 68%, rgba(255,249,244,0.34) 100%), radial-gradient(circle at 46% 34%, rgba(255,249,244,0.78), rgba(255,249,244,0.18) 58%, rgba(255,249,244,0.42) 100%)",
+            pointerEvents: "none",
+          }}
+        />
         {/* ── Large solid amber blob at the bottom (Feastie's pink blob equivalent) ── */}
         <div style={{
           position: "absolute",
@@ -716,86 +753,12 @@ export default function Home() {
           height: "50%",
           background: "linear-gradient(135deg, #F4B66D, #F07B45)",
           borderRadius: "52% 48% 0 0 / 30% 30% 0 0",
-          zIndex: 0,
-          opacity: 0.38,
+          zIndex: 1,
+          opacity: 0.24,
         }} />
 
-        {/* Scattered short dash decorations (like feastie) */}
-        {[
-          { top: "19%", left: "7%", r: 10 },
-          { top: "16%", left: "11%", r: -25 },
-          { top: "23%", left: "5.5%", r: 40 },
-          { top: "36%", left: "48%", r: 15 },
-          { top: "39%", left: "50%", r: -10 },
-          { top: "28%", right: "3%", r: 20 },
-          { top: "32%", right: "1%", r: -30 },
-          { bottom: "38%", right: "3%", r: 5 },
-        ].map((d, i) => (
-          <div key={i} aria-hidden="true" style={{
-            position: "absolute", zIndex: 1,
-            width: 18, height: 3,
-            background: "#E86635",
-            borderRadius: 3,
-            opacity: 0.55,
-            transform: `rotate(${d.r}deg)`,
-            top: d.top, bottom: d.bottom,
-            left: d.left, right: d.right,
-          }} />
-        ))}
-
         {/* ── Decorative icons spread across left side ── */}
-        {[
-          { Icon: ChefHat, left: "3%", top: "18%", size: 48, color: "#28795B", rot: 12, delay: 0.3 },
-          { Icon: Globe2, left: "9%", top: "28%", size: 52, color: "#E86635", rot: -8, delay: 0.4 },
-          { Icon: Music4, left: "2%", top: "42%", size: 42, color: "#D8A441", rot: 18, delay: 0.35 },
-          { Icon: Flag, left: "13%", top: "16%", size: 40, color: "#D95C2E", rot: -14, delay: 0.45 },
-          { Icon: Trophy, left: "7%", top: "55%", size: 46, color: "#28795B", rot: 8, delay: 0.5 },
-          { Icon: Award, left: "16%", top: "38%", size: 38, color: "#E86635", rot: -10, delay: 0.38 },
-          { Icon: Ticket, left: "4%", top: "68%", size: 44, color: "#D8A441", rot: 20, delay: 0.55 },
-          { Icon: MapPin, left: "14%", top: "62%", size: 40, color: "#D95C2E", rot: -6, delay: 0.42 },
-          { Icon: HandHeart, left: "10%", top: "76%", size: 46, color: "#28795B", rot: 15, delay: 0.48 },
-          { Icon: Store, left: "2%", top: "83%", size: 42, color: "#E86635", rot: -18, delay: 0.52 },
-          { Icon: CookingPot, left: "18%", top: "22%", size: 44, color: "#D8A441", rot: 10, delay: 0.43 },
-          { Icon: Flame, left: "17%", top: "72%", size: 38, color: "#D95C2E", rot: -8, delay: 0.46 },
-        ].map(({ Icon, left, top, size, color, rot, delay }, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay }}
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              left, top, zIndex: 2,
-              pointerEvents: "none",
-              transform: `rotate(${rot}deg)`,
-            }}
-          >
-            <Icon size={size} color={color} strokeWidth={1.3} style={{ opacity: 0.55 }} />
-          </motion.div>
-        ))}
-
         {/* ── Food icons between Festival and countdown ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.65 }}
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            left: "42%",
-            top: "31%",
-            zIndex: 2,
-            pointerEvents: "none",
-            width: 140,
-            height: 160,
-          }}
-        >
-          <UtensilsCrossed size={52} color="#E86635" strokeWidth={1.4} style={{ opacity: 0.7, transform: "rotate(-20deg)", position: "absolute", top: 0, left: 0 }} />
-          <CookingPot size={58} color="#28795B" strokeWidth={1.4} style={{ opacity: 0.65, position: "absolute", top: 50, left: 55 }} />
-          <Sparkles size={48} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.7, transform: "rotate(12deg)", position: "absolute", top: 100, left: 10 }} />
-        </motion.div>
-
         {/* ── FULL-WIDTH TITLE spanning top ── */}
         <div style={{ position: "relative", zIndex: 2, padding: "clamp(40px, 6vw, 80px) clamp(16px, 4vw, 56px) 0", textAlign: "center" }}>
           <motion.h1
