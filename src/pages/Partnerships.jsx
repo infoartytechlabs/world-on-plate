@@ -172,7 +172,7 @@ export default function Partnerships() {
           </div>
 
           {/* Partner grid — visual on top, text below */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0 16px" }}>
+          <div className="partner-org-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0 16px" }}>
             {[...officialPartners, {
               initials: "CI", name: "Supporting Culinary Institutions",
               description: "A network of culinary schools and programs affiliated with the Washington State Chefs Association — preparing national dishes for the Guinness World Record attempt.",
@@ -254,7 +254,7 @@ export default function Partnerships() {
       {/* ── Sponsorship Intro ── */}
       <section style={{ padding: "100px 0", background: "#fff", position: "relative" }}>
         <div className="wop-container" style={{ width: "min(1500px, calc(100% - 40px))" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+          <div className="partner-intro-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
             <div>
               <div className="wop-eyebrow" style={{ marginBottom: 18 }}>Become a Sponsor</div>
               <h2 className="wop-section-title" style={{ marginBottom: 24 }}>
@@ -267,7 +267,7 @@ export default function Partnerships() {
                 Become a Sponsor <ArrowRight size={18} />
               </button>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div className="partner-stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               {[
                 { number: "8,000+", label: "Expected Attendees", sub: "First-come tasting access" },
                 { number: "195", label: "Nations Represented", sub: "Global cultural reach" },
@@ -308,7 +308,7 @@ export default function Partnerships() {
               { num: "05", stat: "1 Day", unit: "One City", icon: MapPin, title: "Deep Local Engagement", desc: "Pioneer Square comes alive with culture, food, and community. Your sponsorship connects you directly with Seattle residents, businesses, and civic leaders.", accent: "#533AB7" },
               { num: "06", stat: "∞", unit: "Impact", icon: Sparkles, title: "Legacy Brand Exposure", desc: "Logo placement on signage, stage backdrops, printed programs, merchandise, digital platforms, and commemorative materials creates lasting visibility.", accent: "#633806" },
             ].map((pt, i) => (
-              <div key={pt.title} style={{
+              <div key={pt.title} className="partner-why-row" style={{
                 display: "grid",
                 gridTemplateColumns: "80px 200px 1px 1fr",
                 gap: "0 40px",
@@ -324,7 +324,7 @@ export default function Partnerships() {
                   <div style={{ fontFamily: "'DM Serif Display', serif", fontSize: 36, lineHeight: 1, color: pt.accent }}>{pt.stat}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: pt.accent, opacity: 0.65 }}>{pt.unit}</div>
                 </div>
-                <div style={{ width: 1, height: 48, background: "rgba(200,153,58,0.2)", alignSelf: "center" }} />
+                <div className="partner-why-divider" style={{ width: 1, height: 48, background: "rgba(200,153,58,0.2)", alignSelf: "center" }} />
                 <div>
                   <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1A1A14", margin: "0 0 8px", lineHeight: 1.3 }}>{pt.title}</h3>
                   <p style={{ fontSize: 15, color: "#6B6B5A", lineHeight: 1.8, margin: 0, maxWidth: 620 }}>{pt.desc}</p>
@@ -343,7 +343,7 @@ export default function Partnerships() {
             Choose your <span>level of impact.</span>
           </h2>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
+          <div className="partner-tier-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
             {[
               {
                 tier: "Platinum", badge: Trophy, highlight: true,

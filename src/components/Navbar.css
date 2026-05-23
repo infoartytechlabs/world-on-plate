@@ -98,7 +98,7 @@
 .wop-brand span {
   display: flex;
   flex-direction: column;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1;
   font-weight: 900;
   color: var(--navy);
@@ -109,7 +109,7 @@
 .wop-brand b {
   margin-top: 2px;
   font-family: "Playfair Display", serif;
-  font-size: 19px;
+  font-size: 24px;
   line-height: 0.9;
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -134,7 +134,7 @@
   padding: 10px 11px;
   border-radius: 999px;
 
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 900;
   white-space: nowrap;
   color: rgba(16, 23, 40, 0.68);
@@ -257,6 +257,8 @@
   background: rgba(255, 255, 255, 0.76);
 
   box-shadow: 0 12px 28px rgba(54, 34, 18, 0.1);
+
+  margin-left: auto;
 }
 
 .wop-mobile-menu {
@@ -349,11 +351,17 @@
   }
 
   .wop-brand span {
-    font-size: 10px;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 5px;
+    font-size: 18px;
+    white-space: nowrap;
   }
 
   .wop-brand b {
-    font-size: 17px;
+    font-size: 18px;
+    font-family: "Playfair Display", serif;
+    margin-top: 0;
   }
 }
 
@@ -367,7 +375,7 @@
   min-height: 40px;
   padding: 0 10px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--wop-muted, #6B6B5A);
   text-decoration: none;

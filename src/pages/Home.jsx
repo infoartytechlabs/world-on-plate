@@ -36,7 +36,8 @@ import carrie from "../assets/carrie.webp";
 import chefPlatingVideo from "../assets/chef-plating.mp4";
 import worldfoodmarket from "../assets/world-food-market.mp4";
 import foodFilmWorldMap from "../assets/food-film-world-map.png";
-import worldArrival from "../assets/world.webp";
+import worldArrival from "../assets/world.webp.png";
+import worldMobile from "../assets/world.mobile.png";
 import seattleMap from "../../map.jpg";
 import icon1 from "../assets/icons/icon_1.png";
 import icon2 from "../assets/icons/icon_2.png";
@@ -515,11 +516,19 @@ function ExperienceModule() {
 export default function Home() {
   useEffect(() => { document.title = "World on a Plate | Seattle's Global Food Festival 2026"; }, []);
   const heroRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" && window.innerWidth <= 768
+  );
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroBgScale = useSpring(useTransform(heroProgress, [0, 1], [1.04, 1.18]), {
+  const heroBgScale = useSpring(useTransform(heroProgress, [0, 1], [1.0, 1.06]), {
     stiffness: 80,
     damping: 24,
   });
@@ -704,10 +713,11 @@ export default function Home() {
       <CursorTrail images={CURSOR_IMAGES} />
       <section
         ref={heroRef}
+        className="home-hero-section"
         style={{
           position: "relative",
           overflow: "hidden",
-          minHeight: "110vh",
+          minHeight: isMobile ? "50vh" : "110vh",
           background: "#FFF9F4",
           display: "flex",
           flexDirection: "column",
@@ -716,7 +726,7 @@ export default function Home() {
         }}
       >
         <motion.img
-          src={worldArrival}
+          src={isMobile ? worldMobile : worldArrival}
           alt=""
           aria-hidden="true"
           style={{
@@ -725,35 +735,24 @@ export default function Home() {
             zIndex: 0,
             width: "100%",
             height: "100%",
-            objectFit: "cover",
-            objectPosition: "center top",
-            opacity: 0.76,
+            objectFit: isMobile ? "cover" : "contain",
+            objectPosition: isMobile ? "center center" : "center -20px",
+            opacity: 1,
             scale: heroBgScale,
             y: heroBgY,
             filter: "saturate(1.02) contrast(1.04)",
             pointerEvents: "none",
           }}
         />
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 1,
-            background:
-              "linear-gradient(90deg, rgba(255,249,244,0.74) 0%, rgba(255,249,244,0.48) 34%, rgba(255,249,244,0.16) 68%, rgba(255,249,244,0.34) 100%), radial-gradient(circle at 46% 34%, rgba(255,249,244,0.78), rgba(255,249,244,0.18) 58%, rgba(255,249,244,0.42) 100%)",
-            pointerEvents: "none",
-          }}
-        />
         {/* ── Large solid amber blob at the bottom (Feastie's pink blob equivalent) ── */}
-        <div style={{
+        <div className="hero-blob" style={{
           position: "absolute",
           bottom: -80, left: -120, right: -120,
           height: "50%",
           background: "linear-gradient(135deg, #F4B66D, #F07B45)",
           borderRadius: "52% 48% 0 0 / 30% 30% 0 0",
           zIndex: 1,
-          opacity: 0.24,
+          opacity: 0.7,
         }} />
 
         {/* ── Decorative icons spread across left side ── */}
@@ -766,7 +765,7 @@ export default function Home() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: "clamp(64px, 11.5vw, 158px)",
+              fontSize: "clamp(80px, 14vw, 200px)",
               lineHeight: 0.88,
               letterSpacing: "-0.045em",
               color: "#1A1A14",
@@ -781,7 +780,8 @@ export default function Home() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            style={{ marginTop: 16, paddingLeft: 650 }}
+            className="hero-date-wrap"
+            style={{ marginTop: 16, paddingLeft: "clamp(0px, 45vw, 650px)" }}
           >
             <span style={{
               fontFamily: "'DM Serif Display', serif",
@@ -789,6 +789,7 @@ export default function Home() {
               color: "#D95C2E",
               letterSpacing: "-0.02em",
               fontStyle: "italic",
+              fontWeight: 700,
             }}>
               September 26, 2026
             </span>
@@ -798,6 +799,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.55, delay: 0.6 }}
+                className="hero-countdown-row"
                 style={{ position: "absolute", top: 48, left: 0, right: 0, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}
               >
                 {[
@@ -807,7 +809,7 @@ export default function Home() {
                   { value: countdown.seconds, label: "Secs" },
                 ].map(({ value, label }, i) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{
+                    <div className="hero-countdown-box" style={{
                       display: "flex", flexDirection: "column", alignItems: "center",
                       background: "rgba(255,255,255,0.82)",
                       border: "2px solid rgba(232,102,53,0.22)",
@@ -854,20 +856,20 @@ export default function Home() {
           </motion.div>
         </div>
         {/* ── Meet us text below countdown ── */}
-        <motion.p
+        <motion.p className="hero-meet-us"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
           style={{
             position: "absolute",
-            top: "44%",
-            left: "55%",
+            top: "45%",
+            left: "12%",
             transform: "translateX(-50%)",
             zIndex: 3,
             pointerEvents: "none",
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: "clamp(12px, 1.1vw, 15px)",
-            color: "#888",
+            fontSize: "18px",
+            color: "#1A1A14",
             letterSpacing: "0.1em",
             textTransform: "uppercase",
             fontWeight: 800,
@@ -881,13 +883,14 @@ export default function Home() {
 
         {/* ── FREE ENTRY starburst sticker ── */}
         <motion.div
+          className="hero-free-sticker"
           initial={{ opacity: 0, scale: 0.6, rotate: 15 }}
           animate={{ opacity: 1, scale: 1, rotate: 15 }}
           transition={{ duration: 0.55, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: "absolute",
             top: "26%",
-            right: "5%",
+            left: "6%",
             zIndex: 3,
             width: 160,
             height: 160,
@@ -931,7 +934,7 @@ export default function Home() {
 
         {/* ── Space Needle image on the right ── */}
         {/* ── Center images ── */}
-        <div style={{
+        <div className="hero-food-images" style={{
           position: "absolute",
           top: "90%",
           left: "0",
@@ -956,8 +959,8 @@ export default function Home() {
             }}
           >
             <div style={{
-              width: "clamp(380px, 45vw, 640px)",
-              height: "clamp(500px, 62vw, 860px)",
+              width: "clamp(160px, 45vw, 640px)",
+              height: "clamp(220px, 62vw, 860px)",
               borderRadius: "999px",
               overflow: "hidden",
               flexShrink: 0,
@@ -967,8 +970,8 @@ export default function Home() {
               <img src={food1} alt="International dish" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div style={{
-              width: "clamp(380px, 45vw, 640px)",
-              height: "clamp(560px, 70vw, 960px)",
+              width: "clamp(160px, 45vw, 640px)",
+              height: "clamp(240px, 70vw, 960px)",
               borderRadius: "999px",
               overflow: "hidden",
               flexShrink: 0,
@@ -981,12 +984,12 @@ export default function Home() {
         </div>
 
         {/* ── Content below title ── */}
-        <div style={{
+        <div className="hero-content-block" style={{
           position: "relative", zIndex: 2,
           paddingTop: "0px",
           paddingRight: "clamp(16px,4vw,56px)",
           paddingBottom: "clamp(60px,8vw,100px)",
-          paddingLeft: "clamp(200px, 28vw, 480px)",
+          paddingLeft: "clamp(16px, 44vw, 680px)",
         }}>
 
           {/* ── LEFT: Stacked word blocks + content ── */}
@@ -996,7 +999,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.18 }}
           >
             {/* Stacked colored word blocks — like feastie's SIP / SNACK / FESTIVAL */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, marginBottom: 22, width: "100%" }}>
+            <div className="hero-word-blocks" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10, marginBottom: 22, width: "100%" }}>
 
               {/* Row 1: "Culinary" block + "&" */}
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -1048,29 +1051,46 @@ export default function Home() {
                 fontStyle: "italic",
                 transform: "rotate(-3deg)",
                 textShadow: "3px 4px 0px rgba(184,59,47,0.35), 0 8px 24px rgba(232,102,53,0.18)",
+                marginTop: 12,
               }}>Festival</span>
 
             </div>
 
 
             {/* CTAs */}
-            <div style={{ position: "relative", marginTop: 60 }}>
+            <div className="hero-ctas" style={{ position: "relative", marginTop: 60 }}>
               {/* Scattered icons near buttons */}
               <Sparkles size={22} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.7, position: "absolute", top: -28, left: -10, transform: "rotate(-15deg)" }} />
               <ChefHat size={26} color="#28795B" strokeWidth={1.4} style={{ opacity: 0.6, position: "absolute", top: -32, left: 180, transform: "rotate(10deg)" }} />
               <UtensilsCrossed size={20} color="#E86635" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", top: -24, left: 340, transform: "rotate(-20deg)" }} />
               <Globe2 size={22} color="#D95C2E" strokeWidth={1.4} style={{ opacity: 0.5, position: "absolute", bottom: -22, left: 80, transform: "rotate(8deg)" }} />
               <Music4 size={20} color="#D8A441" strokeWidth={1.4} style={{ opacity: 0.55, position: "absolute", bottom: -20, left: 260, transform: "rotate(-12deg)" }} />
-              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-start" }}>
-                <a href="/auth/register" className="wop-btn wop-btn-primary" style={{ fontSize: 18, padding: "17px 38px", borderRadius: 12 }}>
-                  Culinary Register <ArrowRight size={18} />
+              <div className="hero-ctas-inner" style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "flex-start" }}>
+                <a href="/auth/register" style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  gap: isMobile ? 6 : 8,
+                  padding: isMobile ? "13px 24px" : "17px 38px",
+                  borderRadius: isMobile ? 10 : 12,
+                  background: "linear-gradient(135deg, #E86635, #B83B2F)",
+                  color: "#fff",
+                  fontSize: isMobile ? 16 : 18,
+                  fontWeight: 900,
+                  letterSpacing: "-0.02em",
+                  textDecoration: "none",
+                  boxShadow: "0 8px 24px rgba(232,102,53,0.35)",
+                  transition: "transform 0.25s ease",
+                }}>
+                  Culinary Register <ArrowRight size={isMobile ? 16 : 18} />
                 </a>
                 <a href="/registration" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
-                  padding: "17px 34px", borderRadius: 12,
+                  padding: isMobile ? "13px 24px" : "17px 34px",
+                  borderRadius: isMobile ? 10 : 12,
                   border: "2px solid rgba(26,26,20,0.16)",
                   background: "rgba(255,255,255,0.85)",
-                  color: "#1A1A14", fontSize: 18, fontWeight: 700,
+                  color: "#1A1A14",
+                  fontSize: isMobile ? 16 : 18,
+                  fontWeight: 700,
                   textDecoration: "none",
                 }}>
                   Become a Sponsor
@@ -1082,7 +1102,7 @@ export default function Home() {
         </div>
 
         {/* ── Bottom facts bar ── */}
-        <div className="atelier-facts" style={{ position: "relative", zIndex: 2 }}>
+        <div className="atelier-facts" style={{ position: "relative", zIndex: 2, marginTop: isMobile ? "20vh" : undefined }}>
           {eventFacts.map((fact) => {
             const Icon = fact.icon;
             return (

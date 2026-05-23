@@ -1,69 +1,17 @@
 import { motion } from "framer-motion";
 import {
-  ArrowRight,
-  Building2,
   CalendarDays,
-  ChefHat,
   CheckCircle2,
-  HandHeart,
   Mail,
   MapPin,
   MessageSquare,
-  Music4,
+  Phone,
   Send,
-  Store,
-  Users,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwPlLgi6oxU46-hYekAGX8-za66A5SCt1C6eivsh9YDPl6IC5zdYBRdcH4EkPRKjfIpDA/exec";
-
-const contactCards = [
-  {
-    icon: Users,
-    title: "General Event Questions",
-    text: "For guest questions about timing, location, admission, sample tickets, and the visitor experience.",
-    to: "/faq",
-    action: "Read FAQ",
-  },
-  {
-    icon: Building2,
-    title: "Sponsors",
-    text: "For corporate, private, monetary, or in-kind sponsorship interest.",
-    to: "/partnerships",
-    action: "Sponsor Form",
-  },
-  {
-    icon: Store,
-    title: "Vendors",
-    text: "For World Marketplace, food truck, product, and booth participation interest.",
-    to: "/partnerships",
-    action: "Vendor Form",
-  },
-  {
-    icon: Music4,
-    title: "Musicians",
-    text: "For community artists interested in voluntary cultural performances.",
-    to: "/partnerships",
-    action: "Musician Form",
-  },
-  {
-    icon: ChefHat,
-    title: "Culinary Partners",
-    text: "For culinary schools, programs, chefs, restaurants, and institutions preparing national dishes.",
-    to: "/auth/register",
-    action: "Culinary Register",
-  },
-  {
-    icon: HandHeart,
-    title: "Volunteers",
-    text: "For country booth, merchandise, ticket, visitor experience, and event support roles.",
-    to: "/registration",
-    action: "Volunteer Form",
-  },
-];
 
 const topics = [
   "General Event Question",
@@ -177,7 +125,7 @@ export default function Contact() {
             <div className="wop-eyebrow">Contact</div>
 
             <h1 className="wop-title">
-              Reach the right <span>event team.</span>
+              Reach The <span>Event Team</span>
             </h1>
 
             <p className="wop-subtitle">
@@ -212,34 +160,26 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="contact-path-section">
-        <div className="wop-container contact-path-grid">
-          {contactCards.map((card, index) => {
-            const Icon = card.icon;
-
-            return (
-              <motion.article
-                className="contact-path-card"
-                key={card.title}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ delay: index * 0.04, duration: 0.35 }}
-              >
-                <div className="contact-path-icon">
-                  <Icon size={24} />
-                </div>
-
-                <h2>{card.title}</h2>
-                <p>{card.text}</p>
-
-                <Link to={card.to} className="contact-path-link">
-                  {card.action}
-                  <ArrowRight size={16} />
-                </Link>
-              </motion.article>
-            );
-          })}
+      <section className="contact-info-section">
+        <div className="wop-container contact-info-grid">
+          {[
+            { icon: Mail,  label: "Email",    value: "example@gmail.com",                          href: "mailto:example@gmail.com" },
+            { icon: Phone, label: "Phone",    value: "+1 (206) 555-0173",                          href: "tel:+12065550173" },
+            { icon: MapPin,label: "Location", value: "Occidental Ave S, Pioneer Square, Seattle WA", href: null },
+          ].map(({ icon: Icon, label, value, href }) => (
+            <motion.div
+              key={label}
+              className="contact-info-card"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="contact-info-icon"><Icon size={28} /></div>
+              <span>{label}</span>
+              {href ? <a href={href}>{value}</a> : <strong>{value}</strong>}
+            </motion.div>
+          ))}
         </div>
       </section>
 

@@ -204,26 +204,6 @@ if (!/^[A-Za-z\s'-]{2,40}$/.test(form.lastName)) {
               ))}
             </ul>
 
-            <div className="culinary-feature-cards">
-            <div className="culinary-feature-card green">
-                <div className="feature-emoji">👨‍🍳</div>
-                <h3>National dish participation</h3>
-                <p>Represent your culture and showcase authentic national flavors.</p>
-            </div>
-
-            <div className="culinary-feature-card gold">
-                <div className="feature-emoji">🏆</div>
-                <h3>Guinness World Record attempt</h3>
-                <p>Be part of history as Seattle brings the world to one table.</p>
-            </div>
-
-            <div className="culinary-feature-card blue">
-                <div className="feature-emoji">🌎</div>
-                <h3>Seattle culinary collaboration</h3>
-                <p>Collaborate with chefs, schools, and community partners.</p>
-            </div>
-            </div>
-
           </div>
 
           <div className="auth-card">
@@ -316,6 +296,24 @@ if (!/^[A-Za-z\s'-]{2,40}$/.test(form.lastName)) {
               )}
             </form>
             )}
+          </div>
+
+          <div className="culinary-feature-cards">
+            <div className="culinary-feature-card green">
+              <div className="feature-emoji">👨‍🍳</div>
+              <h3>National dish participation</h3>
+              <p>Represent your culture and showcase authentic national flavors.</p>
+            </div>
+            <div className="culinary-feature-card gold">
+              <div className="feature-emoji">🏆</div>
+              <h3>Guinness World Record attempt</h3>
+              <p>Be part of history as Seattle brings the world to one table.</p>
+            </div>
+            <div className="culinary-feature-card blue">
+              <div className="feature-emoji">🌎</div>
+              <h3>Seattle culinary collaboration</h3>
+              <p>Collaborate with chefs, schools, and community partners.</p>
+            </div>
           </div>
         </div>
       </section>

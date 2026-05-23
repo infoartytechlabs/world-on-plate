@@ -1891,10 +1891,14 @@ body::after {
 .auth-layout {
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
-
+  grid-template-rows: auto auto;
   gap: 48px;
+  align-items: start;
+}
 
-  align-items: center;
+/* Feature cards span full width below both columns on desktop */
+.auth-layout .culinary-feature-cards {
+  grid-column: 1 / -1;
 }
 
 .auth-copy {
@@ -3956,8 +3960,10 @@ body::after {
 }
 
 .atelier-facts div {
-  display: grid;
-  gap: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
   min-height: 208px;
   padding: 24px;
   color: var(--navy);
@@ -3966,18 +3972,20 @@ body::after {
 
 .atelier-facts svg {
   color: var(--orange);
+  width: 18px;
+  height: 18px;
 }
 
 .atelier-facts span {
   color: var(--brown);
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .atelier-facts strong {
-  font-size: clamp(38px, 2vw, 24px);
+  font-size: clamp(16px, 1.6vw, 22px);
   line-height: 1.1;
 }
 
@@ -5797,9 +5805,12 @@ body::after {
     min-height: auto;
   }
 
-  .atelier-facts,
   .atelier-stat-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .atelier-facts {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .food-film-section {
@@ -5878,8 +5889,8 @@ body::after {
   }
 
   .atelier-facts {
-    grid-template-columns: 1fr;
-    margin-top: 0;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: auto;
     padding-bottom: 0;
     border-radius: 0;
     width: 100%;
@@ -6227,6 +6238,71 @@ body::after {
   color: var(--orange);
   font-size: 14px;
   font-weight: 900;
+}
+
+.contact-info-section {
+  padding: 60px 0;
+}
+
+.contact-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.contact-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 28px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1.5px solid rgba(232, 102, 53, 0.12);
+  box-shadow: 0 8px 32px rgba(184, 59, 47, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-info-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 48px rgba(184, 59, 47, 0.12);
+}
+
+.contact-info-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E86635, #B83B2F);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(232, 102, 53, 0.3);
+}
+
+.contact-info-card span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.contact-info-card strong,
+.contact-info-card a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 700;
+  color: #1A1A14;
+  text-decoration: none;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  word-spacing: 0.08em;
+}
+
+.contact-info-card a:hover {
+  color: #E86635;
 }
 
 .contact-form-section {
@@ -7069,6 +7145,12 @@ body::after {
   .auth-card {
     margin-left: 0;
     max-width: 760px;
+    order: 1;
+  }
+
+  .auth-layout .culinary-feature-cards {
+    order: 2;
+    grid-column: 1;
   }
 }
 
@@ -7366,4 +7448,391 @@ body::after {
     0 18px 42px rgba(232,123,50,0.28);
 }
 
+/* ── MOBILE RESPONSIVE ── */
+
+@media (max-width: 768px) {
+
+  /* Hero */
+  .home-atelier section:first-of-type {
+    padding-top: 90px !important;
+  }
+
+  /* Hide decorative icons on mobile */
+  .home-atelier section:first-of-type > [style*="position: absolute"][style*="zIndex: 2"] {
+    display: none;
+  }
+
+  /* Stats grid */
+  .atelier-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Ribbon */
+  .atelier-ribbon-widget {
+    flex: 0 0 clamp(70px, 20vw, 100px);
+    width: clamp(70px, 20vw, 100px);
+  }
+
+  /* Journey cards */
+  .atelier-journey {
+    flex-direction: column;
+  }
+
+  /* Dish grid */
+  .atelier-dish-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Route section */
+  .atelier-route-layout {
+    flex-direction: column;
+  }
+
+  /* People grid */
+  .atelier-people-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Taste route cards */
+  .taste-route-layers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Taste burst grid */
+  .taste-burst-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Taste playground layout */
+  .taste-playground-layout {
+    flex-direction: column;
+  }
+
+  /* Contact info grid */
+  .contact-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Action grid */
+  .atelier-action-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* CTA section */
+  .atelier-cta {
+    flex-direction: column;
+  }
+
+  /* Food film */
+  .food-film-layout {
+    flex-direction: column;
+  }
+
+  /* Volunteer card */
+  .volunteer-card {
+    flex-direction: column;
+  }
+
+  /* Free entry sticker — hide on mobile */
+  .home-atelier [style*="clipPath"] {
+    display: none;
+  }
+
+  /* Space needle — smaller on mobile */
+  .home-atelier img[alt="Space Needle"] {
+    height: clamp(150px, 30vw, 260px) !important;
+  }
+
+  /* Hero title */
+  .home-atelier h1 {
+    white-space: normal !important;
+    font-size: clamp(44px, 12vw, 80px) !important;
+  }
+
+  /* Meet us text — reposition */
+  .home-atelier [style*="Meet us"] {
+    left: 5% !important;
+    font-size: 13px !important;
+  }
+
+  /* Buttons — stack on mobile */
+  .home-atelier [style*="justifyContent: flex-start"] {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Atelier module cards */
+  .atelier-module-cards {
+    flex-direction: column;
+  }
+
+  /* Story section */
+  .atelier-story-head {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .atelier-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .taste-route-layers {
+    grid-template-columns: 1fr;
+  }
+
+  .atelier-people-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .atelier-dish-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form-layout {
+    flex-direction: column;
+  }
+}
+
 /* end of pending approval styles */
+
+/* ── HERO SECTION MOBILE ── */
+
+@media (max-width: 768px) {
+  .home-hero-section {
+    min-height: 80vh !important;
+    padding-top: 80px !important;
+  }
+
+  /* Title */
+  .home-hero-section h1 {
+    font-size: 80px !important;
+    white-space: normal !important;
+    line-height: 0.92 !important;
+    text-align: center !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* Date + countdown wrapper — center on mobile */
+  .home-hero-section .hero-date-wrap {
+    padding-left: 0 !important;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-hero-section .hero-date-wrap > span {
+    font-size: clamp(18px, 5vw, 28px) !important;
+    position: relative !important;
+    top: 16px !important;
+  }
+
+  /* Countdown row — horizontal, smaller on mobile */
+  .hero-countdown-row {
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    top: 280px !important;
+  }
+
+  /* Countdown boxes — smaller on mobile */
+  .hero-countdown-box {
+    padding: 12px 16px !important;
+    min-width: 64px !important;
+    border-radius: 12px !important;
+  }
+
+  .hero-countdown-box span:first-child {
+    font-size: 28px !important;
+  }
+
+  .hero-countdown-box span:last-child {
+    font-size: 11px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Hide center food images on mobile */
+  .home-hero-section .hero-food-images {
+    display: none !important;
+  }
+
+  /* Space Needle — smaller & repositioned */
+  .home-hero-section img[alt="Space Needle"] {
+    height: clamp(180px, 38vw, 280px) !important;
+    right: -4% !important;
+    top: 5% !important;
+  }
+
+  /* FREE ENTRY sticker — smaller */
+  .home-hero-section .hero-free-sticker {
+    width: 100px !important;
+    height: 100px !important;
+    top: 28% !important;
+    left: 3% !important;
+  }
+
+  .home-hero-section .hero-free-sticker span:nth-child(2) {
+    font-size: 14px !important;
+  }
+
+  /* Content block */
+  .home-hero-section .hero-content-block {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 160px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* Word blocks — center on mobile */
+  .home-hero-section .hero-word-blocks {
+    align-items: flex-start !important;
+  }
+
+  .home-hero-section .hero-word-blocks > span:last-child {
+    align-self: flex-end !important;
+    margin-right: 80px !important;
+    position: relative !important;
+    top: -130px !important;
+    font-size: clamp(48px, 12vw, 80px) !important;
+  }
+
+  /* CTAs — smaller on mobile, side by side */
+  .hero-ctas-inner {
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+
+  .home-hero-section .hero-ctas {
+    position: absolute !important;
+    top: 400px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-top: 0 !important;
+    white-space: nowrap;
+  }
+
+  .hero-cta-btn {
+    font-size: 12px !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+    min-height: unset !important;
+    line-height: normal !important;
+  }
+
+  /* Meet us text */
+  .home-hero-section .hero-meet-us {
+    top: auto !important;
+    bottom: 55% !important;
+    left: 60% !important;
+    transform: translateX(-50%) !important;
+    font-size: 16px !important;
+  }
+
+  /* Facts bar */
+  .home-hero-section .atelier-facts {
+    margin-top: 10vh !important;
+  }
+
+  .home-hero-section .atelier-facts div {
+    min-height: 100px !important;
+    padding: 12px !important;
+  }
+
+  .home-hero-section .atelier-facts span {
+    font-size: 10px !important;
+  }
+
+  .home-hero-section .atelier-facts strong {
+    font-size: 14px !important;
+  }
+
+  /* Amber blob */
+  .home-hero-section .hero-blob {
+    height: 40% !important;
+  }
+
+  /* Spacer — remove on mobile */
+  .home-hero-section .hero-spacer {
+    display: none !important;
+  }
+}
+
+/* ── PARTNERSHIPS PAGE MOBILE ── */
+@media (max-width: 768px) {
+
+  /* Hide sticker on mobile */
+  .partnership-sticker {
+    display: none !important;
+  }
+
+  /* Hero section */
+  .partner-hero {
+    padding: 60px 0 40px !important;
+  }
+
+  /* Sponsorship intro — stack columns */
+  .partner-intro-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  /* Stats mini-grid inside intro — keep 2 cols but smaller */
+  .partner-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Why sponsor rows — stack into cards */
+  .partner-why-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 28px 0 !important;
+  }
+
+  /* Hide the vertical divider line on mobile */
+  .partner-why-divider {
+    display: none !important;
+  }
+
+  /* Tier cards — single column */
+  .partner-tier-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Org cards — single column */
+  .partner-org-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Modal — full screen on mobile */
+  .partner-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 100dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    overflow-y: auto;
+  }
+
+  .partner-modal-backdrop {
+    align-items: flex-end !important;
+  }
+
+  /* Section padding reduction */
+  .partner-orgs-section,
+  .partner-tiers-section {
+    padding: 60px 0 !important;
+  }
+}

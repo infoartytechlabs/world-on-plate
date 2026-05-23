@@ -9,7 +9,8 @@
       "Bash(Select-Object FullName)",
       "Bash(Head -50)",
       "Bash(grep -E \"\\\\.\\(jsx|js\\)$\")",
-      "WebFetch(domain:www.feastie.ca)"
+      "WebFetch(domain:www.feastie.ca)",
+      "Bash(npx vite *)"
     ]
   }
 }

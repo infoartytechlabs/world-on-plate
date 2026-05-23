@@ -20,7 +20,6 @@ export default function Navbar() {
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Event", path: "/event-details" },
-    { label: "Countries", path: "/countries" },
     { label: "Partnerships", path: "/partnerships" },
     { label: "Organizers", path: "/organizers" },
     { label: "FAQ", path: "/faq" },
@@ -88,15 +87,6 @@ export default function Navbar() {
             </NavLink>
           ))}
 
-          <Link
-            to="/admin"
-            className={`wop-mobile-admin ${isAdmin ? "wop-mobile-admin--active" : ""}`}
-            onClick={() => setOpen(false)}
-          >
-            <ShieldCheck size={14} />
-            Admin
-          </Link>
-
           <Link to="/registration" className="wop-mobile-register" onClick={() => setOpen(false)}>
             <ClipboardList size={14} />
             Register
@@ -105,6 +95,15 @@ export default function Navbar() {
           <Link to="/auth/register" className="wop-mobile-cta" onClick={() => setOpen(false)}>
             <ChefHat size={14} />
             Culinary Register
+          </Link>
+
+          <Link
+            to="/admin"
+            className={`wop-mobile-admin ${isAdmin ? "wop-mobile-admin--active" : ""}`}
+            onClick={() => setOpen(false)}
+          >
+            <ShieldCheck size={14} />
+            Admin
           </Link>
         </div>
       )}
