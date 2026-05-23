@@ -7602,6 +7602,7 @@ body::after {
   .home-hero-section {
     min-height: 80vh !important;
     padding-top: 80px !important;
+    zoom: 0.93;
   }
 
   /* Title */
@@ -7681,6 +7682,7 @@ body::after {
     padding-right: 16px !important;
     padding-top: 160px !important;
     padding-bottom: 40px !important;
+    
   }
 
   /* Word blocks — center on mobile */
